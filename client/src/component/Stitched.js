@@ -3,6 +3,8 @@ import Nav from './Nav';
 import Footer from './Footer';
 import React from 'react';
 import axios from "axios";
+import img1 from '../images/شعار_مخيطة-removebg-preview.png'
+
 import { useState, useEffect } from "react";
 
 import { useNavigate } from "react-router";
@@ -12,190 +14,43 @@ import pic3 from '../images/محيطة 3.jpg';
 
 import { Link } from "react-router-dom";
 // import {
-//   Ripple,
-//   initTE,
-// } from "tw-elements";
-// import { useEffect, useState } from 'react';
-// initTE({ Ripple });
-export default function Example() {
+
+ function Stitched({userIdapp}) {
   const[value,setvalue]=useState("")
-  const [img, setImg] = useState("");
-
-  const onChange = (e) => {
-    const files = e.target.files;
-    const file = files[0];
-    getBase64(file);
-    console.log(img);
-  };
-  const onLoad = (fileString) => {
-    setImg(fileString);
-  };
-  const getBase64 = (file) => {
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      onLoad(reader.result);
-    };
-  };
-  const [b_id, setb_id] = useState();
-  const fetchProtectedData = async () => {
-    try {
-      const token = localStorage.getItem("auth");
-      if (token) {
-        const response = await axios.get("http://localhost:5000/protected", {
-          headers: {
-            Authorization: token,
-          },
-        });
-        setb_id(response.data.user.id);
-      }
-    } catch (error) {
-      console.error(error);
-      localStorage.removeItem("auth");
-      window.location.href = "http://localhost:3000/Login";
-    } finally {
-      console.log(false);
-    }
-  };
-
-  useEffect(() => {
-    if (localStorage.auth != null) {
-      fetchProtectedData();
-    }
-  }, []);
-
-  console.log(b_id);
-  const [Name, setName] = useState("");
-  const [location, setLocation] = useState("");
-  const [price, setPrice] = useState("");
-  const [des, setdescription] = useState("");
-  const [donationType, setdonationType] = useState("Money");
-  const [donationCase, setdonationCase] = useState("Stray Animals");
-  const navigate = useNavigate();
-  const [priceStatus,setPriceStatus]=useState(true)
-
-  const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent the default behavior of the event
-    const formData = {
-      Name: Name,
-      location: location,
-      price: price,
-      des: des,
-      donationType: donationType,
-      donationCase: donationCase,
-      b_id: b_id,
-      image: img,
-    };
-    try {
-      const newPost = await axios.post(
-        "http://localhost:5000/api/beneficiarys",
-        formData
-      );
-      Swal.fire({
-        title: `submitted form successful`,
-        icon: "success",
-        confirmButtonText: "OK",
-      });
-      console.log(newPost.data);
-    } catch (error) {
-      Swal.fire({
-        title: "Error",
-        text: "please enter valid donation amount",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-      console.error(error.message);
-    }
-  };
-
-  const contactMethods = [
-    {
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-6 h-6 "
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-          />
-        </svg>
-      ),
-      contact: "Support@example.com",
-    },
-    {
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-6 h-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
-          />
-        </svg>
-      ),
-      contact: "+1 (555) 000-000",
-    },
-    {
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-6 h-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-          />
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-          />
-        </svg>
-      ),
-      contact: "Mountain View, California, United State.",
-    },
-  ];
-  const article=[
-    
-    {img:pic1,title:"عامر الخياط",des:" مهنة الخياط واحدة من المهن القديمة في المجتمع، وعلى الرغم من بساطتها الا انها ليست مهنة سهَلْة بل تتطلب موهبة ومهارة عالية.",id:"1"},
-    {img:pic1,title:"مرقة",des:" مهنة الخياط واحدة من المهن القديمة في المجتمع، وعلى الرغم من بساطتها الا انها ليست مهنة سهَلْة بل تتطلب موهبة ومهارة عالية.",id:"2"},
-    {img:pic1,title:"زينة خانوم",des:" مهنة الخياط واحدة من المهن القديمة في المجتمع، وعلى الرغم من بساطتها الا انها ليست مهنة سهَلْة بل تتطلب موهبة ومهارة عالية.",id:"3"}
-  ]
-
+  const [users, setUsers] = useState([]);
 
   useEffect(()=>{
+    axios
+    .get(`http://localhost:5000/stitched`)
+    .then((response) => {
+      setUsers(response.data); // Assuming there is only one user with the given ID
+      console.log(response.data);
+      console.log(response.data);
+      console.log(response.data);
+      console.log(users);
 
-    setFilterDataUsers(article)
+    
+
+    })
+    .catch((error) => console.log(error.message));
 
   },[])
 
-const [FilterDataUsers, setFilterDataUsers] = useState([]);
-console.log(FilterDataUsers)
+
+const [filterDataUsers, setFilterDataUsers] = useState([]);
+
 const filterDataByNameUsers = (searchTermUsers) => {
-  const filteredDataUsers = article?.filter((item) =>
-    item.title.toLowerCase().includes(searchTermUsers.toLowerCase())
+  const filteredDataUsers = users.filter((item) =>
+    item.username.toLowerCase().includes(searchTermUsers.toLowerCase())
   );
-  setFilterDataUsers(filteredDataUsers)
-  console.log(FilterDataUsers);
+  setFilterDataUsers(filteredDataUsers);
 };
 
+useEffect(() => {
+  setFilterDataUsers(users);
+}, [users]);
+
+console.log(filterDataUsers)
   return (
     <>
     
@@ -224,7 +79,7 @@ const filterDataByNameUsers = (searchTermUsers) => {
     id="search-bar"
     placeholder="كلمتك الرئيسية هنا"
     className="px-6 py-2 w-full rounded-md flex-1 outline-none   backdrop-opacity-50"
-  />
+  /><Link to={"/Profileprovider"}>
   <button   
 className="w-full md:w-auto px-6 py-3 bg-fuchsia-800   text-white fill-white active:scale-95 duration-100 border will-change-transform overflow-hidden relative rounded-xl transition-all disabled:opacity-70">
     <div className="relative">
@@ -258,6 +113,7 @@ className="w-full md:w-auto px-6 py-3 bg-fuchsia-800   text-white fill-white act
       </div>
     </div>
   </button>
+  </Link>
 </label>
 
 
@@ -267,7 +123,59 @@ className="w-full md:w-auto px-6 py-3 bg-fuchsia-800   text-white fill-white act
 
 </div>
 
+<div className="text-center mt-16">
+      <h1 className="text-3xl text-gray-800 font-semibold">
+المخايط المتاحة      </h1>
+      <p className="mt-3 text-gray-500">
+        المدونات التي يحبها المجتمع. يتم تحديثها كل ساعة.
+      </p>
+    </div>
+    <section className="py-4   mx-auto max-w-screen-xl md:px-12 mt-8 grid gap-3 sm:grid-cols-1 lg:grid-cols-3 ">
+    {filterDataUsers.map((item) => {
+return(
+  <div
+  key={item.id}
 
+    className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+  {/* <a href="#!"> */}
+  <img className='mr-48 mt-5'
+              src={img1}
+              width={70}
+              height="100%"
+              alt="Float UI logo"
+            />
+    {/* <img
+      className="rounded-t-lg"
+      src={item.img}
+      alt=""
+    /> */}
+  {/* </a> */}
+
+  <div className="p-6">
+    <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
+{item.username}
+    </h5>
+    <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200">
+{item.address}
+    </p>
+    <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200">
+{item.domain}
+    </p>
+    <Link to={"/ProductCollection"}><button 
+      type="button"
+      className="inline-block rounded bg-fuchsia-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-fuchsia-300 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+      data-te-ripple-init=""
+      data-te-ripple-color="light"
+    >
+      تصاميمي
+    </button></Link>
+  </div>
+</div>
+)
+  
+})}
+
+</section>
 
   
     <section className="flex items-center bg-fuchsia-100 xl:h-screen font-poppins dark:bg-gray-800 ">
@@ -314,232 +222,14 @@ className="w-full md:w-auto px-6 py-3 bg-fuchsia-800   text-white fill-white act
           veniam Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
           consectetur adipiscing elit, sed do Lorem ipsum dolor sit amet.
         </p>
-        {/* <a
-          href="#"
-          className="px-4 py-2 text-gray-100 bg-fuchsia-800 rounded dark:bg-fuchsia-400 dark:hover:bg-blue-500 hover:bg-blue-600"
-        >
-          Learn more
-        </a> */}
+      
       </div>
     </div>
   </div>
   
 </section>
 
-<div className="text-center mt-16">
-      <h1 className="text-3xl text-gray-800 font-semibold">
-        المقالات
-      </h1>
-      <p className="mt-3 text-gray-500">
-        المدونات التي يحبها المجتمع. يتم تحديثها كل ساعة.
-      </p>
-    </div>
-    <section className="py-4   mx-auto max-w-screen-xl md:px-12 mt-8 grid gap-3 sm:grid-cols-1 lg:grid-cols-3 ">
-{ FilterDataUsers.map((item)=>{
-return(
 
-
-
-
-  <div
-
-    className="block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-  {/* <a href="#!"> */}
-    
-    <img
-      className="rounded-t-lg"
-      src={item.img}
-      alt=""
-    />
-  {/* </a> */}
-
-  <div className="p-6">
-    <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
-{item.title}
-    </h5>
-    <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200">
-{item.des}
-    </p>
-    <Link to={"/ProductCollection"}><button
-      type="button"
-      className="inline-block rounded bg-fuchsia-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-fuchsia-300 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-      data-te-ripple-init=""
-      data-te-ripple-color="light"
-    >
-      تصاميمي
-    </button></Link>
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
-)
-  
-})}
-
-</section>
-
-
-    
-
-
-
-      {/* /////////////////////////// */}
-
-      <main className="py-14 ">
-        <div className="max-w-screen-xl mx-auto px-4 text-gray-600 md:px-8">
-          <div className="max-w-lg mx-auto gap-12 justify-between lg:flex lg:max-w-none">
-            {/* <span
-              id="blackOverlay"
-              className="w-full h-full absolute opacity-50 bg-black"
-            /> */}
-            <div
-              className="max-w-xl h-75"
-              style={{
-                backgroundImage:
-                  'url("https://images.unsplash.com/photo-1516934024742-b461fba47600?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80")',
-                backgroundRepeat: "no-repeat",
-                opacity: 0.5,
-                backgroundSize: "cover",
-              }}
-            >
-              <div className="p-10 ">
-                <p className="text-yellow-800 pt-10 text-7xl font-semibold sm:text-4xl">
-                  Let us know how we can help
-                </p>
-                <p className="text-black text-xl p-10 text-white leading-10">
-                  We’re here to help and answer any question you might have, We
-                  look forward to hearing from you! Please fill out the form,
-                  Support our animal donation initiatives to make a positive
-                  impact on animals in need. Your contributions provide food,
-                  shelter, and medical care. Join us in creating a better world
-                  for our furry friends. Make a difference in the lives of
-                  animals through your generous donations. Help us provide
-                  essential care and support to vulnerable animals in need.
-                </p>
-                {/* <div>
-                <ul className="mt-6 flex flex-wrap gap-x-10 gap-y-6 items-center">
-                  {contactMethods.map((item, idx) => (
-                    <li key={idx} className="flex items-center gap-x-3">
-                      <div className="flex-none text-white">{item.icon}</div>
-                      <p>{item.contact}</p>
-                    </li>
-                  ))}
-                </ul>
-              </div> */}
-              </div>
-            </div>
-            <div className="flex-1 mt-12 sm:max-w-lg lg:max-w-md">
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div>
-                  <label className="font-medium">Full name</label>
-                  <input
-                    type="text"
-                    required
-                    value={Name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border-2 border-gray-300 p-2  focus:border-[#E8AA42] shadow-sm rounded-lg"
-                  />
-                </div>
-                <div>
-                  <label className="font-medium">Location</label>
-                  <input
-                    type="text"
-                    required
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border-2 border-gray-300 p-2  focus:border-[#E8AA42] shadow-sm rounded-lg"
-                  />
-                </div>
-                {priceStatus == true ?
-                <div>
-                  <label className="font-medium">Donation's amount</label>
-                  <input
-                    type="text"
-                    placeholder="$"
-                    required
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border-2 border-gray-300 p-2   focus:border-[#E8AA42] shadow-sm rounded-lg"
-                  />
-                </div> : null
-                }
-                <div>
-                  <label className="font-medium">Description</label>
-                  <textarea
-                    required
-                    value={des}
-                    onChange={(e) => setdescription(e.target.value)}
-                    className="w-full mt-2 h-36 px-3 py-2 border-2 border-gray-300 p-2 rounded-lg  resize-none appearance-none bg-transparent outline-none  focus:border-[#E8AA42] shadow-sm "
-                  ></textarea>
-                </div>
-
-                <div>
-                  <label className="font-medium">Case Image</label>
-
-                  <input
-                    className="shadow mb-4 appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
-                    type="file"
-                    placeholder="Table Image"
-                    name="guest_num"
-                    onChange={(e) => {
-                      onChange(e);
-                    }}
-                    accept="image/*"
-                  />
-                </div>
-
-                <label for="don" className="font-bold">
-                  Donation case :{" "}
-                </label>
-
-                <select
-                  id="don"
-                  value={donationCase}
-                  onChange={(e) => setdonationCase(e.target.value)}
-                  className="select border-2 border-gray-300 p-2 rounded-lg w-full max-w-xs focus:border-[#E8AA42]"
-                >
-                  {/* <option disabled selected>Donation case</option> */}
-                  <option>Stray Animals</option>
-                  <option>injured animals</option>
-                </select>
-                <div className="flex">
-                  <label for="don1" className="font-bold">
-                    Type of Donate :{" "}
-                  </label>
-                  <select
-                    id="don1"
-                    value={donationType}
-                    onChange={(e) => {
-                      setdonationType(e.target.value)
-                      setPriceStatus(e.target.value == "Others" ? false : true)
-                    }}
-                    className="select border-2 border-gray-300 p-2 rounded-lg w-full max-w-xs focus:border-[#E8AA42]"
-                  >
-                    {/* <option disabled selected>Type of Donation</option> */}
-                    <option>Money</option>
-                    <option>Others</option>
-                  </select>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full px-4 py-2 text-white font-medium bg-[#E8AA42] hover:bg-[#7C9070] active:bg-[#7C9070] rounded-lg duration-150"
-                >
-                  Submit
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </main>
-
-  
-  
     </>
   )}
+  export default Stitched

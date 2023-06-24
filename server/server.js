@@ -23,8 +23,8 @@ pool
     console.error("Error connecting to PostgreSQL database:", err);
   });
 
-app.use(express.json());
-app.use(cors()); // Enable CORS for all routes
+  app.use(express.json({limit:'50mb'}));
+  app.use(cors()); // Enable CORS for all routes
 
 app.post('/Register', async (req, res) => {
   const { username, email, password ,domain, address ,role} = req.body;
@@ -110,25 +110,102 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
-//////////////////////////
-// app.get("/protected", (req, res) => {
-//   const protected = async  (req, res) => {
-//     const token = req.headers.authorization.trim();
-//     if (!token) {
-//       return res.status(401).json({ message: 'No token provided.' });
-//     }
+///////////////////////////////////////request of user
+app.post("/request", (req, res) => {
+  const {user_id, description ,photo} = req.body;
+  console.log(user_id,description,photo);
+  pool.query(
+    "INSERT INTO requests(user_id, description ,photo) VALUES($1,$2,$3) RETURNING*",
+    [user_id, description ,photo],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+
+        res.status(201).send(result.rows);
+      }
+    }
+  );
+});
+///////////////////////////////////////Product of makhiata 
+      
+
+app.post("/product", (req, res) => {
+  // const { name, description, price, product_id, photo } = req.body;
+  const { name, description, price,image, product_id} = req.body;
+
+  // console.log(name, description, price, product_id, photo);
+  pool.query(
+    // "INSERT INTO product(name, description, price, product_id, photo, flag) VALUES($1, $2, $3, $4, $5, false) RETURNING *",
+    "INSERT INTO products(name, description, price,image, product_id) VALUES($1, $2, $3, $4, $5) RETURNING *",
+
+    // [name, description, price, product_id, photo],
+    [name, description, price,image, product_id],
+
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.status(201).send(result.rows);
+      }
+    }
+  );
+});
+
+
+
+app.get('/profileProvider/:id', async function (req, res) {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const user = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
+    console.log(user)
+    res.json(user.rows); // Assuming there is only one user with the given ID
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: 'An error occurred while fetching user data' });
+  }
+});
+
+
+
+/////////give all makhaiet
+app.get('/stitched', async function (req, res) {
+  try {
+    // const { id } = req.params;
+    // console.log(id);
+    const user = await pool.query("SELECT * FROM users where role= 'مخيطة'");
+    res.json(user.rows); // Assuming there is only one user with the given ID
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: 'An error occurred while fetching user data' });
+  }
+});
   
-//     jwt.verify(token, SECRETKEY, (err, decoded) => {
-//       if (err) {
-//         console.log("token error:", err); // Log the error object for debugging
-//         return res.status(403).json({ message: 'Failed to authenticate token.' });
-//       }
-//       console.log("token Authenticated");
-//       res.json({ message: 'Authenticated', user: decoded });
-//     });
-//   };
-// }
-// )
+
+///////////////////////
+app.get('/productCollection/:product_id', async function (req, res) {
+  try {
+    // const { id } = req.params;
+    // console.log(id);
+    const user = await pool.query("SELECT * FROM products WHERE id=$1");
+    res.json(user.rows); // Assuming there is only one user with the given ID
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: 'An error occurred while fetching user data' });
+  }
+});
+
+// app.get("/resort", (req, res) => {
+//   const q = "SELECT * FROM resort where active = true "
+//   pool.query(q, (err, data) => {
+//     if (err) return res.json(err)
+//     return res.json(data.rows)
+//   })
+// })
+
+
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

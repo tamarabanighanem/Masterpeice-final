@@ -165,7 +165,7 @@ const Login = () => {
           if (response.data.role === 'مخيطة') {
             navigate('/ProfileUser');
           } else {
-            navigate('/');
+            navigate('/stisched');
           }
         } else {
           Swal.fire({

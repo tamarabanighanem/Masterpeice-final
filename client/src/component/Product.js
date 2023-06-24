@@ -1,8 +1,16 @@
 import React from 'react'
+import { useParams } from 'react-router-dom';
 
 import { Link } from 'react-router-dom'
 
 const Product = () => {
+  const { id } = useParams(); // Access the ID from the URL parameters
+  
+console.log(id)
+
+
+
+
   return (
     <div>
   <section>

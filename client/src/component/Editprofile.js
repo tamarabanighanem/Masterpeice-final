@@ -18,9 +18,14 @@ const style = {
     boxShadow: 3,
     p: 4,
   }; 
+  
 
 
-function EditProfile() {
+function EditProfile({userIdapp}) {
+
+  
+
+
   const navigate=useNavigate()
 const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -29,84 +34,67 @@ const [open, setOpen] = React.useState(false);
     const [userId ,setUserId] = useState()
     const [userData ,setUserData] = useState({})
     const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+    const [email, setEmail] = useState("");
     
-    const fetchProtectedData = async () => {
-      try {
-        const token = localStorage.getItem("auth");
-        if (token) {
-          const response = await axios.get("http://localhost:5000/protected", {
-            headers: {
-              Authorization: token,
-            },
-          });
-          setUserId(response.data.user.id)
-          console.log(response.data.user.email)
-          let id=response.data.user.id
-          try {
-            const response = await axios.get(`http://localhost:5000/api/users/${id}`);
-            console.log(response.data)
-            console.log("tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt")
-            setUserData(response.data[0])
-            setName(response.data[0].firstName)
-            setEmail(response.data[0].email)
 
-          } catch (error) {
-            console.error("Error retrieving data:", error);
-          }
-        }
-      } catch (error) {
-        console.error(error);
-        localStorage.removeItem("auth");
-        window.location.href = "http://localhost:3000/Login";
-      } finally {
-        console.log(false);
-      }
-    };
-  
-  
-  useEffect(()=>{
-    if(localStorage.auth != null){   
-      fetchProtectedData()
-    }
-  },[])
     
   const handleSubmit = async (e) => {
     e.preventDefault();
 console.log(name,email,userId )
-    axios
-      .put(`http://localhost:5000/api/users/${userId}`, {
-        firstName: name,
-        email: email,
-      })
-      .then(function (response) {
-        console.log(response);
-        // navigate("/ProfilePage")
-        window.location.href = 'http://localhost:3000/ProfilePage';
+    // axios
+    //   .put(`http://localhost:5000/api/users/${userId}`, {
+    //     firstName: name,
+    //     email: email,
+    //   })
+    //   .then(function (response) {
+    //     console.log(response);
+    //     // navigate("/ProfilePage")
+    //     window.location.href = 'http://localhost:3000/ProfilePage';
 
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
   }
-  const [img, setImg] = useState("");
 
-const onChange = (e) => {
-  const files = e.target.files;
-  const file = files[0];
-  getBase64(file);
-  console.log(img);
-};
-const onLoad = (fileString) => {
-  setImg(fileString);
-};
-const getBase64 = (file) => {
-  let reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = () => {
-    onLoad(reader.result);
-  };
-};
+  const [user, setUser] = useState({});
+  console.log(userIdapp)
+  console.log(userIdapp)
+  console.log(userIdapp)
+  console.log(userIdapp)
+  
+
+
+  // useEffect(() => {
+  //   axios
+  //     .get(`http://localhost:5000/profileProvider/${userIdapp}`)
+  //     .then((response) => {
+  //       setUser(response.data); // Assuming there is only one user with the given ID
+  //       console.log(response.data);
+
+
+  //     })
+  //     .catch((error) => console.log(error.message));
+  // }, []);
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    } else {
+      axios
+        .get(`http://localhost:5000/profileProvider/${userIdapp}`)
+        .then((response) => {
+          setUser(response.data[0]);
+          localStorage.setItem("user", JSON.stringify(response.data[0]));
+          console.log(response.data);
+          console.log(userIdapp);
+        })
+        .catch((error) => console.log(error.message));
+    }
+  }, [userIdapp]);
+  
+  console.log(user)
+
   return (
     <div>
     <Button  className="mb-10  bg-fuchsia-800  text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800   "
@@ -119,23 +107,20 @@ const getBase64 = (file) => {
     >
       <Box sx={style}>
         <div className='flex flex-col'>
-        <Input onChange={(e)=>setName(e.target.value)} id="name" value={name}
- type='text' placeholder='اسم المخيطة' variant="h6" component="h2" className='m-5'>
+        <Input onChange={(e)=>setName(e.target.value)} id="name" value={name} 
+ type='text' placeholder={user.username ||""} variant="h6" component="h2" className='m-5'>
           Text in a modal
         </Input> <br></br>
-        <Input placeholder='رقم الهاتف' id="email" type='text'onChange={(e)=>setEmail(e.target.value)}  value={email} variant="h6" component="h2" className='m-5'>
+        <Input placeholder=  {user.address ||""} id="email" type='text'onChange={(e)=>setEmail(e.target.value)}  value={email} variant="h6" component="h2" className='m-5'>
           Text in a modal
         </Input> <br></br>
         <Input onChange={(e)=>setName(e.target.value)} id="name" value={name}
- type='text' placeholder='الوصف/الموقع' variant="h6" component="h2" className='m-5'>
+ type='text' placeholder={user.description ||""} variant="h6" component="h2" className='m-5'>
           Text in a modal
         </Input> <br></br>
       
         
-        <Input onChange={(e)=>setName(e.target.value)} id="name" value={name}
- type='file' placeholder='اسم المخيطة' variant="h6" component="h2" className='m-5'>
-          Text in a modal
-        </Input> <br></br>
+      
       
 
         <Button

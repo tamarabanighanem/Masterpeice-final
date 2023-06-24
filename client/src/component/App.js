@@ -1,5 +1,7 @@
 import { useState,useEffect } from 'react';
 import axios from 'axios';
+import { Route, Routes, BrowserRouter } from 'react-router-dom';
+
 import './App.css';
 import Home from './Home';
 import Login from './Login';
@@ -8,15 +10,12 @@ import Pricing from './Pricing';
 import ContactUs from './ContactUs'
 import Product from './Product';
 import Stitched from './Stitched'
-import Profile from './ProfileProviderr';
-import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import Prodectdetails from './Prodectdetails';
 import ProductCollection from './ProductCollection';
 import Checkout from './Checkout';
 import Benficiry from './benficiry';
 import EditProfile from './Editprofile';
 import ProfileUser from './ProfileUser';
-import Resorts from './Test';
 // Initialization for ES Users
 import {
   Collapse,
@@ -26,6 +25,7 @@ import {
 import About from './About';
 import Nav from './Nav';
 import Footer from './Footer';
+import ProfileProviderr from './ProfileProviderr';
 
 function App() {
   initTE({ Collapse, Ripple });
@@ -40,12 +40,14 @@ function App() {
             Authorization: token,
           },
         });
-        setUserId(response.data.user.id)
+        setUserId(response.data.id)
       }
+      console.log(userId)
+
     } catch (error) {
       console.error(error);
-      localStorage.removeItem("token");
-      window.location.href = "http://localhost:3000/Login";
+      // localStorage.removeItem("token");
+      // window.location.href = "http://localhost:3000/Login";
     } finally {
       console.log(false);
 
@@ -59,7 +61,7 @@ useEffect(()=>{
   }
 },[])
 
-
+console.log(userId)
 
 
 
@@ -73,19 +75,19 @@ useEffect(()=>{
 <Nav/>
 <Routes>
   <Route path='/' element={<Home/>}/>
-  <Route path='/productcollection' element={<ProductCollection/>}/>
-  <Route path='/product' element={<Product/>}/>
+  <Route path='/productcollection' element={<ProductCollection userIdapp={userId}/>}/>
+  <Route path='/product/:id' element={<Product/>}/>
   <Route path='/Login' element={<Login/>}/>
   <Route path='/Signup' element={<Signup/>}/>
   <Route path='/Pricing' element={<Pricing/>}/>
   <Route path='/ContactUs' element={<ContactUs/>}/>
   <Route path='/About' element={<About/>}/>
   <Route path='/stisched' element={<Stitched/>}/>
-  <Route path='/Profile' element={<Profile/>}/>
+  <Route path='/Profileprovider' element={<ProfileProviderr userIdapp={userId}/>}/>
   <Route path='/productdetails' element={<Prodectdetails/>}/>
   <Route path='/checkout' element={<Checkout/>}/>
   <Route path='/ben' element={<Benficiry/>}/>
-  <Route path='/Editprofile' element={<EditProfile/>}/>
+  <Route path='/Editprofile' element={<EditProfile userIdapp={userId}/>}/>
   <Route path='/ProfileUser' element={<ProfileUser userIdapp={userId}/>}/>
 
 </Routes>
