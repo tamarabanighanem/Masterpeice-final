@@ -180,7 +180,7 @@ app.get('/profileUser/:id', async function (req, res) {
     res.status(500).json({ error: 'An error occurred while fetching user data' });
   }
 });
-//////////////////////all Product for mkhiata in profile
+//////////////////////all Product for mkhiata in profile غير مبيوعة
 
 app.get('/productOfMakhiata/:id', async function (req, res) {
   try {
@@ -188,7 +188,23 @@ app.get('/productOfMakhiata/:id', async function (req, res) {
     console.log(id);
   
     
-    const user = await pool.query("SELECT * FROM products WHERE user_id = $1 AND active = true", [id]);
+    const user = await pool.query("SELECT * FROM products WHERE user_id = $1 AND active = true AND deleted = false ", [id]);
+    console.log(user)
+    res.json(user.rows); // Assuming there is only one user with the given ID
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: 'An error occurred while fetching user data' });
+  }
+});
+//////////////////////all Product for mkhiata in profile  مبيوعة
+
+app.get('/productdeletedOfMakhiata/:id', async function (req, res) {
+  try {
+    const { id } = req.params;
+    console.log(id);
+  
+    
+    const user = await pool.query("SELECT * FROM products WHERE user_id = $1 AND active = true AND deleted = true ", [id]);
     console.log(user)
     res.json(user.rows); // Assuming there is only one user with the given ID
   } catch (err) {
@@ -232,7 +248,7 @@ app.get('/productCollection/:id', async function (req, res) {
   try {
     const { id } = req.params;
     console.log(id);
-    const user = await pool.query('SELECT * FROM products WHERE user_id = $1 AND active = true', [id]);
+    const user = await pool.query('SELECT * FROM products WHERE user_id = $1 AND active = true AND deleted = false', [id]);
     res.json(user.rows); // Assuming there is only one user with the given ID
   } catch (err) {
     console.log(err.message);
@@ -359,7 +375,24 @@ app.post("/payment", (req, res) => {
     }
   );
 });
+app.put('/prouctAvailable/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    // const { description,phone, photo } = req.body;
+    // console.log(description, phone ,photo);
 
+    const updated = await pool.query(
+      'UPDATE products SET deleted = true WHERE id = $1',
+      [id]
+    );
+
+    console.log(updated);
+
+    res.json(updated.rows);
+  } catch (error) {
+    res.status(500).json({ error: "Can't edit data" });
+  }
+});
 
 /////////////////////editrequest
 app.put('/editrequest/:id', async (req, res) => {

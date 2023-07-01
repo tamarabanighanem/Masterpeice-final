@@ -141,7 +141,13 @@ function PaymentPage({userIdapp}) {
       console.error(error.message);
     }
 
-    showSuccessAlert("thanks for Donation")
+    showSuccessAlert("تم الدفع بنجاح")
+    try {
+      const request = await axios.put(`http://localhost:5000/prouctAvailable/${id}`);
+      console.log(request.data);
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   const showSuccessAlert = (message,currentPrice) => {

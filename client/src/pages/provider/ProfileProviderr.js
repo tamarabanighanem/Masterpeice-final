@@ -92,6 +92,7 @@ function ProfileProviderr({userIdapp}) {
   };
   
   const [user, setUser] = useState({});
+  const [delproduct, setdelproduct] = useState([]);
 
 
 const [open, setOpen] = React.useState(false);
@@ -120,7 +121,14 @@ useEffect(() => {
       // Assuming there is only one user with the given ID
     })
     .catch((error) => console.log(error.message));
-
+    axios
+    .get(`http://localhost:5000/productdeletedOfMakhiata/${userIdapp}`)
+    .then((response) => {
+      setdelproduct(response.data);
+      console.log(response.data)
+      // Assuming there is only one user with the given ID
+    })
+    .catch((error) => console.log(error.message));
 
     axios
     .get(`http://localhost:5000/requestOfMakhiata/${userIdapp}`)
@@ -321,6 +329,81 @@ const handleDelete = async (id) => {
             <p className="text-lg font-semibold text-black cursor-auto my-3">
             رقم الهاتف : {request.phone}
             </p>
+          {/* <div className="flex items-center">
+            
+            <del>
+              <p className="text-sm text-gray-600 cursor-auto ml-2">$199</p>
+            </del>
+            
+            <div className="ml-auto">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={20}
+                height={20}
+                fill="currentColor"
+                className="bi bi-bag-plus"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z"
+                />
+                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+              </svg>
+            </div>
+          </div> */}
+        </div>
+      {/* </Link> */}
+      {/* <button type="submit"
+                                className="w-20 text-sm px-4 py-2 mb-3 text-white  bg-fuchsia-800 hover:bg-fuchsia-100 mr-48 active:bg-fuchsia-100 rounded-lg duration-150"
+                            >
+                                Edit
+                            </button> */}
+                                {/* <div className="w-full lg:w-4/12 px-4  lg:order-3 lg:text-right lg:self-center">
+                    <div className="py-6 px-3 mt-32 sm:mt-0">
+                
+   </div>
+                {post.id}  </div> */}
+         
+    </div>
+        );
+      })}
+      </section>
+        </div>
+        {/* ///////////////////////////////// */}
+
+        <div className="text-center mt-16">
+      <h1 className="text-3xl text-gray-800 font-semibold">الطلبات المبيوعة</h1>
+      {/* <p className="mt-3 text-gray-500">
+        المدونات التي يحبها المجتمع. يتم تحديثها كل ساعة.
+      </p> */}
+    </div>
+<div className="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
+<section
+    id="Projects"
+    className="w-fit mx-auto grid grid-cols-4 lg:grid-cols-4 md:grid-cols-3 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5"
+  >
+          {delproduct?.map((del) => {
+                    return (
+                      
+    <div  key={del.id} className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+      
+      {/* <Link to={`/Product/${post.id}`}key={post.id}> */}
+
+        <img
+          src={del.photo}
+          alt="Product"
+          className="h-80 w-72 object-cover rounded-t-xl"
+        />
+        <div className="px-4 py-3 w-72">
+          {/* <p className="text-lg font-bold text-black truncate block capitalize">
+          {request.name}
+          </p> */}
+          <p className="text-lg font-semibold text-black cursor-auto my-3">
+            الاسم :  {del.name}
+            </p>
+            <p className="text-lg font-semibold text-black cursor-auto my-3">
+            الوصف :  {del.description}            </p>
           {/* <div className="flex items-center">
             
             <del>
