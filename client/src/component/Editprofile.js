@@ -32,68 +32,72 @@ const [open, setOpen] = React.useState(false);
   const handleClose = () => setOpen(false);
     /////////////////////
     const [userId ,setUserId] = useState()
-    const [userData ,setUserData] = useState({})
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    
+    // const [userData ,setUserData] = useState({})
+    const [username, setuserName] = useState("");
+    const [address, setaddress] = useState("");
+    const [domain, setdomain] = useState("");
+  
 
     
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-console.log(name,email,userId )
-    // axios
-    //   .put(`http://localhost:5000/api/users/${userId}`, {
-    //     firstName: name,
-    //     email: email,
-    //   })
-    //   .then(function (response) {
-    //     console.log(response);
-    //     // navigate("/ProfilePage")
-    //     window.location.href = 'http://localhost:3000/ProfilePage';
 
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
-  }
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+axios
+  .put(`http://localhost:5000/editprofileProvirer/${userIdapp}`, {
+    username: username,
+    address: address,
+    domain: domain,
+  })
+  .then(function (response) {
+    console.log(response);
+    // navigate("/ProfilePage");
+    // window.location.href = 'http://localhost:3000/ProfilePage';
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+};
+
+// Make sure to adjust the values being passed (e.g., name, email, and "some description") based on your requirements and the actual data you want to update in the server-side database.
+
+
+
+
+
+
 
   const [user, setUser] = useState({});
   console.log(userIdapp)
   console.log(userIdapp)
   console.log(userIdapp)
   console.log(userIdapp)
+  console.log(userIdapp)
+  console.log(userIdapp)
+
   
 
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`http://localhost:5000/profileProvider/${userIdapp}`)
-  //     .then((response) => {
-  //       setUser(response.data); // Assuming there is only one user with the given ID
-  //       console.log(response.data);
 
-
-  //     })
-  //     .catch((error) => console.log(error.message));
-  // }, []);
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    } else {
+  
       axios
         .get(`http://localhost:5000/profileProvider/${userIdapp}`)
         .then((response) => {
           setUser(response.data[0]);
-          localStorage.setItem("user", JSON.stringify(response.data[0]));
+          // localStorage.setItem("user", JSON.stringify(response.data[0]));
           console.log(response.data);
-          console.log(userIdapp);
+          console.log(response.data);
+          console.log(response.data);
+          console.log(response.data);
         })
         .catch((error) => console.log(error.message));
-    }
+    // }
   }, [userIdapp]);
   
-  console.log(user)
+
+
+
 
   return (
     <div>
@@ -107,17 +111,18 @@ console.log(name,email,userId )
     >
       <Box sx={style}>
         <div className='flex flex-col'>
-        <Input onChange={(e)=>setName(e.target.value)} id="name" value={name} 
+        <Input onChange={(e)=>setuserName(e.target.value)} id="name" value={username} 
  type='text' placeholder={user.username ||""} variant="h6" component="h2" className='m-5'>
           Text in a modal
         </Input> <br></br>
-        <Input placeholder=  {user.address ||""} id="email" type='text'onChange={(e)=>setEmail(e.target.value)}  value={email} variant="h6" component="h2" className='m-5'>
+        <Input onChange={(e)=>setdomain(e.target.value)} id="name" value={domain}
+ type='text' placeholder={user.domain ||""} variant="h6" component="h2" className='m-5'>
           Text in a modal
         </Input> <br></br>
-        <Input onChange={(e)=>setName(e.target.value)} id="name" value={name}
- type='text' placeholder={user.description ||""} variant="h6" component="h2" className='m-5'>
+        <Input placeholder=  {user.address ||""} id="email" type='text'onChange={(e)=>setaddress(e.target.value)}  value={address} variant="h6" component="h2" className='m-5'>
           Text in a modal
         </Input> <br></br>
+    
       
         
       

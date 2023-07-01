@@ -1,0 +1,18 @@
+
+
+
+
+@media (max-width: 768px) {
+
+    .sideBarDash{
+        display: none;
+    }
+
+}
+@media (min-width: 769px) {
+
+    .DashboardNav{
+        display: none;
+    }
+
+}
