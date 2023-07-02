@@ -37,11 +37,11 @@ function handleLogOut(){
 
 
   Swal.fire({
-    title: ` logout?  `,
+    title: ` هل تود الخروج `,
     showConfirmButton: true,
     showCancelButton: true,
-    confirmButtonText: "OK",
-    cancelButtonText: "Cancel",
+    confirmButtonText: "نعم",
+    cancelButtonText: "الغاء",
     icon: 'warning'
 }
 ).then((result) => {
@@ -58,7 +58,7 @@ function handleLogOut(){
       
 
     } else
-        Swal.fire(' Cancelled', '', 'error')
+        Swal.fire(' الغاء', '', 'error')
 
 })
 
@@ -66,7 +66,7 @@ function handleLogOut(){
 
 
     return (
-      <Card className=" min-h-[calc(100vh)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-white-900/5 Sidebar bg-white sideBarDash">
+      <Card className=" min-h-[calc(100vh)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-white-900/5  bg-fuchsia-100 ">
         <div className="mb-2 p-4">
         <Typography className="text-[#E8AA42]" variant="h5" color="blue-gray">
         <Link to="/">
@@ -76,14 +76,14 @@ function handleLogOut(){
           </Typography>
         </div>
         <List>
-          <Link to='/'>
-          <ListItem className="hover:bg-[#E8AA42]">
+          {/* <Link to='/'>
+          <ListItem className="hover:bg-fuchsia-800 hover:text-white">
             <ListItemPrefix>
-              <PresentationChartBarIcon className="h-5 w-5" />
+              <PresentationChartBarIcon className="h-5 w-5 hover:text-white" />
             </ListItemPrefix>
-            <a style={{color:'black'}}> Statistics </a>
+            <a className='hover:text-white' style={{color:'black'}}> Statistics </a>
           </ListItem>
-          </Link>
+          </Link> */}
 
 
           {/* <Link to='/ListAdmin'>
@@ -96,51 +96,51 @@ function handleLogOut(){
           </Link> */}
 
            <Link to='/ListUser'>
-           <ListItem className="hover:bg-[#E8AA42]">
+           <ListItem className="hover:bg-fuchsia-800 hover:text-white border-b-2">
             <ListItemPrefix>
             <Icon path={mdiAccountMultipleOutline} size={1} />
             </ListItemPrefix>
-            <a style={{color:'black'}}> Users list </a>
+            <a style={{color:'black'}}> قائمة المسجلين </a>
           </ListItem>
           </Link>
 
-          <Link to='/ListRestaurant'>
+          {/* <Link to='/ListRestaurant'>
           <ListItem className="hover:bg-[#E8AA42]">
             <ListItemPrefix>
             <Icon path={mdiHandshakeOutline } size={1} />
             </ListItemPrefix>
             <a style={{color:'black'}}> beneficiary List </a>
           </ListItem>
-          </Link>
+          </Link> */}
 
-          <Link to='/EditAboutContact'>
+          {/* <Link to='/EditAboutContact'>
           <ListItem className="hover:bg-[#E8AA42]">
             <ListItemPrefix>
             <Icon path={mdiInformationOutline} size={1} />
             </ListItemPrefix>
             <a style={{color:'black'}}> Edit About </a>
           </ListItem>
-          </Link>
+          </Link> */}
 
           <Link to='/AcceptTables'>
-          <ListItem className="hover:bg-[#E8AA42]">
+          <ListItem className="hover:bg-fuchsia-800 hover:text-white border-b-2">
             <ListItemPrefix>
             <Icon path={mdiTableFurniture} size={1} />
             </ListItemPrefix>
-            <a style={{color:'black'}}> Pending Posts </a>
+            <a style={{color:'black'}}> الطلبات المعلقة </a>
           </ListItem>
           </Link>
 
-          <Link to='/PaymentsInfo'>
+          {/* <Link to='/PaymentsInfo'>
           <ListItem className="hover:bg-[#E8AA42]">
             <ListItemPrefix>
             <Icon path={mdiCashClock} size={1} />
             </ListItemPrefix>
             <a style={{color:'black'}}> payments </a>
           </ListItem>
-          </Link>
+          </Link> */}
 
-         <Link to='/Chat'>
+         {/* <Link to='/Chat'>
          <ListItem className="hover:bg-[#E8AA42]">
             <ListItemPrefix>
               <InboxIcon className="h-5 w-5" />
@@ -149,8 +149,8 @@ function handleLogOut(){
             {/* <ListItemSuffix>
               <Chip value="14" size="sm" variant="white" color="blue-gray" className="rounded-full" />
             </ListItemSuffix> */}
-          </ListItem>
-          </Link>
+          {/* </ListItem>
+          </Link>  */}
 
 {/* 
          <Link to="UserProfile">
@@ -171,11 +171,11 @@ function handleLogOut(){
           </ListItem>
             </Link> */}
            <button onClick={handleLogOut}>
-           <ListItem className="hover:bg-amber-500">
+           <ListItem className="hover:bg-fuchsia-800 hover:text-white border-b-2">
             <ListItemPrefix>
               <PowerIcon className="h-5 w-5" />
             </ListItemPrefix>
-            <a style={{color:'black'}}> Log Out </a>
+            <a style={{color:'black'}}> تسجيل خروج</a>
           </ListItem>
           </button>
         </List>

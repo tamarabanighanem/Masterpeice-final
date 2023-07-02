@@ -31,7 +31,7 @@ const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
     /////////////////////
-    const [userId ,setUserId] = useState()
+    const [userId ,setUserId] = useState(userIdapp)
     // const [userData ,setUserData] = useState({})
     const [username, setuserName] = useState("");
     const [address, setaddress] = useState("");
@@ -51,6 +51,7 @@ axios
   })
   .then(function (response) {
     console.log(response);
+    setUserId(userIdapp)
     // navigate("/ProfilePage");
     // window.location.href = 'http://localhost:3000/ProfilePage';
   })
@@ -93,7 +94,7 @@ axios
         })
         .catch((error) => console.log(error.message));
     // }
-  }, [userIdapp]);
+  }, [userId]);
   
 
 

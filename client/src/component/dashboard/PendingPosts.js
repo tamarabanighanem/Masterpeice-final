@@ -240,14 +240,14 @@ const handleAccept = async (id) => {
 };
   return (
     <>
-      <section className="w-full dark:bg-gray-900 mt-5 ">
+      <section className="w-full bg-fuchsia-100  ">
       <div className="">
-        <h1 className="text-[30px] font-bold py-3">Requests</h1>
+        <h1 className="text-[30px] font-bold py-3 ">الطلبات المعلقة</h1>
         {/* Start coding here */}
-        <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-2xl overflow-hidden">
+        <div className="bg-white dark:bg-gray-800  relative shadow-md  overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-white uppercase bg-[#222] dark:bg-gray-700 dark:text-gray-400">
+              <thead className="text-xs text-white uppercase bg-fuchsia-800 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col" className="px-4 py-3">
                     Hotel Name
