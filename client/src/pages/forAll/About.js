@@ -34,7 +34,6 @@ const About = () => {
   return (
     <div>
       <>
-  <Nav/>
 <section
   class="overflow-hidden bg-gray-50 sm:grid sm:grid-cols-2 sm:items-center"
 >
@@ -103,7 +102,6 @@ const About = () => {
                 </div>
             </div>
         </section>
-        <Footer/>
   </>
   </div>
   )

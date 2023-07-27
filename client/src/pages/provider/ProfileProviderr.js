@@ -18,7 +18,7 @@ function ProfileProviderr({userIdapp}) {
   const [name, setname] = useState("");
   const [price, setprice] = useState("");
   const [description, setdescription] = useState("");
-
+const[loading,setLoading]=useState(true)
   const onChange = (e) => {
     const files = e.target.files;
     const file = files[0];
@@ -34,28 +34,7 @@ function ProfileProviderr({userIdapp}) {
     reader.onload = () => {
       onLoad(reader.result);
     };
-  };
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault(); // Prevent the default behavior of the event
-  //   const data = {
-  //     name:name,
-  //     description: description,
-  //     price:price,
-  //     product_id:userIdapp,
-  //     photo: image,
-
-  //   };
-  //   console.log(data)
-  //   console.log(userIdapp)
-  //   try {
-  //     const request = await axios.post("http://localhost:5000/product",data);
-    
-  //     console.log(request.data);
-  //   } catch (error) {
-    
-  //     console.error(error.message);
-  //   }
-  // };
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent the default behavior of the event
@@ -134,10 +113,12 @@ useEffect(() => {
     .get(`http://localhost:5000/requestOfMakhiata/${userIdapp}`)
     .then((response) => {
       setrequest(response.data);
+      setLoading(false)
       console.log(response.data)
       // Assuming there is only one user with the given ID
     })
-    .catch((error) => console.log(error.message));
+    .catch((error) => console.log(error.message)
+    );
 }, [userIdapp]);
 // useEffect(() => {
 
@@ -173,7 +154,27 @@ const handleDelete = async (id) => {
     // Handle error if necessary
   }
 };
+const handleDeleterequist = async (id) => {
+  try {
+    // Display confirmation dialog
+    const confirmed = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You are about to delete the product. This action cannot be undone.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    });
 
+    if (confirmed.isConfirmed) {
+      await axios.delete("http://localhost:5000/requestOfMakhiataDelete/" + id);
+      window.location.reload();
+    }
+  } catch (error) {
+    // Handle error if necessary
+  }
+};
   return (
     <>
       {/* component */}
@@ -244,6 +245,11 @@ const handleDelete = async (id) => {
                   <div className="mb-2 text-blueGray-600">
                     <i className="fas fa-phone ml-5 text-lg text-blueGray-400" />
                     {user.domain||""}
+                  </div> 
+                   <div className="mb-2 text-blueGray-600">
+                    <i className="fas fa-map-marker ml-5 text-lg text-blueGray-400" />
+                    
+                    {user.address ||""}
                   </div>
                 </div>
             
@@ -251,10 +257,10 @@ const handleDelete = async (id) => {
                   <div className="flex flex-wrap justify-center">
                     <div className="w-full justify-center lg:w-9/12 px-4">
                     
-                    {user.address ||""}
-                      {/* <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
+                  
+                      <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
                       "الخياطة هي فن يجمع بين الإبداع والدقة، حيث تتحول الأقمشة العادية إلى قطع فريدة من الملابس التي تعكس ذوقًا وشخصية المرتدي. بين خيوط الإبرة وصانعة الملابس تنبض قصصٌ لا تُروى، وتنسج أحلام وأفكار تتجسد في تصاميم مبتكرة. دعنا نستكشف معًا عالم الخياطة والتصميم، حيث يلتقي الفن والموضة وتتحقق الأحلام والأفكار في أجمل الأزياء المصممة والمعدلة بمهارة وحب."
-                      </p> */}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -275,10 +281,6 @@ const handleDelete = async (id) => {
       <p className="mb-4 ">
       "الخياطة هي فن يجمع بين الإبداع والدقة، حيث تتحول الأقمشة العادية إلى قطع فريدة من الملابس التي تعكس ذوقًا وشخصية المرتدي. بين خيوط الإبرة وصانعة الملابس تنبض قصصٌ لا تُروى، وتنسج أحلام وأفكار تتجسد في تصاميم مبتكرة. دعنا نستكشف معًا عالم الخياطة والتصميم، حيث يلتقي الفن والموضة وتتحقق الأحلام والأفكار في أجمل الأزياء المصممة والمعدلة بمهارة وحب."
       </p>
-      {/* <p>
-        We are strategists, designers and developers. Innovators and problem
-        solvers. Small enough to be simple and quick.
-      </p> */}
     </div>
     <div className="grid grid-cols-2 gap-4 mt-8">
       <img
@@ -296,13 +298,16 @@ const handleDelete = async (id) => {
 </section>
 
         {/* //////////////////////////////////////// */}
-        <div className="text-center mt-16">
-      <h1 className="text-3xl text-gray-800 font-semibold">الطلبات المطلوبة</h1>
-      {/* <p className="mt-3 text-gray-500">
-        المدونات التي يحبها المجتمع. يتم تحديثها كل ساعة.
-      </p> */}
-    </div>
+        <div className="text-center mt-10 p-10">
+    <h1 className="font-bold text-3xl bg-gray-200 p-5 w-full rounded-xl  mb-4">الطلبات المطلوبة
+</h1>
+
+  </div>
 <div className="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
+{request.length === 0 ?(<>
+    
+    <div className="text-2xl  w-full py-48 justify-center flex items-center  text-neutral-800  dark:text-neutral-50">
+    لا توجد طلبات للعرض  😢   </div></>):(
 <section
     id="Projects"
     className="w-fit mx-auto grid grid-cols-4 lg:grid-cols-4 md:grid-cols-3 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5"
@@ -311,85 +316,38 @@ const handleDelete = async (id) => {
                     return (
                       
     <div  key={request.id} className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-      
-      {/* <Link to={`/Product/${post.id}`}key={post.id}> */}
-
         <img
           src={request.photo}
           alt="Product"
           className="h-80 w-72 object-cover rounded-t-xl"
         />
         <div className="px-4 py-3 w-72">
-          {/* <p className="text-lg font-bold text-black truncate block capitalize">
-          {request.name}
-          </p> */}
           <p className="text-lg font-semibold text-black cursor-auto my-3">
             الوصف :  {request.description}
             </p>
             <p className="text-lg font-semibold text-black cursor-auto my-3">
             رقم الهاتف : {request.phone}
             </p>
-          {/* <div className="flex items-center">
-            
-            <del>
-              <p className="text-sm text-gray-600 cursor-auto ml-2">$199</p>
-            </del>
-            
-            <div className="ml-auto">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={20}
-                height={20}
-                fill="currentColor"
-                className="bi bi-bag-plus"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z"
-                />
-                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-              </svg>
-            </div>
-          </div> */}
+            <Button  className="mr-40 bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
+         variant="text"   onClick={() => handleDeleterequist(request.id)}>تم الانتهاء  </Button> 
         </div>
-      {/* </Link> */}
-      {/* <button type="submit"
-                                className="w-20 text-sm px-4 py-2 mb-3 text-white  bg-fuchsia-800 hover:bg-fuchsia-100 mr-48 active:bg-fuchsia-100 rounded-lg duration-150"
-                            >
-                                Edit
-                            </button> */}
-                                {/* <div className="w-full lg:w-4/12 px-4  lg:order-3 lg:text-right lg:self-center">
-                    <div className="py-6 px-3 mt-32 sm:mt-0">
-                
-   </div>
-                {post.id}  </div> */}
-         
+      
     </div>
         );
       })}
-      </section>
+      </section>)}
         </div>
+      
         {/* ///////////////////////////////// */}
-        <div className="container justify-center mx-auto">
-  <div className="mx-4 py-16">
-    <div className="w-full relative flex items-center justify-center">
-      <img
-        src="https://i.ibb.co/4sYZ8gC/img-2.png"
-        alt="dining"
-        className="w-full h-full absolute z-0 xl:block"
-      />
+        <div  className="container mx-auto   flex justify-center items-center ">
+        <div className=" py-16 w-full">
+        <div className=" relative flex items-center justify-center">
       <img
         src="https://images.unsplash.com/photo-1457972657980-4c9fddebec8d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"
         alt="dining"
-        className="w-full h-full absolute z-0 sm:block xl:hidden"
+        className="w-full h-full absolute z-0 sm:block  xl:hidden"
       />
-      <img
-        src="https://i.ibb.co/JKkzGDs/pexels-max-vakhtbovych-6301182-1.png"
-        alt="dining"
-        className="w-full h-full absolute z-0 sm:hidden"
-      />
-      <div className="bg-gray-500 bg-opacity-50 lg:py-36 py-60 md:px-20 px-10 sm:px-4 flex flex-col items-center justify-center relative z-50">
+      <div className="bg-gray-500 bg-opacity-50  lg:py-36 py-60 md:px-20 px-10 sm:px-4 flex flex-col items-center justify-center relative w-full">
         <h1 className="text-4xl font-semibold leading-9 text-white text-center">
         خياطة الأحلام: فن وإبداع يجسد الأناقة والأصالة        </h1>
         <p className="text-base leading-normal text-center text-white border-l-2 mt-6">
@@ -407,13 +365,17 @@ const handleDelete = async (id) => {
     </div>
   </div>
 </div>
-        <div className="text-center mt-16">
-      <h1 className="text-3xl text-gray-800 font-semibold">الطلبات المبيوعة</h1>
-      {/* <p className="mt-3 text-gray-500">
-        المدونات التي يحبها المجتمع. يتم تحديثها كل ساعة.
-      </p> */}
-    </div>
+
+<div className="text-center mt-10 p-10">
+    <h1 className="font-bold text-3xl bg-gray-200 p-5 w-full rounded-xl  mb-4">الطلبات المباعة
+</h1>
+
+  </div>
 <div className="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
+{delproduct.length === 0 ?(<>
+    
+    <div className="text-2xl  w-full py-48 justify-center flex items-center  text-neutral-800  dark:text-neutral-50">
+    لا توجد طلبات مباعة للعرض  😢   </div></>):(
 <section
     id="Projects"
     className="w-fit mx-auto grid grid-cols-4 lg:grid-cols-4 md:grid-cols-3 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5"
@@ -439,110 +401,33 @@ const handleDelete = async (id) => {
             </p>
             <p className="text-lg font-semibold text-black cursor-auto my-3">
             الوصف :  {del.description}            </p>
-          {/* <div className="flex items-center">
-            
-            <del>
-              <p className="text-sm text-gray-600 cursor-auto ml-2">$199</p>
-            </del>
-            
-            <div className="ml-auto">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={20}
-                height={20}
-                fill="currentColor"
-                className="bi bi-bag-plus"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z"
-                />
-                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-              </svg>
-            </div>
-          </div> */}
+    
         </div>
-      {/* </Link> */}
-      {/* <button type="submit"
-                                className="w-20 text-sm px-4 py-2 mb-3 text-white  bg-fuchsia-800 hover:bg-fuchsia-100 mr-48 active:bg-fuchsia-100 rounded-lg duration-150"
-                            >
-                                Edit
-                            </button> */}
-                                {/* <div className="w-full lg:w-4/12 px-4  lg:order-3 lg:text-right lg:self-center">
-                    <div className="py-6 px-3 mt-32 sm:mt-0">
-                
-   </div>
-                {post.id}  </div> */}
+    
          
     </div>
         );
       })}
       </section>
-        </div>
+    )}</div>
         </section>
-        <div className="bg-fuchsia-100 py-20 flex flex-col items-center justify-center">
-            <div className="xl:w-1/2 w-11/12">
-                <h1 role="heading" tabIndex={0} className="text-6xl font-bold 2xl:leading-10 leading-0 text-center text-gray-800">
-                استكشف حرفية الخياطة
-                </h1>
-                <h2 role="contentinfo" tabIndex={0} className="text-base leading-normal text-center text-gray-600 mt-5">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text Lorem Ipsum is simply dummy text of the printing
-                </h2>
-            </div>
-            <div className="2xl:px-20 lg:px-12 px-4 flex flex-wrap items-start mt-4">
-                <div className="mt-24">
-                    <div className="flex items-end ">
-                        <img tabIndex={0} src="https://images.unsplash.com/photo-1557777586-f6682739fcf3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDl8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60" alt="girl with blue background" className="w-20 h-20 rounded-lg mr-6" />
-                        <img tabIndex={0} src="https://images.unsplash.com/photo-1642453971059-7ebfb1aec5f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE5fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60" alt="guy winking" className="w-48 h-36 rounded-lg" />
-                    </div>
-                    <div className="flex items-center justify-end my-6">
-                        <img tabIndex={0} src="https://images.unsplash.com/photo-1459792323369-14e51bb68de0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE3fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60" alt="guy smiling" />
-                    </div>
-                    <div className="flex items-start">
-                        <img tabIndex={0} src="https://images.unsplash.com/photo-1564848534648-558dc1ef55c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDEwfHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60" alt="girl with bluw background" className="w-48 h-48 rounded-lg" />
-                        <img tabIndex={0} src="https://images.unsplash.com/photo-1536867520774-5b4f2628a69b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60" alt="guy with glasses" className="w-20 h-20 rounded-lg ml-6 flex-shrink-0 object-cover object-fit" />
-                    </div>
-                </div>
-                <div className="ml-6 mt-32">
-                    <img tabIndex={0} src="https://images.unsplash.com/photo-1542044801-30d3e45ae49a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDEwfHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60" className="w-72 h-80 rounded-lg" alt="guy with sunglasses" />
-                    <div className="flex items-start mt-6">
-                        <img tabIndex={0} src="https://images.unsplash.com/photo-1561822713-da02f57225b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDIwfHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60" alt="girl  laughing" className="w-48 h-48 rounded-lg" />
-                        <img tabIndex={0} src="https://images.unsplash.com/photo-1542044801-30d3e45ae49a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDEwfHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60" alt="guy with glasses" className="w-20 h-20 rounded-lg ml-6 object-cover object-fit" />
-                    </div>
-                </div>
-                <div className="mt-14 ml-6">
-                    <div className="lg:flex ">
-                        <div>
-                            <img tabIndex={0} src="https://images.unsplash.com/photo-1486622923572-7a7e18acf192?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDV8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60" alt="group of friends" className="w-96 h-72 rounded-lg object-center object-fit" />
-                        </div>
-                        <div>
-                            <div className="flex ml-6">
-                                <img tabIndex={0} src="https://images.unsplash.com/photo-1518732836484-bd257665c9d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDV8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60" className="w-20 h-20 rounded-lg mt-14" alt="man" />
-                                <img tabIndex={0} src="https://images.unsplash.com/photo-1528578577235-b963df6db908?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDR8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60......." className="w-20 h-24 rounded-lg ml-6" alt="woman" />
-                            </div>
-                            <img tabIndex={0} src="https://images.unsplash.com/photo-1517840545241-b491010a8af4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60" alt="boy with blonde hair" className="ml-6 mt-6 w-48 h-32 rounded-lg" />
-                        </div>
-                    </div>
-                    <div className="mt-6 flex">
-                        <img tabIndex={0} className="w-48 h-48 rounded-lg" src="https://images.unsplash.com/photo-1457972657980-4c9fddebec8d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="young girl with red hair" />
-                        <img tabIndex={0} className="w-72 h-56 rounded-lg ml-6" src="https://images.unsplash.com/photo-1518732836484-bd257665c9d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDV8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60" alt="young girl with red hair" />
-                    </div>
-                </div>
-            </div>
-        </div>
+    
         {/* ////////////////////////////// */}
+        <div className="">
+        <div className="text-center mt-10 p-10">
+    <h1 className="font-bold text-3xl bg-gray-200 p-5 w-full rounded-xl  mb-4">   التصاميم المعروضة
+</h1>
 
-        <div className="text-center mt-16">
-      <h1 className="text-3xl text-gray-800 font-semibold">التصاميم المعروضة</h1>
-      {/* <p className="mt-3 text-gray-500">
-        المدونات التي يحبها المجتمع. يتم تحديثها كل ساعة.
-      </p> */}
-    </div>
-<div className="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
+  </div>
+      
+<div className="max-w-screen-xl  px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
+{users.length === 0 ?(<>
+    
+    <div className="text-2xl  w-full py-48 justify-center flex items-center  text-neutral-800  dark:text-neutral-50">
+    لا توجد طلبات للعرض  😢   </div></>):(
 <section
     id="Projects"
-    className="w-fit mx-auto grid grid-cols-4 lg:grid-cols-4 md:grid-cols-3 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5"
+    className="w-fit mx-auto  grid grid-cols-4 lg:grid-cols-4 md:grid-cols-3 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5"
   >
           {users?.map((post) => {
                     return (
@@ -603,9 +488,9 @@ const handleDelete = async (id) => {
     </div>
         );
       })}
-      </section>
+      </section>)}
         </div>
-        
+        </div>
   <main className="py-14 bg-fuchsia-100 ">
   <div className="text-center mt-10">
       <h1 className="text-3xl text-gray-800 font-semibold mb-10">                             لاضافة منتج املئ النموذج التالي
@@ -687,9 +572,9 @@ const handleDelete = async (id) => {
                   
       
                             <button type="submit"
-                                className="w-full px-4 py-2 text-white font-medium bg-fuchsia-800 hover:bg-[#7C9070] active:bg-[#7C9070] rounded-lg duration-150"
+                                className="w-full px-4 py-2 text-white font-medium bg-fuchsia-800 hover:bg-fuchsia-300 active:bg-fuchsia-300 rounded-lg duration-150"
                             >
-                                Submit
+                                ارسال
                             </button>
                         </form>
                     </div>

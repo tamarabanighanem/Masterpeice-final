@@ -41,27 +41,53 @@ const [open, setOpen] = React.useState(false);
     
 
 
+// const handleSubmit = async (e) => {
+//   e.preventDefault();
+// axios
+//   .put(`http://localhost:5000/editprofileProvirer/${userIdapp}`, {
+//     username: username,
+//     address: address,
+//     domain: domain,
+//   })
+//   .then(function (response) {
+//     console.log(response);
+//     setUserId(userIdapp)
+    
+//   })
+//   .catch(function (error) {
+//     console.log(error);
+//   });
+// };
+
+
 const handleSubmit = async (e) => {
   e.preventDefault();
-axios
-  .put(`http://localhost:5000/editprofileProvirer/${userIdapp}`, {
-    username: username,
-    address: address,
-    domain: domain,
-  })
-  .then(function (response) {
-    console.log(response);
-    setUserId(userIdapp)
-    // navigate("/ProfilePage");
-    // window.location.href = 'http://localhost:3000/ProfilePage';
-  })
-  .catch(function (error) {
+
+  try {
+    await axios.put(`http://localhost:5000/editprofileProvirer/${userIdapp}`, {
+      username: username,
+      address: address,
+      domain: domain,
+    }
+    
+    );       
+    //  window.location.reload();
+
+
+    // Update the state with new values
+    setUser((prevUser) => ({
+      ...prevUser,
+      username: username,
+      address: address,
+      domain: domain,
+    })
+    );
+
+    handleClose(); // Close the modal
+  } catch (error) {
     console.log(error);
-  });
+  }
 };
-
-// Make sure to adjust the values being passed (e.g., name, email, and "some description") based on your requirements and the actual data you want to update in the server-side database.
-
 
 
 
@@ -70,11 +96,7 @@ axios
 
   const [user, setUser] = useState({});
   console.log(userIdapp)
-  console.log(userIdapp)
-  console.log(userIdapp)
-  console.log(userIdapp)
-  console.log(userIdapp)
-  console.log(userIdapp)
+
 
   
 
@@ -86,14 +108,8 @@ axios
         .get(`http://localhost:5000/profileProvider/${userIdapp}`)
         .then((response) => {
           setUser(response.data[0]);
-          // localStorage.setItem("user", JSON.stringify(response.data[0]));
-          console.log(response.data);
-          console.log(response.data);
-          console.log(response.data);
-          console.log(response.data);
         })
         .catch((error) => console.log(error.message));
-    // }
   }, [userId]);
   
 

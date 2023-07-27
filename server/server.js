@@ -151,6 +151,26 @@ app.post("/product", (req, res) => {
 });
 
 
+app.post("/requistProduct", (req, res) => {
+  // const { name, description, price, product_id, photo } = req.body;
+  const { phone, description, mkhiata_id,user_id,photo} = req.body;
+
+  pool.query(
+    "INSERT INTO request( phone,description,mkhiata_id, user_id,photo) VALUES($1, $2, $3, $4, $5) RETURNING *",
+
+    // [name, description, price, product_id, photo],
+    [phone, description,mkhiata_id, user_id,photo],
+
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.status(201).send(result.rows);
+      }
+    }
+  );
+});
+
 
 app.get('/profileProvider/:id', async function (req, res) {
   try {
@@ -538,7 +558,15 @@ app.delete("/product/:id", (req, res) => {
     return res.json("resort has been deleted successfully")
   })
 })
-
+////delete request from profile provider
+app.delete('/requestOfMakhiataDelete/:id',(req,res)=>{
+  const reqId=req.params.id
+  const q='DELETE FROM request WHERE id = $1'
+  pool.query(q,[reqId],(err,data)=>{
+    if(err) return res.json(err)
+    return res.json("request has been deleted successfully")
+  })
+})
 ////payment
 app.get("/api/payments", async (req, res) => {
   const data = await pool.query("SELECT * FROM payments ");

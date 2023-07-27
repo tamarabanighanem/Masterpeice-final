@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import img1 from '../images/شعار_مخيطة-removebg-preview.png'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { UserContext } from '../UserContext';
+import  { useContext } from 'react';
 
 const Nav = ({username ,forceUpdate}) => {
   const [state, setState] = useState(false);
+  const { SignStatus,updateSignStatus } = useContext(UserContext)
 
   // Replace javascript:void(0) paths with your paths
   const navigation = [
@@ -91,7 +94,7 @@ console.log(role)
 
 
   return (
-    <nav className={`bg-fuchsia-200 p-5 md:text-sm ${state ? "rtl:text-right shadow-lg text-black rounded-xl border mx-2 mt-2 md:shadow-none md:border-none md:mx-2 md:mt-0" : ""}`}>
+    <nav className={`bg-fuchsia-200 p-5 fixed z-50 w-full md:text-sm ${state ? "rtl:text-right shadow-lg text-black rounded-xl border mx-2 mt-2 md:shadow-none md:border-none md:mx-2 md:mt-0" : ""}`}>
       <div className="gap-x-14 items-center max-w-screen-xl mx-auto px-4 md:flex md:px-8">
         <div className="flex items-center justify-between py-1 md:block logoimg">
           

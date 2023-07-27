@@ -30,17 +30,14 @@ import { Link } from "react-router-dom";
   },[])
 
 
-  console.log(users)
-  console.log(users)
-  const [filterDataUsers, setFilterDataUsers] = useState([]);
 
-const filterDataByNameUsers = (searchTermUsers) => {
+  const [filterDataUsers, setFilterDataUsers] = useState([]);
+  const filterDataByNameUsers = (searchTermUsers) => {
   const filteredDataUsers = users.filter((item) =>
     item.username.toLowerCase().includes(searchTermUsers.toLowerCase())
   );
   setFilterDataUsers(filteredDataUsers);
 };
-
 useEffect(() => {
   setFilterDataUsers(users);
 }, [users]);
@@ -116,65 +113,63 @@ className="w-full md:w-auto px-6 py-3 bg-fuchsia-800   text-white fill-white act
 
 
 </div>
+{/* <div className="text-center mt-10 p-10">
+    <h1 className="font-bold text-3xl bg-gray-100 p-5 w-full rounded-xl  mb-4">        طلباتي
+</h1>
 
+  </div> */}
 <div className="text-center mt-16">
       <h1 className="text-3xl text-gray-800 font-semibold">
 المخايط المتاحة      </h1>
-      <p className="mt-3 text-gray-500">
-        المدونات التي يحبها المجتمع. يتم تحديثها كل ساعة.
-      </p>
-    </div>
-    <section className="py-4   mx-auto max-w-screen-xl md:px-12 mt-8 grid gap-3 sm:grid-cols-1 lg:grid-cols-3 ">
-    {filterDataUsers.map((item) => {
-
     
-return(
-  <div
-  key={item.id}
-
-    className="w-72 bg-fuchsia-100 shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-  {/* <a href="#!"> */}
-  <img className='mr-48 mt-5'
-              src={img1}
-              width={70}
-              height="100%"
-              alt="Float UI logo"
-            />
-    {/* <img
-      className="rounded-t-lg"
-      src={item.img}
-      alt=""
-    /> */}
-  {/* </a> */}
-
-  <div className="p-6 ">
-    <h5 className="mb-2 mb-10 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
-{item.username}
-    </h5>
-    <p className="mb-4 mb-10 text-base text-neutral-600 dark:text-neutral-200">
-{item.address}
-    </p>
-    <p className="mb-4 mb-10 text-base text-neutral-600 dark:text-neutral-200">
-{item.domain}
-    </p>
-    <Link to={`/ProductCollection/${item.id} `}><button 
-      type="button"
-      className="inline-block rounded bg-fuchsia-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-fuchsia-300 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-      data-te-ripple-init=""
-      data-te-ripple-color="light"
-    >
-      تصاميمي {item.id}
-
-    </button></Link>
-  </div>
-</div>
-)
-})}
-
+    </div>
+    <section className="py-4 mx-auto max-w-screen-xl text-center pb-28 md:px-12 mt-8 grid gap-3 sm:grid-cols-1 lg:grid-cols-3">
+  {filterDataUsers.length === 0 ? (<>
+    <div className="text-4xl  w-full py-48 justify-center flex items-center  text-neutral-800  dark:text-neutral-50">
+      </div>
+    <div className="text-4xl  w-full py-52 justify-center flex items-center  text-neutral-800  dark:text-neutral-50">
+    لا توجد مخايط للعرض  😢   </div></>
+  ) : (
+    filterDataUsers.map((item) => {
+      return (
+        <div key={item.id} className="w-72 bg-gray-100  shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+          <img
+            className='mr-28 mt-5 items-center flex justify-center '
+            src={img1}
+            width={70}
+            height="100%"
+            alt="Float UI logo"
+          />
+          <div className="p-6">
+            <h5 className="mb-4 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
+              اسم المخيطة : {item.username}
+            </h5>
+            <p className="mb-4  text-base text-neutral-600 dark:text-neutral-200">
+            الموقع :   {item.address}
+            </p>
+            <p className="mb-4  text-base text-neutral-600 dark:text-neutral-200">
+            رقم الهاتف :   {item.domain}
+            </p>
+            <Link to={`/ProductCollection/${item.id}`}>
+              <button
+                type="button"
+                className="inline-block rounded bg-fuchsia-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-fuchsia-300 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                data-te-ripple-init=""
+                data-te-ripple-color="light"
+              >
+                تصاميمي{item.id}
+              </button>
+            </Link>
+          </div>
+        </div>
+      );
+    })
+  )}
 </section>
 
+
   
-    <section className="flex items-center bg-fuchsia-100 xl:h-screen font-poppins dark:bg-gray-800 ">
+    <section className="flex items-center pt-5 bg-fuchsia-100 xl:h-screen font-poppins dark:bg-gray-800 ">
   <div className="justify-center flex-1 max-w-6xl py-4 mx-auto lg:py-6 md:px-6">
     <div className="flex flex-wrap ">
       <div className="w-full px-4 mb-10 lg:w-1/2 lg:mb-0">
@@ -198,7 +193,7 @@ return(
           </div>
         </div>
       </div>
-      <div className="w-full px-6 mb-10 lg:w-1/2 lg:mb-0 ">
+      <div className="w-full px-6  mb-10 lg:w-1/2 lg:mb-0 ">
         <div className="pl-4 mb-6 border-l-4 border-fuchsia-800 ">
           {/* <span className="text-sm text-gray-600 uppercase dark:text-gray-400">
             Who we are?

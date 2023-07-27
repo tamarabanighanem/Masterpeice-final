@@ -96,7 +96,7 @@ function handleLogOut(){
           </Link> */}
 
            <Link to='/ListUser'>
-           <ListItem className="hover:bg-fuchsia-800 hover:text-white border-b-2">
+           <ListItem className="hover:bg-fuchsia-400 hover:text-white border-b-2">
             <ListItemPrefix>
             <Icon path={mdiAccountMultipleOutline} size={1} />
             </ListItemPrefix>
@@ -113,17 +113,17 @@ function handleLogOut(){
           </ListItem>
           </Link> */}
 
-          {/* <Link to='/EditAboutContact'>
-          <ListItem className="hover:bg-[#E8AA42]">
+          <Link to='/EditAboutContact'>
+          <ListItem className="hover:bg-fuchsia-400 hover:text-white border-b-2">
             <ListItemPrefix>
             <Icon path={mdiInformationOutline} size={1} />
             </ListItemPrefix>
             <a style={{color:'black'}}> Edit About </a>
           </ListItem>
-          </Link> */}
+          </Link>
 
           <Link to='/AcceptTables'>
-          <ListItem className="hover:bg-fuchsia-800 hover:text-white border-b-2">
+          <ListItem className="hover:bg-fuchsia-400 hover:text-white border-b-2">
             <ListItemPrefix>
             <Icon path={mdiTableFurniture} size={1} />
             </ListItemPrefix>
@@ -171,7 +171,7 @@ function handleLogOut(){
           </ListItem>
             </Link> */}
            <button onClick={handleLogOut}>
-           <ListItem className="hover:bg-fuchsia-800 hover:text-white border-b-2">
+           <ListItem className="hover:bg-fuchsia-400 hover:text-white border-b-2">
             <ListItemPrefix>
               <PowerIcon className="h-5 w-5" />
             </ListItemPrefix>

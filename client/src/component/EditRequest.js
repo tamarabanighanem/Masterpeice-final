@@ -31,7 +31,7 @@ function EditRequest({productId, open, close }) {
   console.log(productId)
   console.log(productId)
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     try {
       await axios.put(`http://localhost:5000/editrequest/${productId}`, {
         // name: name,
@@ -39,6 +39,7 @@ function EditRequest({productId, open, close }) {
         phone: phone,
         photo: image
       });
+      window.href.reload()
       console.log("Product updated successfully!");
     } catch (error) {
       console.log(error);
@@ -76,7 +77,10 @@ function EditRequest({productId, open, close }) {
   useEffect(() => {
     fetchProductDetails();
   }, [productId]);
-
+  const handleOnClick = () => {
+    handleSubmit();
+    close();
+  };
   return (
     <div>
       <Modal
@@ -129,7 +133,7 @@ function EditRequest({productId, open, close }) {
               accept="image/*"
             />
             <Button
-              onClick={handleSubmit}
+              onClick={handleOnClick}
               className="m-5 border-solid bg-fuchsia-800 text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800"
               variant="text"
             >

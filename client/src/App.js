@@ -140,7 +140,7 @@ console.log("ffffffffffff",forceUpdate)
   <Route path='/editRequest/:requestId' element={<EditRequest/>}/>
   <Route path='/' element={<Home/>}/>
   <Route path='/productcollection/:itemId' element={<ProductCollection userIdapp={userId}/>}/>
-  <Route path='/product/:id/:itemId' element={<Product/>}/>
+  <Route path='/product/:id/:itemId' element={<Product userIdapp={userId}/>}/>
   <Route path='/Login' element={<Login />}/>
   <Route path='/Signup' element={<Signup />}/>
   <Route path='/Pricing' element={<Pricing/>}/>

@@ -9,17 +9,10 @@ import img2 from '../../images/thomas-william-6Sls-TB27kM-unsplash.jpg'
 
 const ProductCollection = ({userIdapp}) => {
   const { itemId } = useParams();
-
-  console.log(itemId)
-  console.log(itemId)
-  console.log(itemId)
-  console.log(itemId)
-
-
   const [description, setdescription] = useState("");
   const [phone, setphone] = useState("");
-
-  console.log(userIdapp)
+const[loading,setLoading]=useState(true)
+  // console.log(userIdapp)
   const [image, setImg] = useState("");
   
   const onChange = (e) => {
@@ -75,43 +68,56 @@ const ProductCollection = ({userIdapp}) => {
   useEffect(()=>{
     axios
     .get(`http://localhost:5000/productCollection/${itemId}`)
+
     .then((response) => {
       setUsers(response.data); // Assuming there is only one user with the given ID
-      console.log(response.data);
-      console.log(response.data);
-      console.log(response.data);
+      setLoading(false)
+
       
     })
     .catch((error) => console.log(error.message));
-    // setFilterDataUsers(article)
+    setLoading(false)
+
 
   },[])
-  // useEffect(() => {
-  //   console.log(users);
-  // }, [users]);
+  
   return (
     <>
+    {loading?(<div className="relative flex justify-center items-center">
+  <div className="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-purple-500" />
+  <img
+    src="https://www.svgrepo.com/show/509001/avatar-thinking-9.svg"
+    className="rounded-full h-28 w-28"
+  />
+</div>
+):(
+  <>
     <div>
       <section>
     <div className="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
 
 
       <>
-  <div className="text-center p-10">
-    <h1 className="font-bold text-4xl mb-4">        توفرمخيطتنا العديد من التصاميم المناسبة للجميع..اليك بعضها
+  <div className="text-center mt-10 p-10">
+    <h1 className="font-bold text-3xl bg-gray-200 p-5 w-full rounded-xl  mb-4">        توفر مخيطتنا العديد من التصاميم المناسبة للجميع اليك بعضها
 </h1>
-    {/* <h1 className="text-3xl">        تصاميمنا
-</h1> */}
+
   </div>
-  {/* ✅ Grid Section - Starts Here 👇 */}
   <section
     id="Projects"
     className="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5"
   >
-    {/*   ✅ Product card 1 - Starts Here 👇 */}
-    {users?.map((post) => {
+    {users.length === 0 ? (<>
+    <div className="text-4xl  w-full py-48 justify-center flex items-center  text-neutral-800  dark:text-neutral-50">
+      </div>
+    <div className="text-4xl  w-full py-52 justify-center flex items-center  text-gray-500  dark:text-neutral-50">
+    لا توجد تصاميم للعرض  😢   </div></>
+  ) : (
+    users?.map((post) => {
                     return (
+                      
     <div className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+      
     <Link to={`/Product/${post.id}/${itemId}`}key={post.id}>
         <img
           src={post.photo}
@@ -134,28 +140,13 @@ const ProductCollection = ({userIdapp}) => {
               <p className="text-sm text-gray-600 cursor-auto ml-2">$199</p>
             </del>
             
-            <div className="ml-auto">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={20}
-                height={20}
-                fill="currentColor"
-                className="bi bi-bag-plus"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z"
-                />
-                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-              </svg>
-            </div>
           </div>
         </div>
       </Link>
     </div>
-        );
-      })}
+      );
+    })
+  )}
   
   </section>
 
@@ -165,105 +156,73 @@ const ProductCollection = ({userIdapp}) => {
     </div>
   </section>
   </div>
-
-
-  <div className="text-center p-10">
-    <h1 className="font-bold text-4xl mb-4">لطلب تصميم حسب رغبتك..يرجى تعبئة النموذج التالي</h1>
-    {/* <h1 className="text-3xl">        تصاميمنا
-</h1> */}
-  </div>
-  <main className="py-10 ">
-        <div className="max-w-screen-xl mx-auto px-4 text-gray-600 md:px-8">
-          <div className="max-w-lg mx-auto gap-12 justify-between lg:flex lg:max-w-none">
-            {/* <span
-              id="blackOverlay"
-              className="w-full h-full absolute opacity-50 bg-black"
-            /> */}
-             <img
-      className="rounded-t-lg w-1/3"
-      src={img2}
-      alt=""
-    />
-            {/* <div
-              className="max-w-xl h-30"
-              style={{
-                backgroundImage:
-                  'url("https://images.unsplash.com/photo-1516934024742-b461fba47600?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80")',
-                backgroundRepeat: "no-repeat",
-                opacity: 0.5,
-                backgroundSize: "cover",
-              }}
-            >
-              <div className="p-10 ">
-                <p className="text-yellow-800 pt-10 text-7xl font-semibold sm:text-4xl">
-                  Let us know how we can help
-                </p>
-                <p className="text-black text-xl p-10 text-white leading-10">
-                  We’re here to help and answer any question you might have, We
-                  look forward to hearing from you! Please fill out the form,
-                  Support our animal donation initiatives to make a positive
-                  impact on animals in need. Your contributions provide food,
-                  shelter, and medical care. Join us in creating a better world
-                  for our furry friends. Make a difference in the lives of
-                  animals through your generous donations. Help us provide
-                  essential care and support to vulnerable animals in need.
-                </p>
-        
-              </div>
-            </div> */}
-            <div className="flex-1 mt-12 sm:max-w-lg lg:max-w-md">
-              <form onSubmit={handleSubmit} className="space-y-5">
+  <main className=" ">
   
-                <div>
-                  <label className="font-medium">الوصف</label>
-                  <textarea
-                    required
-                    placeholder='يرجى تحديد قياساتك'
-                    value={description}
-                    onChange={(e) => setdescription(e.target.value)}
-                    className="w-full mt-2 h-36 px-3 py-2 border-2 border-gray-300 p-2 rounded-lg  resize-none appearance-none bg-transparent outline-none  focus:border-[#E8AA42] shadow-sm "
-                  ></textarea>
-                </div>
-                <div>
-                                <label className="font-medium">
+        <div  className="container mx-auto  flex justify-center items-center ">
+        <div className="  w-full">
+        <div className=" relative flex items-center justify-center">
+      <img
+        src="https://plus.unsplash.com/premium_photo-1683122013962-8139ef39837c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+        alt="dining"
+        className="w-full h-full absolute  z-0 xl:block"
+      />
+  
+      <div className="bg-black bg-opacity-60 w-full lg:py-36 py-60 md:px-20 px-10 sm:px-4 flex flex-col items-center justify-center relative ">
+      <div className="heading text-center  font-bold text-4xl  pb-28 text-white">
+    لطلب تصميم حسب رغبتك..يرجى تعبئة النموذج التالي  </div>
+  <form onSubmit={handleSubmit} className="space-y-5 w-1/3 rounded-2xl  bg-white p-5">
+  
+  <div>
+    <label className="font-medium">الوصف</label>
+    <textarea
+      required
+      placeholder='يرجى تحديد قياساتك'
+      value={description}
+      onChange={(e) => setdescription(e.target.value)}
+      className="w-full mt-2 h-36 px-3 py-2 border-2 border-gray-300 p-2 rounded-lg  resize-none appearance-none bg-transparent outline-none  focus:border-[#E8AA42] shadow-sm "
+    ></textarea>
+  </div>
+  <div>
+                  <label className="font-medium">
 رقم الهاتف
-                                </label>
-                                <input
-                                    type="text"
-                                    required
-                                    value={phone}
-                                    onChange={(e)=>setphone(e.target.value)}
-                                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border-2 border-gray-300 p-2  focus:border-[#E8AA42] shadow-sm rounded-lg"
-                                />
-                            </div>
-                <div>
-                  <label className="font-medium">صورة عن التصميم المطلوب</label>
-
+                  </label>
                   <input
-                    className="shadow mb-4 appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
-                    type="file"
-                    placeholder="Table Image"
-                    name="guest_num"
-                    onChange={(e) => {
-                      onChange(e);
-                    }}
-                    accept="image/*"
+                      type="text"
+                      required
+                      value={phone}
+                      onChange={(e)=>setphone(e.target.value)}
+                      className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border-2 border-gray-300 p-2  focus:border-[#E8AA42] shadow-sm rounded-lg"
                   />
-                </div>
+              </div>
+  <div>
+    <label className="font-medium">صورة عن التصميم المطلوب</label>
 
-              
-                <button
-                  type="submit"
-                  className="w-full px-4 py-2 text-white font-medium bg-fuchsia-800 hover:bg-fuchsia-300 active:bg-fuchsia-300 rounded-lg duration-150"
-                >
-                  Submit
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
+    <input
+      className="shadow mb-4 appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
+      type="file"
+      placeholder="Table Image"
+      name="guest_num"
+      onChange={(e) => {
+        onChange(e);
+      }}
+      accept="image/*"
+    />
+  </div>
+
+
+  <button
+    type="submit"
+    className="w-full px-4 py-2 text-white font-medium bg-fuchsia-800 hover:bg-fuchsia-300 active:bg-fuchsia-300 rounded-lg duration-150"
+  >
+ارسال  </button>
+</form>                                                               
+      </div>
+    </div>
+  </div>
+</div>
       </main>
-
+      </>
+)}
   </>
   )
 }
