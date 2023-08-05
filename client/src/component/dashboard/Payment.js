@@ -23,7 +23,7 @@ const PaymentsInfo = () => {
   const [persons0, setPersons0] = useState([]);
 
   const [searchTermUsers, setSearchTermUsers] = useState("");
-  const [FilterDataUsers, setFilterDataUsers] = useState([]);
+  // const [FilterDataUsers, setFilterDataUsers] = useState([]);
   const [HandleP, setHandleP] = useState();
 
   const allUsers = async () => {
@@ -33,7 +33,7 @@ const PaymentsInfo = () => {
       const response = await axios.get("http://localhost:5000/api/payments");
       console.log(response.data);
       setPersons(response.data);
-      setFilterDataUsers(response.data);
+      // setFilterDataUsers(response.data);
     } catch (error) {
       console.error("Error inserting data:", error);
     }
@@ -49,7 +49,7 @@ const PaymentsInfo = () => {
     const filteredDataUsers = persons.filter((item) =>
       item.firstName.toLowerCase().includes(searchTermUsers.toLowerCase())
     );
-    setFilterDataUsers(filteredDataUsers);
+    // setFilterDataUsers(filteredDataUsers);
     console.log(filteredDataUsers);
     setCurrentPageUsers(1);
   };
@@ -63,7 +63,7 @@ const PaymentsInfo = () => {
 
   const itemsPerPage = 2;
 
-  totalItemsUsers = FilterDataUsers.length;
+  // totalItemsUsers = FilterDataUsers.length;
 
   totalPagesUsers = Math.ceil(totalItemsUsers / itemsPerPage);
 
@@ -71,7 +71,7 @@ const PaymentsInfo = () => {
 
   const endIndexUsers = startIndexUsers + itemsPerPage;
 
-  slicedArrayUsers = FilterDataUsers.slice(startIndexUsers, endIndexUsers);
+  // slicedArrayUsers = FilterDataUsers.slice(startIndexUsers, endIndexUsers);
 
   const handlePageChangeUsers = (event, pageNumber) => {
     setCurrentPageUsers(pageNumber);

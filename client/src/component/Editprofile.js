@@ -21,7 +21,7 @@ const style = {
   
 
 
-function EditProfile({userIdapp}) {
+function EditProfile({userIdapp,refreshh,setRefreshh}) {
 
   
 
@@ -83,7 +83,9 @@ const handleSubmit = async (e) => {
     })
     );
 
-    handleClose(); // Close the modal
+    handleClose();
+    setRefreshh(!refreshh)
+    // Close the modal
   } catch (error) {
     console.log(error);
   }

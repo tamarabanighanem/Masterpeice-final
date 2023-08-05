@@ -7,20 +7,69 @@ import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom'
 
 const Product = ({userIdapp}) => {
-  const { id ,itemId} = useParams(); 
-  const [title,setTitle]=useState()
+  const { id ,itemId} = useParams();
+  const [user, setUser] = useState({});
+ 
+  const [phone,setPhone]=useState()
+  const[allComment,setAllcomment]=useState([])
+  console.log(allComment)
+  console.log(allComment)
+  console.log(allComment)
+  const[refresh,setrefresh]=useState([])
+  // const [name,setName]=useState('')
+
   const[loading,setLoading]=useState(true)
 const [body,setBody]=useState()
-console.log(userIdapp)
-console.log(id)
+const [content,setContent]=useState()
+
+const handleSubmitcomment= async (e) =>{
+  e.preventDefault()
+const comment={
+user_id:userIdapp,
+product_id:id,
+name:user.username,
+body:content
+}
+setContent('');
+try {
+  const response = await axios.post(`http://localhost:5000/comment`, comment);
+  setrefresh(allComment)
+
+  // Display success message
+  Swal.fire({
+    icon: 'success',
+    title: 'Success!',
+    text: 'Product has been submitted successfully.',
+  });
+
+  console.log(response.data);
+} catch (error) {
+  // Display error message
+  Swal.fire({
+    icon: 'error',
+    title: 'Error!',
+    text: 'Failed to submit the product.',
+  });
+
+  console.error(error.message);
+}
+// setName('')
+setBody('')
+// Swal.fire(
+// 'Comment added!',
+// 'You clicked the button!',
+// 'success'
+// )
+
+}
 // Access the ID from the URL parameters
 const handleSubmit = async (event) => {
   event.preventDefault(); // Prevent the default behavior of the event
   const product={
-    phone:title,
+    phone:phone,
     description:body,
     mkhiata_id:itemId,
-    uesr_id:userIdapp,
+    user_id:userIdapp,
     photo:product1.photo,
     
   }
@@ -47,22 +96,8 @@ const handleSubmit = async (event) => {
     console.error(error.message);
   }
 };
-  // const handleSubmit=(e)=>{
-  //   e.preventDefault();
-  //   const product={
-  //     photo:product1.photo,
-  //     title:title,
-  //     body:body
-  //   }
-  //   axios.post(`http://localhost:5000/eachproduct/${id}`,product)
 
-  //    // Clear the form fields
-  //    setTitle('');
-  //    setBody('');
-  //   //  setrefresh(!refresh)
-  //  };
   
-
 const [product1, setproduct1] = useState([]);
 
 useEffect(()=>{
@@ -71,13 +106,38 @@ useEffect(()=>{
   .then((response) => {
     setproduct1(response.data[0]);
     setLoading(false) // Assuming there is only one user with the given ID
-  console.log(product1)
     
   })
   .catch((error) => console.log(error.message));
   // setFilterDataUsers(article)
 setLoading(false)
 },[])
+useEffect(()=>{
+  axios
+  .get(`http://localhost:5000/commentEachProduct/${id}`)
+  .then((response) => {
+    setAllcomment(response.data);
+    setLoading(false) // Assuming there is only one user with the given ID
+    
+  })
+  .catch((error) => console.log(error.message));
+  // setFilterDataUsers(article)
+setLoading(false)
+},[refresh])
+useEffect(() => {
+  try {
+    axios.get(`http://localhost:5000/dataUser/${userIdapp}`)
+      .then((response) => {
+        setUser(response.data);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  } catch (error) {
+    console.log(error.message);
+  }
+}, [userIdapp]);
+
 
   return (
     <div>
@@ -134,38 +194,7 @@ setLoading(false)
     >
 الشراء الان
     </button></Link>
-    <div className='pt-20'>
-      <h4 className='pb-5'>اذا كنت ترغب بتفصيل نفس القطة مع اختلاف بعض المواصفات املأ النموذج التالي</h4>
-    <form onSubmit={handleSubmit}>
-  <div className="editor mx-auto w-96 flex flex-col text-gray-800 border bg-white border-gray-300 p-4 shadow-lg max-w-2xl">
-    <input
-      className="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none"
-      spellCheck="false"
-      placeholder="Title" 
-      type="text"
-      value={title}
-      onChange={(e)=>{setTitle(e.target.value)}}
-    />
-    <textarea
-      className="description bg-gray-100 sec p-3 h-60 border border-gray-300 outline-none"
-      spellCheck="false"
-      placeholder="Describe everything about this post here"
-      defaultValue={""}
-      value={body}
-      onChange={(e)=>{setBody(e.target.value)}}
-/>
-     buttons
-    <div className="buttons pt-5 flex">
-       <div className="btn border border-gray-300 p-1 px-4 font-semibold cursor-pointer text-gray-500 ml-auto">
-        Cancel
-      </div>
-      <button type="submit" className="btn border border-indigo-500 p-1 px-4 font-semibold cursor-pointer text-gray-200 ml-2 bg-indigo-500">
-        Post
-      </button>
-    </div>
-  </div>
-  </form>
-  </div>  
+    
         </div>
       
       </div>
@@ -173,6 +202,73 @@ setLoading(false)
   </section>
   )
   }
+  <div className='p-48'>
+  <form onSubmit={handleSubmitcomment} className="w-full  bg-white rounded-lg px-4 pt-2">
+      <div className="flex flex-wrap -mx-3 mb-6">
+    
+        <div className="w-full md:w-full px-3 mb-2 mt-2">
+          <textarea
+            className="bg-gray-100 rounded border  border-gray-400 w-full   h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white"
+            name="body"
+            placeholder="اكتب تعليق"
+            required=""
+            defaultValue={""}
+            value={content}
+            onChange={(e)=>{setContent(e.target.value)}}
+          />
+        </div>
+        <div className="w-full  flex items-start md:w-full px-3">
+        
+          <div className="-mr-1">
+            <input
+              type="submit"
+              className="bg-fuchsia-400 text-gray-700 font-medium py-1 px-3 border border-fuchsia-400 rounded-lg tracking-wide mr-1 hover:bg-fuchsia-100"
+              value="ارسال"
+            />
+          </div>
+        </div>
+      </div>
+    </form>
+    <div className="">
+      {allComment?.map((comment) => (
+      <div>
+          <div key={comment.id} className="bg-gray-200 m-5 p-2 rounded-3xl">
+          <h4 className="font-bold">{comment.name}</h4>
+          <p className="pt-3">{comment.body}</p>
+        </div>
+      </div>
+      ))}
+    </div>
+ 
+  </div>
+  <div className='pt-20 w-full justify-center bg-purple-100'>
+      <h4 className='pb-5 flex justify-center'>اذا كنت ترغب بتفصيل نفس القطة مع اختلاف بعض المواصفات املأ النموذج التالي</h4>
+    <form className='p-16' onSubmit={handleSubmit}>
+  <div className="editor mx-auto w-96 flex flex-col text-gray-800 border bg-white border-gray-300 p-4 shadow-lg max-w-2xl">
+    <input
+      className="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none"
+      spellCheck="false"
+      placeholder="رقم الهاتف" 
+      type="text"
+      value={phone}
+      onChange={(e)=>{setPhone(e.target.value)}}
+    />
+    <textarea
+      className="description bg-gray-100 sec p-3 h-60 border border-gray-300 outline-none"
+      spellCheck="false"
+      placeholder="اكتب الوصف الذي ترغب فيه"
+      defaultValue={""}
+      value={body}
+      onChange={(e)=>{setBody(e.target.value)}}
+/>
+    <div className="buttons pt-5 flex">
+      <button type="submit" className="btn border border-indigo-500 p-1 px-4 font-semibold cursor-pointer text-gray-200 ml-2 bg-indigo-500">
+        ارسال
+      </button>
+    </div>
+  </div>
+  </form>
+  </div> 
   </div>
   )
 }

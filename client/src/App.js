@@ -37,19 +37,20 @@ import ProfileProviderr from './pages/provider/ProfileProviderr';
 
 import Sidebar from "./pages/dashboard/Sidebar";
 // import NavListMenuD from "../pages/dashboard/NavDashboard";
+import Statistics from './pages/dashboard/Statistics';
 import MainDashboard from "./pages/dashboard/MainDashboard";
 import UserInfo from "./component/dashboard/UserInfo";
 import PendingPosts from './component/dashboard/PendingPosts';
 import  PaymentsInfo from './component/dashboard/Payment'
 // import ProvidersList from "./components/dashboard/ProvidersList";
-// import AdminInfo from "./dashboard/AdminInfo";
+// import AdminInfo from './component/dashboard/AdminInfo';
 import EditAboutUs from "./pages/dashboard/EditAboutUs";
 // import PendingRecipes from "./dashboard/PendingRecipes";
 // import Ingredients from  "../pages/dashboard/Ingredients"
 // import AcceptPayment from "../components/dashboard/AcceptPayment";
 // import AcceptIng from "./components/dashboard/AcceptIng";
 import ApproveTable from './component/dashboard/ApproveTable';
-// import LiveChat from "../pages/dashboard/Chat"
+import LiveChat from "./pages/dashboard/Chat"
 function App() {
   initTE({ Collapse, Ripple });
   // const navigate = useNavigate();
@@ -57,11 +58,12 @@ function App() {
   // const [isLog, updateIsLog] = useState(localStorage.getItem("token") ? true : false);
   const [hideRouter1, setHideRouterUser] = useState(false);
   const [hideRouter2, setHideRouterAdmin] = useState(true);
-  const [hideRouter3, setHideRouterProvider] = useState(true);
+  // const [hideRouter3, setHideRouterProvider] = useState(true);
 
   const [userId ,setUserId] = useState("")
   const [username,setUsername]=useState("")
   const [role ,setRole] = useState("")
+
   const [reducer, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const fetchProtectedData = async () => {
@@ -81,13 +83,11 @@ function App() {
         console.log(token)
         if (response.data.role ==="مخيطة") {
           handelRout=[false,true]
-          console.log("tttttttttttttttttttttttttttttttttttttttttttttttttttt")
           // 'http://localhost:3000/Profileprovider';
         } 
         else if  (response.data.role ==="مستخدم"){
           handelRout=[false,true]
-          console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
-          // 'http://localhost:3000//stisched';
+                            // 'http://localhost:3000//stisched';
         }
         else if(response.data.role==="admin"){
           handelRout=[true,false];
@@ -101,7 +101,7 @@ function App() {
         console.log(userId)
         setHideRouterUser(handelRout[0]);
         setHideRouterAdmin(handelRout[1]);
-
+            
       }
       console.log(userId)
       console.log(role)
@@ -168,9 +168,10 @@ console.log("ffffffffffff",forceUpdate)
           <div style={{ width: "100%" }}>
             {/* <NavListMenuD userIdapp={userId} /> */}
             <Routes>
-              <Route index element={<MainDashboard />} />
-              <Route path="ListUser" element={<UserInfo />} />
+              <Route index element={<MainDashboard/>} />
+              <Route path="ListUser" element={<UserInfo/>} />
               <Route path='/PaymentsInfo' element={<PaymentsInfo/>}/>
+              {/* <Route path='/s' element={<Statistics/>}/> */}
 
               {/* <Route path="UserProfile" element={<UserProfile />} /> */}
               {/* <Route path="ListProviders" element={<ProvidersList />} /> */}
@@ -180,7 +181,7 @@ console.log("ffffffffffff",forceUpdate)
               {/* <Route path="AcceptTables" element={<Ingredients />} /> */}
               {/* <Route path="AcceptPayment" element={<AcceptPayment />} /> */}
               {/* <Route path="AcceptIng" element={<AcceptIng />} /> */}
-              {/* <Route path="Chat" element={<LiveChat />} /> */}
+              <Route path="Chat" element={<LiveChat />} />
              <Route path='Approve' element={<ApproveTable/>}/>
             </Routes>
           </div>

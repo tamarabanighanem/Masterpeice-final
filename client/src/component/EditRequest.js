@@ -21,7 +21,7 @@ const style = {
   p: 4,
 };
 
-function EditRequest({productId, open, close }) {
+function EditRequest({productId, open, close ,setrefreshReq,refreshReq}) {
   // const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [phone, setphone] = useState("");
@@ -39,7 +39,8 @@ function EditRequest({productId, open, close }) {
         phone: phone,
         photo: image
       });
-      window.href.reload()
+      // window.href.reload()
+      setrefreshReq(!refreshReq)
       console.log("Product updated successfully!");
     } catch (error) {
       console.log(error);

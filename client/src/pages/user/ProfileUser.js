@@ -1,100 +1,4 @@
-// import { useState, useEffect } from "react";
-// import * as React from "react";
-// import axios from "axios";
-// import { Button } from "@material-tailwind/react";
-// import EditRequest from "../../component/EditRequest";
-// import EditProfile from "../../component/Editprofile";
-// import Swal from 'sweetalert2';
-// function ProfileUser({userIdapp}) {
 
-//   // console.log(userIdapp)
-//   const [image, setImg] = useState("");
-//   const [name, setname] = useState("");
-//   const [price, setprice] = useState("");
-//   const [description, setdescription] = useState("");
-// console.log(userIdapp)
-// console.log(userIdapp)
-// console.log(userIdapp)
-// console.log(userIdapp)
-
-//   const onChange = (e) => {
-//     const files = e.target.files;
-//     const file = files[0];
-//     getBase64(file);
-//     console.log(image);
-//   };
-//   const onLoad = (fileString) => {
-//     setImg(fileString);
-//   };
-//   const getBase64 = (file) => {
-//     let reader = new FileReader();
-//     reader.readAsDataURL(file);
-//     reader.onload = () => {
-//       onLoad(reader.result);
-//     };
-//   };
-
-//   const [user, setUser] = useState({});
-//   useEffect(() => {
-  
-//       axios
-//         .get(`http://localhost:5000/profileUser/${userIdapp}`)
-//         .then((response) => {
-//           setUser(response.data[0]);
-//           console.log(response.data);
-//           console.log(userIdapp);
-//         })
-//         .catch((error) => console.log(error.message));
-//     // }
-//   }, [userIdapp]);
-  
-
-//   const [users, setUsers] = useState([]);
-
-// useEffect(() => {
-//   axios
-//     .get(`http://localhost:5000/requestOfeachuser/${userIdapp}`)
-//     .then((response) => {
-//       setUsers(response.data);
-//       console.log(response.data)
-//       // Assuming there is only one user with the given ID
-//     })
-//     .catch((error) => console.log(error.message));
-// }, [userIdapp]);
-
-
-// const [requestId,setRequestId]=useState(0)
-
-// const [open, setOpen] = React.useState(false);
-//   const handleOpen = (id) =>{ setOpen(true)
-//     setRequestId(id)
-//   };
-//   const handleClose = () => setOpen(false);
-
-//   console.log(requestId)
-//   console.log(requestId)
-//   console.log(requestId)
-//   console.log(requestId)
-//   const handleDelete = async (id) => {
-//     try {
-//       const confirmed = await Swal.fire({
-//         title: 'Are you sure?',
-//         text: 'You are about to delete the product. This action cannot be undone.',
-//         icon: 'warning',
-//         showCancelButton: true,
-//         confirmButtonColor: '#3085d6',
-//         cancelButtonColor: '#d33',
-//         confirmButtonText: 'Yes, delete it!'
-//       });
-  
-//       if (confirmed.isConfirmed) {
-//         await axios.delete("http://localhost:5000/request/" + id);
-//         window.location.reload();
-//       }
-//     } catch (error) {
-//       // Handle error if necessary
-//     }
-//   };
 import { useState, useEffect } from "react";
 import * as React from "react";
 import axios from "axios";
@@ -114,6 +18,8 @@ function ProfileUser({ userIdapp }) {
   const [users, setUsers] = useState([]);
   const [requestId, setRequestId] = useState(0);
   const [open, setOpen] = React.useState(false);
+  const [refresh,setRefresh]=useState(false)
+  const [refresh2,setRefesh2]=useState(false)
 
   const onChange = (e) => {
     const files = e.target.files;
@@ -162,26 +68,6 @@ function ProfileUser({ userIdapp }) {
     }
   };
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`http://localhost:5000/profileUser/${userIdapp}`)
-  //     .then((response) => {
-  //       setUser(response.data[0]);
-  //       console.log(response.data);
-  //       console.log(userIdapp);
-  //     })
-  //     .catch((error) => console.log(error.message));
-  // }, [userIdapp]);
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`http://localhost:5000/requestOfeachuser/${userIdapp}`)
-  //     .then((response) => {
-  //       setUsers(response.data);
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => console.log(error.message));
-  // }, [userIdapp]);
   const fetchData = async () => {
     try {
       const profileResponse = await axios.get(`http://localhost:5000/profileUser/${userIdapp}`);
@@ -195,7 +81,7 @@ function ProfileUser({ userIdapp }) {
   };
   useEffect(() => {
     fetchData();
-  }, [userIdapp]);  
+  }, [userIdapp,refresh,refresh2]);  
   return (
     <>
       {/* component */}
@@ -290,7 +176,10 @@ function ProfileUser({ userIdapp }) {
                 </div>
                 <div className="w-full lg:w-4/12 px-4  lg:order-3 lg:text-right lg:self-center">
                     <div className="py-6 px-3 mt-32 sm:mt-0">
-<EditProfile userIdapp={userIdapp}/>                 
+<EditProfile userIdapp={userIdapp}
+refreshh={refresh}
+setRefreshh={setRefresh}
+/>                 
    </div>
                   </div>
               </div>
@@ -319,7 +208,7 @@ function ProfileUser({ userIdapp }) {
    users?.map((post) => {
                     return (
                       <div className="p-5 grid grid-cols-2 gap-2">
-                      <div className=" flex flex-col rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 md:max-w-xl md:flex-row">
+                      <div className=" flex flex-col w-full rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 md:max-w-xl md:flex-row">
   <img
     className="  object-cover  md:w-48 md:rounded-none md:rounded-r-lg"
     src={post.photo}
@@ -337,7 +226,7 @@ function ProfileUser({ userIdapp }) {
     <div className=" pt-10  sm:mt-0 flex gap-4">
                     <Button  className="mb-10  bg-fuchsia-800  text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800   "
          variant="text" onClick={()=>handleOpen(post.id)}>تعديل </Button>
-         <EditRequest productId={requestId} open={open} close={handleClose}/>
+         <EditRequest productId={requestId} open={open} close={handleClose} refreshReq={refresh2} setrefreshReq={setRefesh2} />
                
          <Button  className="mb-10  bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
          variant="text"   onClick={() => handleDelete(post.id)}>حذف </Button>

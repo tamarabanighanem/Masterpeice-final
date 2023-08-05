@@ -104,23 +104,24 @@ function handleLogOut(){
           </ListItem>
           </Link>
 
-          {/* <Link to='/ListRestaurant'>
-          <ListItem className="hover:bg-[#E8AA42]">
+          <Link to='Approve'>
+          <ListItem className="hover:bg-fuchsia-400 hover:text-white border-b-2">
             <ListItemPrefix>
-            <Icon path={mdiHandshakeOutline } size={1} />
+            <Icon path={mdiInformationOutline} size={1} />
             </ListItemPrefix>
-            <a style={{color:'black'}}> beneficiary List </a>
+            <a style={{color:'black'}}> تعليقات المستخدمين </a>
           </ListItem>
-          </Link> */}
+          </Link>
+          {/* <Icon path={mdiHandshakeOutline } size={1} /> ايقوووووووووووونه*/ }
 
-          <Link to='/EditAboutContact'>
+          {/* <Link to='/EditAboutContact'>
           <ListItem className="hover:bg-fuchsia-400 hover:text-white border-b-2">
             <ListItemPrefix>
             <Icon path={mdiInformationOutline} size={1} />
             </ListItemPrefix>
             <a style={{color:'black'}}> Edit About </a>
           </ListItem>
-          </Link>
+          </Link> */}
 
           <Link to='/AcceptTables'>
           <ListItem className="hover:bg-fuchsia-400 hover:text-white border-b-2">

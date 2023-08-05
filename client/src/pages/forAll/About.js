@@ -35,7 +35,7 @@ const About = () => {
     <div>
       <>
 <section
-  class="overflow-hidden bg-gray-50 sm:grid sm:grid-cols-2 sm:items-center"
+  class="overflow-hidden pt-10 bg-gray-50 sm:grid sm:grid-cols-2 sm:items-center"
 >
   <div class="p-8 md:p-12 lg:px-16 lg:py-24">
     <div
@@ -63,7 +63,7 @@ const About = () => {
 
   <img
     alt="Violin"
-    src="https://images.unsplash.com/photo-1484959014842-cd1d967a39cf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+    src="https://images.unsplash.com/photo-1517840545241-b491010a8af4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
     class="h-full w-full object-cover sm:h-[calc(100%_-_2rem)] sm:self-end sm:rounded-ss-[30px] md:h-[calc(100%_-_4rem)] md:rounded-ss-[60px]"
   />
 </section>

@@ -13,9 +13,11 @@ const Nav = ({username ,forceUpdate}) => {
   const navigation = [
     { title: "عن أبرة وخيط", path: "/About" },
     { title: "تواصل معنا", path: "/ContactUs" },
-    { title: "خدماتنا", path: "/" },
-    { title: "الرئيسية", path: "/"}
+    // { title: "خدماتنا", path: "/" },
+    // { title: "الرئيسية", path: "/"}
   ];
+  const [refresh,setRefresh]=useState([])
+
   const [showDropdown, setShowDropdown] = useState(false);
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -26,20 +28,22 @@ const Nav = ({username ,forceUpdate}) => {
 
   function handleLogout() {
     localStorage.clear();
-    forceUpdate();
+    window.location.href = 'http://localhost:3000/';
+    // forceUpdate();
   }
   useEffect(() => {
     document.onclick = (e) => {
       const target = e.target;
-      if (!target.closest(".menu-btn")) setState(false);
+      if (!target.closest(".menu-btn")) {
+      setState(false);
+    setRefresh(state)}
     };
-  }, []);
+  }, [refresh]);
 console.log("nav",username)
 
 
 
 const [role ,setRole ]= useState("")
-
 
 const fetchProtectedData = async () => {
   try {
@@ -50,22 +54,17 @@ const fetchProtectedData = async () => {
           Authorization: token,
         },
       });
-      // setUserId(response.data.id)
-      // setUsername(response.data.username)
-
-      console.log(response)
-
-      console.log(token)
+      
       if (response.data.role ==="مخيطة") {
-        console.log("tttttttttttttttttttttttttttttttttttttttttttttttttttt")
-        // 'http://localhost:3000/Profileprovider';
+        setRefresh(role)
       } 
       else if  (response.data.role !=="مخيطة"){
-        console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
-        // 'http://localhost:3000//stisched';
+        setRefresh(role)
+
       }
       setRole(response.data.role)
-    
+      setRefresh(role)
+
     
 
 
@@ -85,7 +84,7 @@ const fetchProtectedData = async () => {
 useEffect(()=>{
 // if(localStorage.token != null){   
   fetchProtectedData()
-},[])
+},[refresh])
 
 
 console.log(role)
@@ -99,12 +98,7 @@ console.log(role)
         <div className="flex items-center justify-between py-1 md:block logoimg">
           
           <Link to={"/"}>  
-          {/* <img
-              src={img1}
-              width={70}
-              height="100%"
-              alt="Float UI logo"
-            /> */}
+  
                       <p className='namenav'>ابرة وخيط</p>
 
             </Link>
@@ -132,29 +126,9 @@ console.log(role)
               </li>
             ))}
           </ul>
-            {/* <Link to="/Login" className="block text-fuchsia-700 hover:text-gray-900 text-xl">
-              تسجيل دخول
-            </Link> */}
+          
                             <div className="rtl:text-right flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
-{/* 
-            {
-              username?(
-                <>
-                <p>صورة الشخص</p>
-                {username}
-                
-                </>
-              ):<>
 
-<Link to="/Signup" className="flex items-center justify-center gap-x-1 text-xl py-2 px-4 text-white font-medium bg-fuchsia-800 hover:bg-white hover:text-fuchsia-800 active:bg-gray-900 rounded-full md:inline-flex">
-  تسجيل
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-    <path fillRule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clipRule="evenodd" />
-  </svg>
-</Link>
-              </>
-
-} */}
 {username? (
               <>
                 <div className="relative">
@@ -258,14 +232,7 @@ console.log(role)
                 </div>
               </>
             ) : (
-              // <Link to={"/login/guest"}>
-              //   <button
-              //     type="button"
-              //     className="text-white bg-[#5aa1c2] hover:bg-[#4e94b5] focus:ring-4 focus:outline-none focus:ring-[#5aa1c2]-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-[#5aa1c2]-600 dark:hover:bg-[#5aa1c2]-700 dark:focus:ring-[#5aa1c2]-800"
-              //   >
-              //     Login
-              //   </button>
-              // </Link>
+        
               <Link to="/Signup" className="flex items-center justify-center gap-x-1 text-xl py-2 px-4 text-white font-medium bg-fuchsia-800 hover:bg-white hover:text-fuchsia-800 active:bg-gray-900 rounded-full md:inline-flex">
   تسجيل
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">

@@ -200,6 +200,44 @@ app.get('/profileUser/:id', async function (req, res) {
     res.status(500).json({ error: 'An error occurred while fetching user data' });
   }
 });
+
+app.get('/dataUser/:id', async function (req, res) {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const user = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
+    console.log(user.rows);
+
+    if (user.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json(user.rows[0]); // Assuming there is only one user with the given ID
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: 'An error occurred while fetching user data' });
+  }
+});
+//////////////////////commmmmment
+app.post("/comment", (req, res) => {
+  // const { name, description, price, product_id, photo } = req.body;
+  const {user_id,product_id,name,body} = req.body;
+
+  pool.query(
+    "INSERT INTO comments(user_id,product_id,name,body) VALUES($1, $2, $3,$4) RETURNING *",
+
+    // [name, description, price, product_id, photo],
+    [user_id,product_id,name,body],
+
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.status(201).send(result.rows);
+      }
+    }
+  );
+});
 //////////////////////all Product for mkhiata in profile غير مبيوعة
 
 app.get('/productOfMakhiata/:id', async function (req, res) {
@@ -282,6 +320,19 @@ app.get('/eachproduct/:id', async function (req, res) {
     const { id } = req.params;
     console.log(id);
     const user = await pool.query('SELECT * FROM products WHERE id = $1', [id]);
+    res.json(user.rows); // Assuming there is only one user with the given ID
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: 'An error occurred while fetching user data' });
+  }
+});
+//////////////////////comment each product
+app.get('/commentEachProduct/:id', async function (req, res) {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    console.log(id);
+    const user = await pool.query('SELECT * FROM comments WHERE product_id = $1 AND active = true', [id]);
     res.json(user.rows); // Assuming there is only one user with the given ID
   } catch (err) {
     console.log(err.message);
@@ -499,6 +550,49 @@ app.get("/pending-product", async (req, res) => {
     console.log(err);
   }
 });
+///////////////get all comment
+app.get('/allcomment', async function (req, res) {
+  try {
+    // const { id } = req.params;
+    // console.log(id);
+    const comment = await pool.query("SELECT * FROM comments WHERE active = true ");
+    res.json(comment.rows); 
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: 'An error occurred while fetching user data' });
+  }
+});
+////////////delete comment
+app.put(`/deleteComment/:id`, async (req, res) => {
+  try {
+    const { id } = req.params;
+    // const { username, address, domain } = req.body;
+    // console.log(username, address, domain);
+  
+
+    const updated = await pool.query(
+      'UPDATE comments SET active = false WHERE id = $1',
+      [id]
+    );
+
+    console.log(updated);
+
+    res.json(updated.rows);
+  
+  } catch (error) {
+    res.status(500).json({ error: "Can't edit data" });
+  }
+});
+// app.get('/allcomment',async function(req,res){
+//   try{
+//     const comment=await pool.query('select 8 from comment')
+//     res.json(comment.rows)}
+//     catch(err){
+//       console.log(err.message)
+//       res.status(500).json({error:'an error'})
+//     }
+//   }
+// )
 
 
 app.delete("/resorts/:id", async (req, res) => {

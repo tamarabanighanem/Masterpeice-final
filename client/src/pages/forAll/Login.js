@@ -27,7 +27,7 @@ const Login = () => {
           // navigate("/Profileprovider");
           window.location.href = 'http://localhost:3000/Profileprovider';
         } 
-        else if  (response.data.role !=="مخيطة"){
+        else if  (response.data.role ==="مستخدم"){
           console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
         // navigate("/stisched");
         window.location.href = 'http://localhost:3000/stisched';
@@ -76,6 +76,7 @@ const Login = () => {
         
       
         localStorage.setItem("token",token)
+        // navigate("/")
         // if (response.role !== 'مخيطة') {
         //   console.log(response.role);
 console.log(token)
