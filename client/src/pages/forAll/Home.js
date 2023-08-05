@@ -4,7 +4,7 @@ import axios from 'axios';
 import {Link} from 'react-router-dom';
 import img1 from '../../images/شعار_مخيطة-removebg-preview.png'
 import im2 from '../../images/pexels-castorly-stock-3945638.jpg'
-
+import Makhiata from './Makhiata';
 const Home = () => {
   const [users, setUsers] = useState([]);
 
@@ -169,8 +169,8 @@ useEffect(()=>{
           <p className="mt-3 text-gray-500">
 للمزيد من المخايط وعرض تصاميمها قم بتسجيل الدخول          </p>
         </div>
-
-    <section className="py-4 mx-auto max-w-screen-xl text-center pb-28 md:px-12 mt-8 grid gap-3 sm:grid-cols-1 lg:grid-cols-3">
+        <Makhiata/>
+    {/* <section className="py-4 mx-auto max-w-screen-xl text-center pb-28 md:px-12 mt-8 grid gap-3 sm:grid-cols-1 lg:grid-cols-3">
   {users.length === 0 ? (<>
     <div className="text-4xl  w-full py-48 justify-center flex items-center  text-neutral-800  dark:text-neutral-50">
       </div>
@@ -203,7 +203,7 @@ useEffect(()=>{
       );
     })
   )}
-</section>
+</section> */}
       {/* //////////////////////////////// */}
       <section className="container mx-auto p-10 md:py-20  px-0 md:p-10 md:px-0">
   <section className="relative px-10 md:p-0 transform duration-500 hover:shadow-2xl cursor-pointer hover:-translate-y-1 ">

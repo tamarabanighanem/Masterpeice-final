@@ -19,7 +19,7 @@ import EditProfile from './component/Editprofile';
 import ProfileUser from './pages/user/ProfileUser';
 import Editproduct from './component/Editproduct';
 import EditRequest from './component/EditRequest';
-
+import Makhiata from './pages/forAll/Makhiata';
 // Initialization for ES Users
 import {
   Collapse,
@@ -144,6 +144,8 @@ console.log("ffffffffffff",forceUpdate)
   <Route path='/Login' element={<Login />}/>
   <Route path='/Signup' element={<Signup />}/>
   <Route path='/Pricing' element={<Pricing/>}/>
+  <Route path='/makhiata' element={<Makhiata/>}/>
+
   <Route path='/ContactUs' element={<ContactUs/>}/>
   <Route path='/About' element={<About/>}/>
   <Route path='/stisched' element={<Stitched/>}/>
@@ -153,6 +155,7 @@ console.log("ffffffffffff",forceUpdate)
   <Route path='/Editprofile' element={<EditProfile userIdapp={userId}/>}/>
   <Route path='/Editproduct/:productId' element={<Editproduct/>}/>
   <Route path='/ProfileUser' element={<ProfileUser userIdapp={userId}/>}/>
+  
 
 </Routes>
 <Footer/>
