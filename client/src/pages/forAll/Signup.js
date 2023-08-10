@@ -1,54 +1,74 @@
 import React, { useState } from 'react';
-// import img1 from '../images/شعار_مخيطة-removebg-preview.png';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const Signup = () => {
   const [isMokhitaChecked, setIsMokhitaChecked] = useState(false);
   const navigate = useNavigate();
-  const [rolell, setrolell] = useState("")
-  const [username, setusername] = useState("")
-  const [email, setemail] = useState("")
-  const [password, setpassword] = useState("")
-  const [domain, setdomain] = useState("")
-  const [address, setaddress] = useState("")
-
+  const [rolell, setrolell] = useState("");
+  const [username, setusername] = useState("");
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
+  const [domain, setdomain] = useState("");
+  const [address, setaddress] = useState("");
   
+  // Validation patterns
+  const usernameRegex = /^[\u0600-\u06FF0-9_]{3,20}$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  // Error states for validation
+  const [usernameError, setUsernameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const handleRadioChange = (e) => {
-
     setIsMokhitaChecked(e.target.value === 'مخيطة');
-    setrolell(e.target.value)
-  
+    setrolell(e.target.value);
   };
-
-
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   // setValue((prevValue) => ({
-  //   //   ...prevValue,
-  //   //   [name]: value,
-  //   // }));
-  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // localStorage.setItem('value', JSON.stringify(value));
-    const data={  
+
+    // Validate the inputs
+    if (!usernameRegex.test(username)) {
+      setUsernameError("Username must be between 3 and 20 characters and can only contain Arabic characters, numbers, and underscores.");
+      return;
+    } else {
+      setUsernameError("");
+    }
+
+    if (!emailRegex.test(email)) {
+      setEmailError("Please enter a valid email address.");
+      return;
+    } else {
+      setEmailError("");
+    }
+
+    if (!passwordRegex.test(password)) {
+      setPasswordError("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+      return;
+    } else {
+      setPasswordError("");
+    }
+
+    // If all validations pass, submit the data
+    const data = {
       username: username,
-      email:email,
+      email: email,
       password: password,
-      domain:domain,
+      domain: domain,
       address: address,
-      role:rolell}
-      console.log(data)
+      role: rolell
+    };
+    // Iyad123@T
     axios
       .post('http://localhost:5000/Register', data)
       .then((res) => {
         const { token } = res.data;
         localStorage.setItem('token', token);
         console.log(res);
-        
 
         if (isMokhitaChecked) {
           navigate('/Profileprovider');
@@ -58,8 +78,16 @@ const Signup = () => {
       })
       .catch((error) => {
         console.error(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'للاسف',
+          text: 'البريد الالكتروني مسجل مسبقا',
+          // footer: '<a href="#">Why do I have this issue?</a>'
+        })
       });
+  
   };
+
   return (
     <>
       <main className="w-full h-full flex flex-col items-center justify-center  sm:px-4 "  style={{ backgroundImage: ' linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://images.unsplash.com/photo-1571175239128-98f16e790b65?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80")', backgroundRepeat: 'no-repeat',backgroundSize:'cover' ,backgroundPosition:'bottom'}}>
@@ -68,7 +96,6 @@ const Signup = () => {
 
           <div className="bg-fuchsia-50 shadow p-4 py-6 sm:p-6 sm:rounded-lg">
           <div className="text-center ">
-            {/* <img src={img1} width={150} className="mx-auto" alt='' /> */}
             <div className="mt-5 space-y-2">
               <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">انشئ حساب</h3>
               <p className="">
@@ -140,6 +167,7 @@ const Signup = () => {
                   required
                   className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-fuchsia-600 shadow-sm rounded-lg"
                 />
+                {usernameError && <p className="text-red-600 text-xs">{usernameError}</p>}
               </div>
               <div>
                 <label className="font-medium">البريد الإلكتروني</label>
@@ -151,6 +179,7 @@ const Signup = () => {
                   required
                   className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-fuchsia-600 shadow-sm rounded-lg"
                 />
+                {emailError && <p className="text-red-600 text-xs">{emailError}</p>}
               </div>
               <div>
                 <label className="font-medium">كلمة السر</label>
@@ -162,6 +191,7 @@ const Signup = () => {
                   required
                   className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-fuchsia-600 shadow-sm rounded-lg"
                 />
+                {passwordError && <p className="text-red-600 text-xs">{passwordError}</p>}
               </div>
               {isMokhitaChecked && (
               

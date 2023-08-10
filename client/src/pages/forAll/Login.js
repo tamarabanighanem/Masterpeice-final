@@ -71,15 +71,15 @@ const Login = () => {
         const {token}=response.data
         console.log(response.data.token)
 
-        fetchProtectedData()
         console.log(value.email)
         
-      
+        
         localStorage.setItem("token",token)
         // navigate("/")
         // if (response.role !== 'مخيطة') {
-        //   console.log(response.role);
-console.log(token)
+          //   console.log(response.role);
+          fetchProtectedData()
+          console.log(token)
 
 
           
@@ -128,7 +128,7 @@ console.log(token)
                   type="email"
                   required
                   name='email'
-                  value={value.email}
+                  // value={value.email}
                   onChange={ handleInput}
                   className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border bg-white focus:border-fuchsia-600 shadow-sm rounded-lg"
                 />
@@ -138,7 +138,7 @@ console.log(token)
                 <input
                   type="password"
                   required
-                  value={value.password}
+                  // value={value.password}
                   name='password'
                   onChange={handleInput}
                   className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border bg-white focus:border-fuchsia-600 shadow-sm rounded-lg"

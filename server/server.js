@@ -112,11 +112,11 @@ function authenticateToken(req, res, next) {
 }
 ///////////////////////////////////////request of user
 app.post("/request", (req, res) => {
-  const {user_id, mkhiata_id,description , phone ,photo} = req.body;
-  console.log(user_id, mkhiata_id,description , phone ,photo);
+  const {user_id, mkhiata_id,description , phone,chestcircumference,waistline,hiphircumference ,photo} = req.body;
+  console.log(user_id, mkhiata_id,description , phone ,chestcircumference,waistline,hiphircumference,photo);
   pool.query(
-    "INSERT INTO request(user_id, mkhiata_id,description , phone ,photo) VALUES($1,$2,$3,$4,$5) RETURNING*",
-    [user_id, mkhiata_id,description , phone ,photo],
+    "INSERT INTO request(user_id, mkhiata_id,description , phone,chestcircumference,waistline,hiphircumference ,photo) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING*",
+    [user_id, mkhiata_id,description , phone ,chestcircumference,waistline,hiphircumference,photo],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -272,13 +272,96 @@ app.get('/productdeletedOfMakhiata/:id', async function (req, res) {
 });
 //////////////////////all request for mkhiata in profile
 
+app.get('/ApprovedrequestOfMakhiata/:id', async function (req, res) {
+  try {
+    const { id } = req.params;
+    console.log(id);
+  
+    
+    const user = await pool.query("SELECT * FROM request WHERE mkhiata_id = $1 AND aproved= true AND statuse=false", [id]);
+    console.log(user)
+    res.json(user.rows); // Assuming there is only one user with the given ID
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: 'An error occurred while fetching user data' });
+  }
+});
+app.post("/ApprovedrequestOfMakhiata/:id", async (req, res) => {
+  const data = await pool.query(
+    `UPDATE request SET aproved = true WHERE id = $1;`,
+    [req.params.id]
+  );
+
+  const resorts = await pool.query(
+    `SELECT * FROM request WHERE aproved = true;`
+  );
+  try {
+    res.status(200).json({
+      status: "success",
+      data: {
+        "resorts-count": resorts.rows.length,
+        resorts: resorts.rows,
+      },
+    });
+  } catch (err) {
+    res.status(400).json(err.message);
+  }
+});
+
 app.get('/requestOfMakhiata/:id', async function (req, res) {
   try {
     const { id } = req.params;
     console.log(id);
   
     
-    const user = await pool.query("SELECT * FROM request WHERE mkhiata_id = $1", [id]);
+    const user = await pool.query("SELECT * FROM request WHERE mkhiata_id = $1 AND aproved=false AND statuse=false", [id]);
+    console.log(user)
+    res.json(user.rows); // Assuming there is only one user with the given IDstOfMakhiata
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: 'An error occurred while fetching user data' });
+  }
+});
+app.get('/requestOfMakhiatainuserprofile/:id', async function (req, res) {
+  try {
+    const { id } = req.params;
+    console.log(id);
+  
+    
+    const user = await pool.query("SELECT * FROM request WHERE user_id = $1 AND aproved=false AND statuse=false", [id]);
+    console.log(user)
+    res.json(user.rows); // Assuming there is only one user with the given IDstOfMakhiata
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: 'An error occurred while fetching user data' });
+  }
+});
+app.put('/finishrequestOfMakhiata/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    // const { description,phone, photo } = req.body;
+    // console.log(description, phone ,photo);
+
+    const updated = await pool.query(
+      'UPDATE request SET statuse = true WHERE id = $1',
+      [id]
+    );
+
+    console.log(updated);
+
+    res.json(updated.rows);
+  } catch (error) {
+    res.status(500).json({ error: "Can't edit data" });
+  }
+});
+
+app.get('/finishrequestOfMakhiata/:id', async function (req, res) {
+  try {
+    const { id } = req.params;
+    console.log(id);
+  
+    
+    const user = await pool.query("SELECT * FROM request WHERE mkhiata_id = $1 AND statuse=true", [id]);
     console.log(user)
     res.json(user.rows); // Assuming there is only one user with the given ID
   } catch (err) {

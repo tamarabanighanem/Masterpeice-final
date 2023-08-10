@@ -1,8 +1,9 @@
 import React from "react";
-import { Children, createContext, useState } from "react";
+import { useEffect, createContext, useState } from "react";
+import axios from 'axios'
 
 export const UserContext = createContext();
-const UserProvider = ( {children} ) => {
+export default function UserProvider ( {children} ) {
   
   const [test, setTest] = useState([]);
 
@@ -27,7 +28,7 @@ const UserProvider = ( {children} ) => {
         </>
     )
 };
- export default UserProvider;
+  // UserProvider;
 
 
 

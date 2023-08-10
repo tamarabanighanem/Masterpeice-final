@@ -1,0 +1,28 @@
+/* ProfileProvider.css
+
+/* Styles for large screens */
+@media screen and (min-width: 1024px) {
+  .profile-page {
+    /* Adjust styles for larger screens */
+  }
+
+  /* Add more media queries for different sections if needed */
+}
+
+/* Styles for medium screens */
+@media screen and (max-width: 1023px) and (min-width: 768px) {
+  .profile-page {
+    /* Adjust styles for medium screens */
+  }
+
+  /* Add more media queries for different sections if needed */
+}
+
+/* Styles for small screens */
+@media screen and (max-width: 767px) {
+  .profile-page {
+    /* Adjust styles for small screens */
+  }
+
+  /* Add more media queries for different sections if needed */
+} 

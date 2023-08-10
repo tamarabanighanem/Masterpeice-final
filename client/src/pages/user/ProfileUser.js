@@ -1,6 +1,107 @@
 
+// import { useState, useEffect } from "react";
+// import * as React from "react";
+// import axios from "axios";
+// import { Button } from "@material-tailwind/react";
+// import EditRequest from "../../component/EditRequest";
+// import EditProfile from "../../component/Editprofile";
+// import Swal from 'sweetalert2';
+// import { Link } from "react-router-dom";
+
+// function ProfileUser({ userIdapp }) {
+//   const [image, setImg] = useState("");
+//   // const [name, setname] = useState("");
+//   // const [price, setprice] = useState("");
+//   // const [description, setdescription] = useState("");
+  
+//   const [user, setUser] = useState({});
+//   const [users, setUsers] = useState([]);
+//   const[reqStatuse,setReqStatuse]=useState([])
+//   const [requestId, setRequestId] = useState(0);
+//   const [open, setOpen] = React.useState(false);
+//   const [refresh,setRefresh]=useState(false)
+//   const [refresh2,setRefesh2]=useState(false)
+
+//   const onChange = (e) => {
+//     const files = e.target.files;
+//     const file = files[0];
+//     getBase64(file);
+//     console.log(image);
+//   };
+
+//   const onLoad = (fileString) => {
+//     setImg(fileString);
+//   };
+
+//   const getBase64 = (file) => {
+//     let reader = new FileReader();
+//     reader.readAsDataURL(file);
+//     reader.onload = () => {
+//       onLoad(reader.result);
+//     };
+//   };
+
+//   const handleOpen = (id) => {
+//     setOpen(true);
+//     setRequestId(id);
+//   };
+
+//   const handleClose = () => setOpen(false);
+
+//   const handleDelete = async (id) => {
+//     try {
+//       const confirmed = await Swal.fire({
+//         title: 'Are you sure?',
+//         text: 'You are about to delete the product. This action cannot be undone.',
+//         icon: 'warning',
+//         showCancelButton: true,
+//         confirmButtonColor: '#3085d6',
+//         cancelButtonColor: '#d33',
+//         confirmButtonText: 'Yes, delete it!'
+//       });
+  
+//       if (confirmed.isConfirmed) {
+//         await axios.delete(`http://localhost:5000/request/${id}`);
+//         setUsers(prevUsers => prevUsers.filter(user => user.id !== id));
+//       }
+//     } catch (error) {
+//       console.log(error.message);
+//     }
+//   };
+
+//   const fetchData = async () => {
+//     try {
+//       const profileResponse = await axios.get(`http://localhost:5000/profileUser/${userIdapp}`);
+//       setUser(profileResponse.data[0]);
+  
+//       const requestsResponse = await axios.get(`http://localhost:5000/requestOfeachuser/${userIdapp}`);
+//       setUsers(requestsResponse.data);
+//     } catch (error) {
+//       console.log(error.message);
+//     }
+  
+  
+//   };
+
+
+//   useEffect(() => {
+//     fetchData();
+//     axios
+//     .get(`http://localhost:5000/requestOfMakhiatainuserprofile/${userIdapp}`)
+//     .then((response) => {
+//       setReqStatuse(response.data);
+//       // setLoading(false)
+//       console.log(response.data)
+//       console.log(response.data)
+//       // Assuming there is only one user with the given ID
+//     })
+//     .catch((error) => console.log(error.message)
+//     );
+//   }, [userIdapp,refresh,refresh2]);  
+//   console.log(userIdapp)
+//   console.log(reqStatuse[0].aproved)
 import { useState, useEffect } from "react";
-import * as React from "react";
+import React from "react";
 import axios from "axios";
 import { Button } from "@material-tailwind/react";
 import EditRequest from "../../component/EditRequest";
@@ -9,36 +110,13 @@ import Swal from 'sweetalert2';
 import { Link } from "react-router-dom";
 
 function ProfileUser({ userIdapp }) {
-  const [image, setImg] = useState("");
-  // const [name, setname] = useState("");
-  // const [price, setprice] = useState("");
-  // const [description, setdescription] = useState("");
-  
-  const [user, setUser] = useState({});
   const [users, setUsers] = useState([]);
+  const [user, setUser] = useState({});
+  const [reqStatus, setReqStatus] = useState([]);
   const [requestId, setRequestId] = useState(0);
-  const [open, setOpen] = React.useState(false);
-  const [refresh,setRefresh]=useState(false)
-  const [refresh2,setRefesh2]=useState(false)
-
-  const onChange = (e) => {
-    const files = e.target.files;
-    const file = files[0];
-    getBase64(file);
-    console.log(image);
-  };
-
-  const onLoad = (fileString) => {
-    setImg(fileString);
-  };
-
-  const getBase64 = (file) => {
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      onLoad(reader.result);
-    };
-  };
+  const [open, setOpen] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+  const [refresh2, setRefresh2] = useState(false);
 
   const handleOpen = (id) => {
     setOpen(true);
@@ -58,7 +136,7 @@ function ProfileUser({ userIdapp }) {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!'
       });
-  
+
       if (confirmed.isConfirmed) {
         await axios.delete(`http://localhost:5000/request/${id}`);
         setUsers(prevUsers => prevUsers.filter(user => user.id !== id));
@@ -72,16 +150,20 @@ function ProfileUser({ userIdapp }) {
     try {
       const profileResponse = await axios.get(`http://localhost:5000/profileUser/${userIdapp}`);
       setUser(profileResponse.data[0]);
-  
+
       const requestsResponse = await axios.get(`http://localhost:5000/requestOfeachuser/${userIdapp}`);
       setUsers(requestsResponse.data);
+
+      const requestStatusResponse = await axios.get(`http://localhost:5000/requestOfMakhiatainuserprofile/${userIdapp}`);
+      setReqStatus(requestStatusResponse.data);
     } catch (error) {
       console.log(error.message);
     }
   };
+
   useEffect(() => {
     fetchData();
-  }, [userIdapp,refresh,refresh2]);  
+  }, [userIdapp, refresh, refresh2]);
   return (
     <>
       {/* component */}
@@ -196,7 +278,7 @@ setRefreshh={setRefresh}
     
     className="w-full mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5"
   > 
-      { users.length === 0 ? (<>
+      {/* { users.length === 0 ? (<>
         <div className="text-4xl  w-full pt-52  justify-center flex items-center  text-neutral-800  dark:text-neutral-50">
     لا توجد طلبات للعرض  😢
     </div>  
@@ -230,7 +312,19 @@ setRefreshh={setRefresh}
                
          <Button  className="mb-10  bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
          variant="text"   onClick={() => handleDelete(post.id)}>حذف </Button>
+
+{reqStatuse[0].aproved===false?(
+    
+   
+    <div className="mb-10  bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
+          variant="text"   onClick={() => handleDelete(post.id)}>قيد الطلب </div>):(
+           <div className="mb-10  bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
+          variant="text"   onClick={() => handleDelete(post.id)}>تم القبول , قيد التنفيذ </div> )  
+         //   <div className="mb-10  bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
+         //  variant="text"   onClick={() => handleDelete(post.id)}>تم الانتهاء</div>
+          }  
    </div>
+
   </div>
          
 
@@ -238,7 +332,49 @@ setRefreshh={setRefresh}
 </div>
     );
   })
-)}
+)} */}
+ {users.length === 0 ? (
+        <>
+          <div className="text-4xl w-full pt-52 justify-center flex items-center text-neutral-800 dark:text-neutral-50">
+            لا توجد طلبات للعرض 😢
+          </div>
+          <div>لطلب تصميم من مخيطتك المفضلة <Link className="text-fuchsia-900 text-sm underline" to={'/stisched'}>اضغط هنا</Link></div>
+          <div className="text-4xl w-full py-48 justify-center flex items-center text-neutral-800 dark:text-neutral-50">
+          </div>
+        </>
+      ) : (
+        <section
+          id="Projects"
+          className="w-full mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5"
+        >
+          {users.map((post) => {
+            const requestStatus = reqStatus.find((status) => status.requestId === post.id);
+
+            return (
+              <div key={post.id} className="p-5 grid grid-cols-2 gap-2">
+                {/* ... Other content ... */}
+                {requestStatus ? (
+                  requestStatus.aproved === false ? (
+                    <div className="mb-10 bg-[#dc2626] text-white shadow hover:bg-[#991b1b] hover:text-black">
+                      قيد الطلب
+                    </div>
+                  ) : (
+                    <div className="mb-10 bg-[#dc2626] text-white shadow hover:bg-[#991b1b] hover:text-black">
+                      تم القبول, قيد التنفيذ
+                    </div>
+                  )
+                ) : (
+                  // Handle case where request status is not available
+                  <div className="mb-10 bg-gray-500 text-white shadow">
+                    حالة الطلب غير معروفة
+                  </div>
+                )}
+                {/* ... Other content ... */}
+              </div>
+            );
+          })}
+        </section>
+      )}
       </section>
       </div>
         </section>

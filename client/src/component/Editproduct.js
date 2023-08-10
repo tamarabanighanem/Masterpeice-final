@@ -21,14 +21,14 @@ const style = {
   p: 4,
 };
 
-function Editproduct({ productId, open, close }) {
+function Editproduct({ productId, open, close,setrefreshReq,refreshReq }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     try {
       await axios.put(`http://localhost:5000/editproduct/${productId}`, {
         name: name,
@@ -36,12 +36,16 @@ function Editproduct({ productId, open, close }) {
         price: price,
         photo: image
       });
+      setrefreshReq(!refreshReq)
       console.log("Product updated successfully!");
     } catch (error) {
       console.log(error);
     }
   };
-
+  const handleOnClick = () => {
+    handleSubmit();
+    close();
+  };
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     getBase64(file)
@@ -126,7 +130,7 @@ function Editproduct({ productId, open, close }) {
               accept="image/*"
             />
             <Button
-              onClick={handleSubmit}
+              onClick={handleOnClick}
               className="m-5 border-solid bg-fuchsia-800 text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800"
               variant="text"
             >

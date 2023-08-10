@@ -5,9 +5,10 @@ import img1 from '../../images/شعار_مخيطة-removebg-preview.png'
 
 
 import { Link } from "react-router-dom";
-const Makhiata = () => {
+const Makhiata = ({filterDataUsers}) => {
   const [users, setUsers] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  console.log(filterDataUsers)
   useEffect(()=>{
     axios
     .get(`http://localhost:5000/stitched`)
