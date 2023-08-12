@@ -278,7 +278,7 @@ app.get('/ApprovedrequestOfMakhiata/:id', async function (req, res) {
     console.log(id);
   
     
-    const user = await pool.query("SELECT * FROM request WHERE mkhiata_id = $1 AND aproved= true AND statuse=false", [id]);
+    const user = await pool.query("SELECT * FROM request WHERE mkhiata_id = $1 AND aproved= true AND statuse=false AND approveduser=true", [id]);
     console.log(user)
     res.json(user.rows); // Assuming there is only one user with the given ID
   } catch (err) {
@@ -287,26 +287,105 @@ app.get('/ApprovedrequestOfMakhiata/:id', async function (req, res) {
   }
 });
 app.post("/ApprovedrequestOfMakhiata/:id", async (req, res) => {
-  const data = await pool.query(
-    `UPDATE request SET aproved = true WHERE id = $1;`,
-    [req.params.id]
-  );
+  const { price } = req.body;
 
-  const resorts = await pool.query(
-    `SELECT * FROM request WHERE aproved = true;`
-  );
   try {
+    // Use a semicolon to separate the SET clauses in the UPDATE statement
+    const data = await pool.query(
+      `UPDATE request SET aproved = true, price = $2 WHERE id = $1;`,
+      [req.params.id, price]
+    );
+
+    // Select only the updated row, assuming id is unique
+    const updatedResort = await pool.query(
+      `SELECT * FROM request WHERE id = $1;`,
+      [req.params.id]
+    );
+
     res.status(200).json({
       status: "success",
       data: {
-        "resorts-count": resorts.rows.length,
-        resorts: resorts.rows,
+        "resort-updated": updatedResort.rows[0], // Assuming id is unique
       },
     });
   } catch (err) {
-    res.status(400).json(err.message);
+    res.status(400).json({ error: err.message });
   }
 });
+////aproved of request after see price
+app.post("/ApprovedrequestComefromUser/:id", async (req, res) => {
+  
+
+  try {
+    // Use a semicolon to separate the SET clauses in the UPDATE statement
+    const data = await pool.query(
+      `UPDATE request SET approveduser = true WHERE id = $1;`,
+      [req.params.id]
+    );
+
+    // Select only the updated row, assuming id is unique
+    const updatedResort = await pool.query(
+      `SELECT * FROM request WHERE id = $1;`,
+      [req.params.id]
+    );
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        "resort": updatedResort.rows[0], // Assuming id is unique
+      },
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// app.post("/ApprovedrequestOfMakhiata/:id", async (req, res) => {
+//   const {price}=req.body
+  
+//   const data = await pool.query(
+//     `UPDATE request SET  aproved = true AND price=$2 WHERE id = $1;`,
+//     [req.params.id]
+//   );
+
+//   const resorts = await pool.query(
+//     `SELECT * FROM request WHERE aproved = true;`
+//   );
+//   try {
+//     res.status(200).json({
+//       status: "success",
+//       data: {
+//         "resorts-count": resorts.rows.length,
+//         resorts: resorts.rows,
+//       },
+//     });
+//   } catch (err) {
+//     res.status(400).json(err.message);
+//   }
+// });
+// app.post("/payment", (req, res) => {
+//   const {card_number,cvv,cardholder,product_id,user_id,provider_id, expiration_date} = req.body;
+
+//   pool.query(
+//     "INSERT INTO payment(card_number,cvv,cardholder,product_id,user_id,provider_id, expiration_date) VALUES($1, $2, $3, $4, $5,$6,$7) RETURNING *",
+//     [card_number,cvv,cardholder,product_id,user_id,provider_id, expiration_date],
+//     (err, result) => {
+//       if (err) {
+//         console.log(err);
+//       } else {
+//         res.status(201).send(result.rows);
+//       }
+//     }
+//   );
+// });
+////////////
+// pool.query("INSERT INTO request(price) VALUES(&1)RETURNING *",[price],(err,result)=>{
+  //   if(err){
+  //     console.log(err)
+  //   }else{
+  //     res.status(201).send(result.rows)
+  //   }
+  // })
 
 app.get('/requestOfMakhiata/:id', async function (req, res) {
   try {
@@ -314,7 +393,7 @@ app.get('/requestOfMakhiata/:id', async function (req, res) {
     console.log(id);
   
     
-    const user = await pool.query("SELECT * FROM request WHERE mkhiata_id = $1 AND aproved=false AND statuse=false", [id]);
+    const user = await pool.query("SELECT * FROM request WHERE mkhiata_id = $1 AND aproved=false AND statuse=false AND approveduser=false", [id]);
     console.log(user)
     res.json(user.rows); // Assuming there is only one user with the given IDstOfMakhiata
   } catch (err) {

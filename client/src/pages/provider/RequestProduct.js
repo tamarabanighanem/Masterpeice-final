@@ -27,15 +27,33 @@ const RequestProduct = ({ userIdapp }) => {
       console.log(error);
     }
   };
-  
-  const handleAccept = async (id) => {
-    try {
-      const response = await axios.post(`http://localhost:5000/ApprovedrequestOfMakhiata/${id}`);
-      setApproved(response.data.data.resorts);
-    } catch (error) {
-      console.log(error);
-    }
+  // const[price,setPrice]=useState('')
+  // const handleAccept = async (id) => {
+  //   const data={
+  //     price : price
+  //   }
+  //   try {
+  //     const response = await axios.post(`http://localhost:5000/ApprovedrequestOfMakhiata/${id}`+data);
+  //     setApproved(response.data.data.resorts);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  const [price, setPrice] = useState('');
+
+const handleAccept = async (id) => {
+  const data = {
+    price: price,
   };
+  try {
+    const response = await axios.post(`http://localhost:5000/ApprovedrequestOfMakhiata/${id}`, data);
+    // Assuming you want to set the "approved" state with the updated data
+    setApproved(response.data.data.resorts);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
   const handleDeleterequist = async (id) => {
     try {
       // Display confirmation dialog
@@ -107,42 +125,15 @@ console.log(userIdapp)
     
     <div className="text-2xl  w-full py-48 justify-center flex items-center  text-neutral-800  dark:text-neutral-50">
     لا توجد طلبات للعرض  😢   </div></>):(
-<section
-    id="Projects"
-    className="w-full mx-auto flex flex-wrap gap-5 mt-10 mb-5 justify-center"
-  >
-          {request?.map((request) => {
-                    return (
-                      
-    <div  key={request.id} className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-        <img
-          src={request.photo}
-          alt="Product"
-          className="h-80 w-72 object-cover rounded-t-xl"
-        />
-        <div className="px-4 py-3 w-72">
-          <p className="text-lg font-semibold text-black cursor-auto my-3">
-            الوصف :  {request.description}
-            </p>
-            <p className="text-lg font-semibold text-black cursor-auto my-3">
-            رقم الهاتف : {request.phone}
-            </p>
-            <Button  className="mr-40 bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
-         variant="text"   onClick={() => handleDeleterequist(request.id)}>تم الانتهاء  </Button> 
-        </div>
+
       
-    </div>
-        );
-      })}
-      </section>)}
       <div className="relative overflow-x-auto">
-      {request?.map((request) => {
-                    return (
-  <table key={request.id} className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <h1>جميع الطلبات</h1>
+      
+  <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead className="text-xs border text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-      {/* <tr className="px-6 py-3"><th scope="col" className="px-6 py-3">
-          Product name
-        </th></tr> */}
+    <tr  className=''><th colSpan="5" scope="col" className='px-6 py-3 text-center'>جميع الطلبات</th></tr>
+
       <tr>
         <th scope="col" className="px-6 py-3">
           Product name
@@ -162,7 +153,9 @@ console.log(userIdapp)
       </tr>
     </thead>
     <tbody>
-      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+    {request?.map((request) => {
+                    return (
+      <tr key={request.id}  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
       
     
         
@@ -173,33 +166,37 @@ console.log(userIdapp)
         /></td>
         <td className="px-6 py-4">{request.description}</td>
         <td className="px-6 py-4"> {request.phone}</td>
-          <th
+      
+        <td className="px-6 py-4">  <input type="text"placeholder='السعر المتوقع' value={price} onChange={(e)=>setPrice(e.target.value)}/>     </td>
+        <td
           scope="row"
           className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
-          <button className="mb-10 p-2  bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
+          <button className="mb-10 p-2 ml-2 bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
          variant="text"     onClick={(event) => {
           handleDeleterequist(request.id);
         }}>حذف </button>
-        </th>
-        <td className="px-6 py-4">        <button  className="mb-10 p-2  bg-fuchsia-800  text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800   "
+         <button  className="mb-10 p-2  bg-fuchsia-800  text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800   "
          variant="text"   onClick={(event) => {
           // alert();
           handleAccept(request.id);
-        }}>قبول</button></td>
+        }}>قبول</button>
+        </td>
       </tr>
-
+  );
+})}
     </tbody>
   </table>
-  );
-      })}
+
 </div>
+)}
 {/* /////////////////////////////// in progress*/}
 <div className="relative overflow-x-auto">
-      {approved?.map((request) => {
-                    return (
-  <table key={request.id} className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    
+  <table  className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <tr  className=''><th colSpan="4" scope="col" className='px-6 py-3 text-center'>قيد التنفيذ</th></tr>
+
       <tr>
         <th scope="col" className="px-6 py-3">
           Product name
@@ -217,14 +214,16 @@ console.log(userIdapp)
       </tr>
     </thead>
     <tbody>
-      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+    {approved?.map((request) => {
+                    return (
+      <tr key={request.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
       
     
         
         <td className="px-6 py-4">  <img
           src={request.photo}
           alt="Product"
-          className="h-80 w-72 object-cover rounded-t-xl"
+          className="h-20 w-20 object-cover rounded-t-xl"
         /></td>
         <td className="px-6 py-4">{request.description}</td>
         <td className="px-6 py-4"> {request.phone}</td>
@@ -237,24 +236,20 @@ console.log(userIdapp)
           handleReject(request.id);
         }}>تم الانتهاء </button>
         </th>
-        {/* <td className="px-6 py-4">        <button  className="mb-10 p-2  bg-fuchsia-800  text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800   "
-         variant="text"   onClick={(event) => {
-          alert();
-          handleAccept(request.id);
-        }}>قبول</button></td> */}
+  
       </tr>
-
+  );
+})}
     </tbody>
   </table>
-  );
-      })}
+
 </div>
 {/* ////////////////////////////finish */}
-<div className="relative overflow-x-auto">
-      {finished?.map((request) => {
-                    return (
-  <table key={request.id} className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+{/* <div className="relative overflow-x-auto">
+    
+  <table  className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <tr  className=''><th colSpan="3" scope="col" className='px-6 py-3 text-center'>الطلبات المنتهية</th></tr>
       <tr>
         <th scope="col" className="px-6 py-3">
           Product name
@@ -265,45 +260,34 @@ console.log(userIdapp)
         <th scope="col" className="px-6 py-3">
           Category
         </th>
-        {/* <th scope="col" className="px-6 py-3">
-          Price
-        </th> */}
+      
       
       </tr>
     </thead>
     <tbody>
-      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+    {finished?.map((request) => {
+                    return (
+      <tr key={request.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
       
     
         
-        <td className="px-6 py-4">  <img
+        <td className="px-6 py-4">  
+        <img
           src={request.photo}
           alt="Product"
-          className="h-80 w-72 object-cover rounded-t-xl"
+          className="h-20 w-20 object-cover rounded-t-xl"
         /></td>
         <td className="px-6 py-4">{request.description}</td>
         <td className="px-6 py-4"> {request.phone}</td>
-          {/* <th
-          scope="row"
-          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-        >
-          <button className="mb-10 p-2  bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
-         variant="text"     onClick={(event) => {
-          handleReject(request.id);
-        }}>تم الانتهاء </button>
-        </th> */}
-        {/* <td className="px-6 py-4">        <button  className="mb-10 p-2  bg-fuchsia-800  text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800   "
-         variant="text"   onClick={(event) => {
-          alert();
-          handleAccept(request.id);
-        }}>قبول</button></td> */}
-      </tr>
 
+      </tr>
+        );
+})}
     </tbody>
   </table>
-  );
-      })}
-</div>
+
+      
+</div> */}
         </div>
 
 {/* <Pagenation/> */}
