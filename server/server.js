@@ -238,6 +238,28 @@ app.post("/comment", (req, res) => {
     }
   );
 });
+//////////////////////reportComment
+app.put('/reportComment/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Ensure that the ID is a valid integer
+    const commentId = parseInt(id);
+
+    const updated = await pool.query(
+      'UPDATE comments SET reported = true WHERE id = $1',
+      [commentId]
+    );
+
+    console.log(updated);
+
+    res.json(updated.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Can't edit data" });
+  }
+});
+
 //////////////////////all Product for mkhiata in profile غير مبيوعة
 
 app.get('/productOfMakhiata/:id', async function (req, res) {
@@ -340,52 +362,7 @@ app.post("/ApprovedrequestComefromUser/:id", async (req, res) => {
   }
 });
 
-// app.post("/ApprovedrequestOfMakhiata/:id", async (req, res) => {
-//   const {price}=req.body
-  
-//   const data = await pool.query(
-//     `UPDATE request SET  aproved = true AND price=$2 WHERE id = $1;`,
-//     [req.params.id]
-//   );
 
-//   const resorts = await pool.query(
-//     `SELECT * FROM request WHERE aproved = true;`
-//   );
-//   try {
-//     res.status(200).json({
-//       status: "success",
-//       data: {
-//         "resorts-count": resorts.rows.length,
-//         resorts: resorts.rows,
-//       },
-//     });
-//   } catch (err) {
-//     res.status(400).json(err.message);
-//   }
-// });
-// app.post("/payment", (req, res) => {
-//   const {card_number,cvv,cardholder,product_id,user_id,provider_id, expiration_date} = req.body;
-
-//   pool.query(
-//     "INSERT INTO payment(card_number,cvv,cardholder,product_id,user_id,provider_id, expiration_date) VALUES($1, $2, $3, $4, $5,$6,$7) RETURNING *",
-//     [card_number,cvv,cardholder,product_id,user_id,provider_id, expiration_date],
-//     (err, result) => {
-//       if (err) {
-//         console.log(err);
-//       } else {
-//         res.status(201).send(result.rows);
-//       }
-//     }
-//   );
-// });
-////////////
-// pool.query("INSERT INTO request(price) VALUES(&1)RETURNING *",[price],(err,result)=>{
-  //   if(err){
-  //     console.log(err)
-  //   }else{
-  //     res.status(201).send(result.rows)
-  //   }
-  // })
 
 app.get('/requestOfMakhiata/:id', async function (req, res) {
   try {
@@ -494,7 +471,7 @@ app.get('/commentEachProduct/:id', async function (req, res) {
     const { id } = req.params;
     console.log(id);
     console.log(id);
-    const user = await pool.query('SELECT * FROM comments WHERE product_id = $1 AND active = true', [id]);
+    const user = await pool.query('SELECT * FROM comments WHERE product_id = $1 AND active = true ', [id]);
     res.json(user.rows); // Assuming there is only one user with the given ID
   } catch (err) {
     console.log(err.message);
@@ -717,7 +694,7 @@ app.get('/allcomment', async function (req, res) {
   try {
     // const { id } = req.params;
     // console.log(id);
-    const comment = await pool.query("SELECT * FROM comments WHERE active = true ");
+    const comment = await pool.query("SELECT * FROM comments WHERE reported = true AND active= true ");
     res.json(comment.rows); 
   } catch (err) {
     console.log(err.message);

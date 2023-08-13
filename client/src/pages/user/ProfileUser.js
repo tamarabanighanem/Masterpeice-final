@@ -13,7 +13,7 @@ function ProfileUser({ userIdapp }) {
 
   const [user, setUser] = useState({});
   const [users, setUsers] = useState([]);
-  const[approved,setApproved]=useState([])
+  const [approved, setApproved] = useState([])
   const [reqStatuse, setReqStatuse] = useState([])
   const [requestId, setRequestId] = useState(0);
   const [open, setOpen] = React.useState(false);
@@ -95,7 +95,7 @@ function ProfileUser({ userIdapp }) {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!'
       });
-  
+
       if (confirmed.isConfirmed) {
         await axios.delete("http://localhost:5000/requestOfMakhiataDelete/" + id);
         window.location.reload();
@@ -105,7 +105,7 @@ function ProfileUser({ userIdapp }) {
     }
   };
   const handleAccept = async (id) => {
-  
+
     try {
       const response = await axios.post(`http://localhost:5000/ApprovedrequestComefromUser/${id}`);
       // Assuming you want to set the "approved" state with the updated data
@@ -250,8 +250,8 @@ function ProfileUser({ userIdapp }) {
               ) : (
                 users?.map((post) => {
                   return (
-                    <div  className="p-5 grid grid-cols-1 ">
-                      <div key={post.id}  className=" flex flex-col rounded-t-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 md:max-w-xl md:flex-row">
+                    <div className="p-5 grid grid-cols-1 ">
+                      <div key={post.id} className=" flex flex-col rounded-t-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 md:max-w-xl md:flex-row">
                         <img
                           className="  object-cover  md:w-48 md:rounded-none md:rounded-t-lg"
                           src={post.photo}
@@ -266,59 +266,61 @@ function ProfileUser({ userIdapp }) {
                           </p>
                           <p className="text-xs text-neutral-500 dark:text-neutral-300">
                             رقم الهاتف :   {post.phone}     </p>
-                            {post.aproved?(
-                              <div><p className="text-red-500 border-l-4 mr-32 font-bold">لا يمكن التعديل على الطلب </p></div>
-                      
-                ):(    <div className=" pt-10  sm:mt-0 flex gap-4">
-                <Button className="mb-10  bg-fuchsia-800  text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800   "
-                  variant="text" onClick={() => handleOpen(post.id)}>تعديل </Button>
-                <EditRequest productId={requestId} open={open} close={handleClose} refreshReq={refresh2} setrefreshReq={setRefesh2} />
+                          {post.aproved ? (
+                            <div><p className="text-red-500 border-l-4 mr-32 font-bold">لا يمكن التعديل على الطلب </p></div>
 
-                <Button className="mb-10  bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
-                  variant="text" onClick={() => handleDelete(post.id)}>حذف </Button>
+                          ) : (<div className=" pt-10  sm:mt-0 flex gap-4">
+                            <Button className="mb-10  bg-fuchsia-800  text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800   "
+                              variant="text" onClick={() => handleOpen(post.id)}>تعديل </Button>
+                            <EditRequest productId={requestId} open={open} close={handleClose} refreshReq={refresh2} setrefreshReq={setRefesh2} />
 
-              
-              </div>)}
+                            <Button className="mb-10  bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
+                              variant="text" onClick={() => handleDelete(post.id)}>حذف </Button>
+
+
+                          </div>)}
                         </div>
-      
+
 
                       </div>
                       <div className="flex ">
-                      {post.aproved ? (
+                        {post.aproved ? (
 
 
-<div  className="mb-10 w-full bg-green-500 p-2 text-center  rounded-b-lg text-white shadow   "
-  variant="text"   >تم القبول الطلب التكلفة =
-  {post.price}
-  {approved.approveduser?(
-    <></>
-  ):(
-<div> 
-<p>  هل تود الاستمرار؟
-    </p> <button className="mb-10 p-2 ml-2 bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
-         variant="text"     onClick={(event) => {
-          handleDeleterequist(post.id);
-        }}>حذف </button>
-         <button  className="mb-10 p-2  bg-fuchsia-800  text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800   "
-         variant="text"   onClick={(event) => {
-          // alert();
-          handleAccept(post.id);
-        }}>قبول</button></div>)
-        
-        
-        }
-  {post.statuse  ? (
-    <p className="bg-green-500 ">تم تصميم القطعة بنجاح</p>
-  ) : (
-    <p className="bg-[#dc2626]">القطعة قيد التنفيذ</p>
-  )}
-</div>
-) : (
-<div className="mb-10 w-full p-2 text-center  bg-[#dc2626] rounded-b-lg text-white shadow    "
-  variant="text"   >لم يتم قول الطلب بعد</div>)
+                          <div className="mb-10 w-full bg-green-500 p-2 text-center  rounded-b-lg text-white shadow   "
+                            variant="text"   >تم القبول الطلب التكلفة =
+                            {post.price}
+                            <div>
+                              <p>  هل تود الاستمرار؟
+                              </p> <button className="mb-10 p-2 ml-2 bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
+                                variant="text" onClick={(event) => {
+                                  handleDeleterequist(post.id);
+                                }}>حذف </button>
+                              <button className="mb-10 p-2  bg-fuchsia-800  text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800   "
+                                variant="text" onClick={(event) => {
+                                  // alert();
+                                  handleAccept(post.id);
+                                }}>قبول</button></div>
+                            {approved.approveduser ? (
+                              <>  {post.statuse ? (
+                                <p className="bg-green-500 ">تم تصميم القطعة بنجاح</p>
+                              ) : (
+                                <p className="bg-[#dc2626]">القطعة قيد التنفيذ</p>
+                              )}</>
+                            ) : (
+                              <div></div>
+                            )
 
-}
-                    </div>
+
+                            }
+                          
+                          </div>
+                        ) : (
+                          <div className="mb-10 w-full p-2 text-center  bg-[#dc2626] rounded-b-lg text-white shadow    "
+                            variant="text"   >لم يتم قول الطلب بعد</div>)
+
+                        }
+                      </div>
                     </div>
                   );
                 }
