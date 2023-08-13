@@ -239,6 +239,26 @@ app.post("/comment", (req, res) => {
   );
 });
 //////////////////////reportComment
+// app.put('/reportComment/:id', async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     // Ensure that the ID is a valid integer
+//     const commentId = parseInt(id);
+
+//     const updated = await pool.query(
+//       'UPDATE comments SET reported = true WHERE id = $1',
+//       [commentId]
+//     );
+
+//     console.log(updated);
+
+//     res.json(updated.rows);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Can't edit data" });
+//   }
+// });
 app.put('/reportComment/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -246,17 +266,20 @@ app.put('/reportComment/:id', async (req, res) => {
     // Ensure that the ID is a valid integer
     const commentId = parseInt(id);
 
-    const updated = await pool.query(
-      'UPDATE comments SET reported = true WHERE id = $1',
-      [commentId]
-    );
+    // Check if the comment exists
+    const existingComment = await pool.query('SELECT * FROM comments WHERE id = $1', [commentId]);
 
-    console.log(updated);
+    if (existingComment.rows.length === 0) {
+      return res.status(404).json({ error: 'Comment not found' });
+    }
 
-    res.json(updated.rows);
+    // Update the "reported" field for the comment
+    await pool.query('UPDATE comments SET reported = true WHERE id = $1', [commentId]);
+
+    res.json({ success: true });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Can't edit data" });
+    res.status(500).json({ error: "Can't update data" });
   }
 });
 
