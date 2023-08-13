@@ -10,7 +10,7 @@ const MainDashboard = () => {
 
 <div className='bg-[#f5f8fe] pt-10 pb-10'>
 
-<Statistics/>
+{/* <Statistics/> */}
 
 <>
  
