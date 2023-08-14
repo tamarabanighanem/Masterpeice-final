@@ -1,5 +1,5 @@
 // import EditProfileBeneficiary from "./EditProfileBeneficiary";
-import { useState, useEffect } from "react";
+import { useState, useEffect ,useContext} from "react";
 import * as React from "react";
 import axios from "axios";
 import { Link } from 'react-router-dom';
@@ -12,9 +12,15 @@ import Editproduct from "../../component/Editproduct";
 // import img2 from '../images/thomas-william-6Sls-TB27kM-unsplash.jpg'
 import img2 from '../../images/filipp-romanovski-8k1xDc3Or4Q-unsplash (1).jpg'
 import './ProfileProvider.css';
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { UserContext } from '../../UserContext';
+
 function ProfileProviderr({ userIdapp, setrefreshReq, refreshReq }) {
   const [refresh, setRefresh] = useState(false)
   const [refresh2, setRefesh2] = useState(false)
+  const {pagination,setItem,currentItems}=useContext(UserContext)
+
   // console.log(userIdapp)
   const [image, setImg] = useState("");
   const [name, setname] = useState("");
@@ -98,6 +104,7 @@ function ProfileProviderr({ userIdapp, setrefreshReq, refreshReq }) {
       .get(`http://localhost:5000/productOfMakhiata/${userIdapp}`)
       .then((response) => {
         setUsers(response.data);
+        setItem(response.data)
         console.log(response.data)
         // Assuming there is only one user with the given ID
       })
@@ -166,6 +173,10 @@ function ProfileProviderr({ userIdapp, setrefreshReq, refreshReq }) {
   //     // Handle error if necessary
   //   }
   // };
+  useEffect(() => {
+    AOS.init();
+    AOS.refresh();
+  }, []);
   return (
     <>
       {/* component */}
@@ -294,7 +305,7 @@ function ProfileProviderr({ userIdapp, setrefreshReq, refreshReq }) {
             </h1>
 
           </div>
-          <RequestProduct userIdapp={userIdapp} />
+          <RequestProduct userIdapp={userIdapp}refreshh={refresh} setRefreshh={setRefresh} />
 
 
           {/* ///////////////////////////////// */}
@@ -341,9 +352,9 @@ function ProfileProviderr({ userIdapp, setrefreshReq, refreshReq }) {
               لا توجد طلبات للعرض 😢
             </div>
           ) : (
-            <section className="w-full mx-auto flex flex-wrap gap-5 mt-10 mb-5 justify-center">
-              {users?.map((post) => (
-                <div key={post.id} className="bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+            <section className="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
+              {currentItems?.map((post) => (
+                <div key={post.id} data-aos="zoom-in-left" className="bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
 
                   <img
                     src={post.photo}
@@ -397,6 +408,7 @@ function ProfileProviderr({ userIdapp, setrefreshReq, refreshReq }) {
               ))}
             </section>
           )}
+          {pagination}
         </div>
 
 

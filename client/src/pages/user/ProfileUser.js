@@ -1,15 +1,19 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect ,useContext} from "react";
 import * as React from "react";
 import axios from "axios";
 import { Button } from "@material-tailwind/react";
 import EditRequest from "../../component/EditRequest";
 import EditProfile from "../../component/Editprofile";
 import Swal from 'sweetalert2';
-import { Link } from "react-router-dom";
+import { UserContext } from '../../UserContext';
 
+import { Link } from "react-router-dom";
+import AOS from "aos";
+import "aos/dist/aos.css";
 function ProfileUser({ userIdapp }) {
   const [image, setImg] = useState("");
+  const {pagination,setItem,currentItems}=useContext(UserContext)
 
   const [user, setUser] = useState({});
   const [users, setUsers] = useState([]);
@@ -20,6 +24,10 @@ function ProfileUser({ userIdapp }) {
   const [refresh, setRefresh] = useState(false)
   const [refresh2, setRefesh2] = useState(false)
   const [accepted, setAccepted] = useState(false);
+  useEffect(() => {
+    AOS.init();
+    AOS.refresh();
+  }, []);
   const onChange = (e) => {
     const files = e.target.files;
     const file = files[0];
@@ -74,6 +82,7 @@ function ProfileUser({ userIdapp }) {
 
       const requestsResponse = await axios.get(`http://localhost:5000/requestOfeachuser/${userIdapp}`);
       setUsers(requestsResponse.data);
+      setItem(requestsResponse.data)
     } catch (error) {
       console.log(error.message);
     }
@@ -248,9 +257,9 @@ function ProfileUser({ userIdapp }) {
                 </div>
               </>
               ) : (
-                users?.map((post) => {
+                currentItems?.map((post) => {
                   return (
-                    <div className="p-5 grid grid-cols-1 ">
+                    <div data-aos="zoom-in" className="p-5 grid grid-cols-1 ">
                       <div key={post.id} className=" flex flex-col rounded-t-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 md:max-w-xl md:flex-row">
                         <img
                           className="  object-cover  md:w-48 md:rounded-none md:rounded-t-lg"
@@ -353,6 +362,7 @@ function ProfileUser({ userIdapp }) {
                 )
               )}
             </section>
+            {pagination}
           </div>
         </section>
 

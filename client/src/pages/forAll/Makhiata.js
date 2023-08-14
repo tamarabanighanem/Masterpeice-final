@@ -2,7 +2,8 @@ import React from 'react'
 import { useState, useEffect } from "react";
 import axios from "axios";
 import img1 from '../../images/شعار_مخيطة-removebg-preview.png'
-
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 import { Link } from "react-router-dom";
 const Makhiata = ({filterDataUsers}) => {
@@ -49,9 +50,13 @@ const Makhiata = ({filterDataUsers}) => {
     setIsLoggedIn(true);
     }
   },[])
+  useEffect(() => {
+    AOS.init();
+    AOS.refresh();
+  }, []);
   return (
     <div>
-  <section className="py-4 mx-auto max-w-screen-xl text-center pb-28 md:px-12 mt-8 grid gap-3 sm:grid-cols-1 lg:grid-cols-3">
+  <section className="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
 {filterDataUsers.length === 0 ? (<>
   <div className="text-4xl  w-full py-48 justify-center flex items-center  text-neutral-800  dark:text-neutral-50">
     </div>
@@ -60,7 +65,7 @@ const Makhiata = ({filterDataUsers}) => {
 ) : (
   filterDataUsers.map((item) => {
     return (
-      <div key={item.id} className="w-72 bg-gray-100  shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+      <div key={item.id} data-aos="fade-left" className="w-72 bg-gray-100  shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
         <img
           className='mr-28 mt-5 items-center flex justify-center '
           src={img1}

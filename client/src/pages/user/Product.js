@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useContext} from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { UserContext } from '../../UserContext';
 
 const Product = ({ userIdapp }) => {
   const { id, itemId } = useParams();
@@ -15,6 +16,7 @@ const Product = ({ userIdapp }) => {
   const [showReportModal, setShowReportModal] = useState(false);
   const [selectedCommentId, setSelectedCommentId] = useState(null);
   const [reportReason, setReportReason] = useState('');
+  const {pagination,setItem,currentItems}=useContext(UserContext)
 
   useEffect(() => {
     // Fetch product details
@@ -51,6 +53,7 @@ const Product = ({ userIdapp }) => {
     try {
       const response = await axios.get(`http://localhost:5000/commentEachProduct/${id}`);
       setComments(response.data);
+      setItem(response.data)
     } catch (error) {
       console.error(error.message);
     }
@@ -216,22 +219,31 @@ const handleSubmit = async (event) => {
                   </div>
                 </form>
                 <div>
-                  {comments.map((comment) => (
-                    <div key={comment.id} className="bg-gray-200 m-5 p-2  flex">
-                      <div className="flex-grow">
-                        <h4 className="font-bold ">{comment.name}</h4>
-                        <hr className="text-black" />
-                        <p className="pt-3">{comment.body}</p>
-                      </div>
-                      <button
-                        onClick={() => handleReportComment(comment.id)}
-                        className="mt-16 items-end text-blue-500 text-sm self-start"
-                      >
-                        ابلاغ
-                      </button>
-                    </div>
-                  ))}
-                </div>
+  {comments.length >= 3 && pagination} {/* Display pagination if there are 3 or more comments */}
+  {currentItems.map((comment) => (
+    <div key={comment.id} className="bg-gray-200 m-5 p-2  flex">
+      <div className="flex-grow">
+        <h4 className="font-bold ">{comment.name}</h4>
+        <hr className="text-black" />
+        <p className="pt-3">{comment.body}</p>
+      </div>
+      <button
+        onClick={() => handleReportComment(comment.id)}
+        className="mt-16 items-end text-blue-500 text-sm self-start"
+      >
+        ابلاغ
+      </button>
+    </div>
+  ))}
+  {/* {comments.length >= 3 && pagination} Display pagination again at the end */}
+</div>
+{/* In this code, the pagination component is only displayed if the comments array has 3 or more items. It appears both before the comment list and after it. You can adjust the placement of the pagination component according to your design requirements. */}
+
+
+
+
+
+
               </div>
             </div>
           </div>

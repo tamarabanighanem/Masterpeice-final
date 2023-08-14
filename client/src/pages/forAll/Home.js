@@ -132,7 +132,7 @@ useEffect(()=>{
             المدونات التي يحبها المجتمع. يتم تحديثها كل ساعة.
           </p>
         </div>
-        <div data-aos="fade-up" className="mt-12 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        <div data-aos="fade-down" className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((item, key) => (
             <article
               className="max-w-md mx-auto mt-4 shadow-lg border rounded-md duration-300 hover:shadow-sm"

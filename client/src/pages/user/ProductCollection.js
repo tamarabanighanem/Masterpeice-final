@@ -4,7 +4,8 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router';
 import Swal from 'sweetalert2';
 import { UserContext } from '../../UserContext';
-// import Pagenation from '../forAll/Pagenation';
+import AOS from "aos";
+import "aos/dist/aos.css";
 const ProductCollection = ({ userIdapp ,product }) => {
   const {pagination,setItem,currentItems}=useContext(UserContext)
   
@@ -17,10 +18,7 @@ const ProductCollection = ({ userIdapp ,product }) => {
   const [loading, setLoading] = useState(true);
   const [image, setImg] = useState('');
   const [delproduct, setdelproduct] = useState([]);
-  // const [currentItem, setcurrentItem] = useState([]);
 
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const itemsPerPage = 3; // Number of items to display per page
 
   const onChange = (e) => {
     const files = e.target.files;
@@ -41,7 +39,7 @@ const ProductCollection = ({ userIdapp ,product }) => {
     };
   };
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent the default behavior of the event
@@ -107,33 +105,12 @@ const ProductCollection = ({ userIdapp ,product }) => {
     .catch((error) => console.log(error.message));
 
   }, []);
+  useEffect(() => {
+    AOS.init();
+    AOS.refresh();
+  }, []);
 
-  // Calculate the current items to be displayed based on the current page
-  // const indexOfLastItem = currentPage * itemsPerPage;
-  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  // const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
 
-  // // Calculate the total number of pages
-  // const totalPages = Math.ceil(products.length / itemsPerPage);
-
-  // // Event handler for "Previous" button click
-  // const handlePreviousClick = () => {
-  //   if (currentPage > 1) {
-  //     setCurrentPage(currentPage - 1);
-  //   }
-  // };
-
-  // // Event handler for page number click
-  // const handlePageClick = (pageNumber) => {
-  //   setCurrentPage(pageNumber);
-  // };
-
-  // // Event handler for "Next" button click
-  // const handleNextClick = () => {
-  //   if (currentPage < totalPages) {
-  //     setCurrentPage(currentPage + 1);
-  //   }
-  // };
 
   return (
     <>
@@ -160,13 +137,14 @@ const ProductCollection = ({ userIdapp ,product }) => {
                 {products !== 0 ? (
                   <section
                     id="Projects"
+                    data-aos="flip-up"
                     className="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5"
                   >
                     {currentItems.map((post) => {
                       return (
                         <div
                           key={post.id}
-                          className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl"
+                          data-aos="flip-right"                          className="w-72  bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl"
                         >
 
                           <Link to={`/Product/${post.id}/${itemId}`} key={post.id}>
@@ -226,98 +204,6 @@ const ProductCollection = ({ userIdapp ,product }) => {
         </>
       )}
 {pagination}
-      {/* ////////////////////pagination */}
-      {/* <Pagenation item={products} /> */}
-      {/* <div className="flex items-center justify-center py-10 lg:px-0 sm:px-6 px-4">
-        <div className="lg:w-3/5 w-full flex items-center justify-between border-t border-gray-200">
-          <div
-            className="flex items-center pt-3 text-gray-600 hover:text-indigo-700 cursor-pointer"
-            onClick={handlePreviousClick}
-          >
-        
-            <svg
-              width={14}
-              height={8}
-              viewBox="0 0 14 8"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M1.1665 4H12.8332"
-                stroke="currentColor"
-                strokeWidth="1.25"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M9.5 7.33333L12.8333 4"
-                stroke="currentColor"
-                strokeWidth="1.25"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M9.5 0.666687L12.8333 4.00002"
-                stroke="currentColor"
-                strokeWidth="1.25"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <p className="text-sm ml-3 font-medium leading-none ">السابق</p>
-          </div>
-          <div className="sm:flex hidden">
-            {Array.from({ length: totalPages }, (_, index) => (
-              <p
-                key={index}
-                className={`text-sm font-medium leading-none cursor-pointer text-gray-600 ${
-                  currentPage === index + 1 ? 'text-indigo-700' : 'hover:text-indigo-700'
-                } border-t border-transparent ${
-                  currentPage === index + 1 ? 'border-indigo-400' : 'hover:border-indigo-400'
-                } pt-3 mr-4 px-2`}
-                onClick={() => handlePageClick(index + 1)}
-              >
-                {index + 1}
-              </p>
-            ))}
-          </div>
-          <div
-            className="flex items-center pt-3 text-gray-600 hover:text-indigo-700 cursor-pointer"
-            onClick={handleNextClick}
-          >
-            <p className="text-sm font-medium leading-none mr-3">التالي</p>
-            <svg
-              width={14}
-              height={8}
-              viewBox="0 0 14 8"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M1.1665 4H12.8332"
-                stroke="currentColor"
-                strokeWidth="1.25"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M1.1665 4L4.49984 7.33333"
-                stroke="currentColor"
-                strokeWidth="1.25"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M1.1665 4.00002L4.49984 0.666687"
-                stroke="currentColor"
-                strokeWidth="1.25"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
-        </div>
-      </div> */}
 
       <div className="text-center mt-10 p-10">
     <h1 className="font-bold text-3xl bg-gray-200 p-5 w-full rounded-xl  mb-4">جزء من اعمال المخيطة
@@ -334,56 +220,20 @@ const ProductCollection = ({ userIdapp ,product }) => {
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {delproduct?.map((product) => (
             <a key={product.id} href={product.href} className="group">
-              <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+              <div  data-aos="flip-up" className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
                 <img 
                   src={product.photo}
                   alt="Product"
                   className="h-96 w-full object-cover object-center group-hover:opacity-75"
                 />
               </div>
-              {/* <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3> */}
-              {/* <p className="mt-1 text-lg font-medium text-gray-900">{product.price}</p> */}
+            
             </a>
           ))}
         </div>
   )}  </div>
     </div>
-{/* <div className="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
-{delproduct.length === 0 ?(<>
-    
-    <div className="text-2xl  w-full py-48 justify-center flex items-center  text-neutral-800  dark:text-neutral-50">
-    لا توجد طلبات مباعة للعرض  😢   </div></>):(
-<section
-    id="Projects"
-    className="w-full mx-auto flex flex-wrap gap-5 mt-10 mb-5 justify-center"
-  >
-          {delproduct?.map((del) => {
-                    return (
-                      
-    <div  key={del.id} className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-      
 
-        <img
-          src={del.photo}
-          alt="Product"
-          className="h-80 w-72 object-cover rounded-t-xl"
-        />
-        <div className="px-4 py-3 w-72">
-        
-          <p className="text-lg font-semibold text-black cursor-auto my-3">
-            الاسم :  {del.name}
-            </p>
-            <p className="text-lg font-semibold text-black cursor-auto my-3">
-            الوصف :  {del.description}            </p>
-    
-        </div>
-    
-         
-    </div>
-        );
-      })}
-      </section>
-    )}</div> */}
   
       <main className=" ">
   <div className="container mx-auto flex justify-center items-center">

@@ -15,7 +15,7 @@ export default function UserProvider ( {children} ) {
 const[item,setItem]=useState([])
 
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 3; // Number of items to display per page
+    const itemsPerPage = 6; // Number of items to display per page
       // Calculate the current items to be displayed based on the current page
       const indexOfLastItem = currentPage * itemsPerPage;
       const indexOfFirstItem = indexOfLastItem - itemsPerPage;
