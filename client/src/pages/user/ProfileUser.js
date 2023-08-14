@@ -279,109 +279,74 @@ function ProfileUser({ userIdapp }) {
 
 
                           </div>)}
-                        </div>
 
-
-                      </div>
-                      <div className="flex">
-      {post.aproved ? (
-        <div className="mb-10 w-full bg-green-500 p-2 text-center rounded-b-lg text-white shadow" variant="text">
-          تم القبول الطلب التكلفة = {post.price}
-          <div>
-            {accepted ? null : (
-              <div>
-                <p>هل تود الاستمرار؟</p>
-                <button
-                  className="mb-10 p-2 ml-2 bg-[#dc2626] text-white shadow hover:bg-[#991b1b] hover:text-black"
-                  variant="text"
-                  onClick={(event) => {
-                    handleDeleterequist(post.id);
-                  }}
-                >
-                  حذف
-                </button>
-                {/* تغيير الزر الحالي لزر قبول يحتوي على الشروط */}
-                <button
-                  className="mb-10 p-2 bg-fuchsia-800 text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800"
-                  variant="text"
-                  onClick={(event) => {
-                    setAccepted(true); // تحديث المتغير للإشارة إلى القبول
-                    handleAccept(post.id);
-                  }}
-                >
-                  قبول
-                </button>
-              </div>
-            )}
-            {/* عرض حالة الطلب بناءً على الشروط */}
-            {approved.approveduser ? (
-              <>
-                {post.statuse ? (
-                  <p className="bg-green-500">تم تصميم القطعة بنجاح</p>
-                ) : (
-                  <p className="bg-[#dc2626]">القطعة قيد التنفيذ</p>
-                )}
-              </>
-            ) : (
-              <div>
-                {post.statuse ? (
-                  <p className="bg-green-500">تم تصميم القطعة بنجاح</p>
-                ) : (
-                  <p></p>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      ) : (
-        <div className="mb-10 w-full p-2 text-center bg-[#dc2626] rounded-b-lg text-white shadow" variant="text">
-          لم يتم قول الطلب بعد
-        </div>
-      )}
-    </div>
-
-
-                      {/* <div className="flex ">
-                        {post.aproved ? (
-
-
-                          <div className="mb-10 w-full bg-green-500 p-2 text-center  rounded-b-lg text-white shadow   "
-                            variant="text"   >تم القبول الطلب التكلفة =
-                            {post.price}
+                          {post.aproved ? (
+                          <div className="mb-10 w-full bg-green-500 p-2 text-center rounded-b-lg text-white shadow" variant="text">
+                            تم القبول الطلب التكلفة = {post.price}
                             <div>
-                              <p>  هل تود الاستمرار؟
-                              </p> <button className="mb-10 p-2 ml-2 bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
-                                variant="text" onClick={(event) => {
-                                  handleDeleterequist(post.id);
-                                }}>حذف </button>
-                              <button className="mb-10 p-2  bg-fuchsia-800  text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800   "
-                                variant="text" onClick={(event) => {
-                                  // alert();
-                                  handleAccept(post.id);
-                                }}>قبول
-                            
-                                </button>     
-                                 {approved.approveduser ? (
-                              <>  {post.statuse ? (
-                                <p className="bg-green-500 ">تم تصميم القطعة بنجاح</p>
+                              {!approved.approveduser ? (
+                                <>
+
+                                  <div>
+                                    <p>هل تود الاستمرار؟</p>
+                                    <button
+                                      className="mb-10 p-2 ml-2 bg-[#dc2626] text-white shadow hover:bg-[#991b1b] hover:text-black"
+                                      variant="text"
+                                      onClick={(event) => {
+                                        handleDeleterequist(post.id);
+                                      }}
+                                    >
+                                      حذف
+                                    </button>
+                                    {/* تغيير الزر الحالي لزر قبول يحتوي على الشروط */}
+                                    <button
+                                      className="mb-10 p-2 bg-fuchsia-800 text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800"
+                                      variant="text"
+                                      onClick={(event) => {
+                                        // setAccepted(true); // تحديث المتغير للإشارة إلى القبول
+                                        handleAccept(post.id);
+                                      }}
+                                    >
+                                      قبول
+                                    </button>
+                                  </div>
+                                </>
+                              ) : (<>
+
+
+
+
+                              </>)}
+                              {/* عرض حالة الطلب بناءً على الشروط */}
+                              {approved.approveduser ? (
+                                <>
+                                  {post.statuse ? (
+                                    <p className="bg-green-500">تم تصميم القطعة بنجاح</p>
+                                  ) : (
+                                    <p className="bg-[#dc2626]">القطعة قيد التنفيذ</p>
+                                  )}
+                                </>
                               ) : (
-                                <p className="bg-[#dc2626]">القطعة قيد التنفيذ</p>
-                              )}</>
-                            ) : (
-                              <div></div>
-                            )
-
-
-                            }</div>
-                          
-                          
+                                <div>
+                                  {post.statuse ? (
+                                    <p className="bg-green-500">تم تصميم القطعة بنجاح</p>
+                                  ) : (
+                                    <p></p>
+                                  )}
+                                </div>
+                              )}
+                            </div>
                           </div>
                         ) : (
-                          <div className="mb-10 w-full p-2 text-center  bg-[#dc2626] rounded-b-lg text-white shadow    "
-                            variant="text"   >لم يتم قول الطلب بعد</div>)
+                          <div className="mb-10 w-full p-2 text-center bg-[#dc2626] rounded-b-lg text-white shadow" variant="text">
+                            لم يتم قول الطلب بعد
+                          </div>
+                        )}
 
-                        }
-                      </div> */}
+                        </div>
+
+                      </div>
+                  
                     </div>
                   );
                 }

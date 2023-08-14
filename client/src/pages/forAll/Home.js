@@ -6,10 +6,16 @@ import img1 from '../../images/شعار_مخيطة-removebg-preview.png'
 import im2 from '../../images/pexels-castorly-stock-3945638.jpg'
 import Makhiata from './Makhiata';
 import Offers from './Offers';
+import AOS from "aos";
+import "aos/dist/aos.css";
 const Home = () => {
   const [users, setUsers] = useState([]);
   const [filterDataUsers, setFilterDataUsers] = useState([]);
 console.log(users)
+useEffect(() => {
+  AOS.init();
+  AOS.refresh();
+}, []);
   // Fetch users data and set it to the "filteredDataUsers" state
   useEffect(() => {
     axios
@@ -126,7 +132,7 @@ useEffect(()=>{
             المدونات التي يحبها المجتمع. يتم تحديثها كل ساعة.
           </p>
         </div>
-        <div className="mt-12 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        <div data-aos="fade-up" className="mt-12 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((item, key) => (
             <article
               className="max-w-md mx-auto mt-4 shadow-lg border rounded-md duration-300 hover:shadow-sm"

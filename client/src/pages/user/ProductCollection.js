@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router';
 import Swal from 'sweetalert2';
-import Pagenation from '../forAll/Pagenation';
+import { UserContext } from '../../UserContext';
+// import Pagenation from '../forAll/Pagenation';
 const ProductCollection = ({ userIdapp ,product }) => {
+  const {pagination,setItem,currentItems}=useContext(UserContext)
   
   const { itemId } = useParams();
   const [description, setdescription] = useState('');
@@ -15,9 +17,10 @@ const ProductCollection = ({ userIdapp ,product }) => {
   const [loading, setLoading] = useState(true);
   const [image, setImg] = useState('');
   const [delproduct, setdelproduct] = useState([]);
+  // const [currentItem, setcurrentItem] = useState([]);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3; // Number of items to display per page
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const itemsPerPage = 3; // Number of items to display per page
 
   const onChange = (e) => {
     const files = e.target.files;
@@ -84,7 +87,9 @@ const ProductCollection = ({ userIdapp ,product }) => {
     axios
       .get(`http://localhost:5000/productCollection/${itemId}`)
       .then((response) => {
-        setProducts(response.data); // Assuming there is only one user with the given ID
+        setProducts(response.data);
+        setItem(response.data)
+        // setcurrentItem(products) // Assuming there is only one user with the given ID
         setLoading(false);
       })
       .catch((error) => {
@@ -104,31 +109,31 @@ const ProductCollection = ({ userIdapp ,product }) => {
   }, []);
 
   // Calculate the current items to be displayed based on the current page
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
+  // const indexOfLastItem = currentPage * itemsPerPage;
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Calculate the total number of pages
-  const totalPages = Math.ceil(products.length / itemsPerPage);
+  // // Calculate the total number of pages
+  // const totalPages = Math.ceil(products.length / itemsPerPage);
 
-  // Event handler for "Previous" button click
-  const handlePreviousClick = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+  // // Event handler for "Previous" button click
+  // const handlePreviousClick = () => {
+  //   if (currentPage > 1) {
+  //     setCurrentPage(currentPage - 1);
+  //   }
+  // };
 
-  // Event handler for page number click
-  const handlePageClick = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+  // // Event handler for page number click
+  // const handlePageClick = (pageNumber) => {
+  //   setCurrentPage(pageNumber);
+  // };
 
-  // Event handler for "Next" button click
-  const handleNextClick = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+  // // Event handler for "Next" button click
+  // const handleNextClick = () => {
+  //   if (currentPage < totalPages) {
+  //     setCurrentPage(currentPage + 1);
+  //   }
+  // };
 
   return (
     <>
@@ -202,6 +207,7 @@ const ProductCollection = ({ userIdapp ,product }) => {
                             </div>
                           </Link>
                         </div>
+
                       );
                     })}
                   </section>
@@ -219,9 +225,10 @@ const ProductCollection = ({ userIdapp ,product }) => {
           </div>
         </>
       )}
-
+{pagination}
       {/* ////////////////////pagination */}
-      <div className="flex items-center justify-center py-10 lg:px-0 sm:px-6 px-4">
+      {/* <Pagenation item={products} /> */}
+      {/* <div className="flex items-center justify-center py-10 lg:px-0 sm:px-6 px-4">
         <div className="lg:w-3/5 w-full flex items-center justify-between border-t border-gray-200">
           <div
             className="flex items-center pt-3 text-gray-600 hover:text-indigo-700 cursor-pointer"
@@ -260,7 +267,6 @@ const ProductCollection = ({ userIdapp ,product }) => {
             <p className="text-sm ml-3 font-medium leading-none ">السابق</p>
           </div>
           <div className="sm:flex hidden">
-            {/* Render page numbers */}
             {Array.from({ length: totalPages }, (_, index) => (
               <p
                 key={index}
@@ -311,7 +317,7 @@ const ProductCollection = ({ userIdapp ,product }) => {
             </svg>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="text-center mt-10 p-10">
     <h1 className="font-bold text-3xl bg-gray-200 p-5 w-full rounded-xl  mb-4">جزء من اعمال المخيطة
