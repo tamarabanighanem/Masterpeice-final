@@ -475,7 +475,35 @@ app.get('/productCollection/:id', async function (req, res) {
     res.status(500).json({ error: 'An error occurred while fetching user data' });
   }
 });
+//////جلب عروض المخايط في الهوم بيج
+app.get('/offersOfMakhiata', async function(req,res){
+  try{
+    const offers=await pool.query('SELECT * FROM products WHERE offers=true')
+    res.json(offers.rows)
+  } catch(err){
+    console.log(err.message)
+    res.status(500).json({error: 'An error occurred while fetching offers data'})
+  }
+})
+//////تحويل المنتج لقسم العروض
+app.put('/offersOfMakhiata/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    // const { description,phone, photo } = req.body;
+    // console.log(description, phone ,photo);
 
+    const updated = await pool.query(
+      'UPDATE products SET offers = true WHERE id = $1',
+      [id]
+    );
+
+    console.log(updated);
+
+    res.json(updated.rows);
+  } catch (error) {
+    res.status(500).json({ error: "Can't edit data" });
+  }
+});
 ////////////////////////////تفاصيل كل قطعه
 app.get('/eachproduct/:id', async function (req, res) {
   try {

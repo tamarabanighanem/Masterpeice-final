@@ -4,7 +4,8 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router';
 import Swal from 'sweetalert2';
 import Pagenation from '../forAll/Pagenation';
-const ProductCollection = ({ userIdapp }) => {
+const ProductCollection = ({ userIdapp ,product }) => {
+  
   const { itemId } = useParams();
   const [description, setdescription] = useState('');
   const[chestCircumference,setChestCircumference]=useState('')
@@ -77,7 +78,8 @@ const ProductCollection = ({ userIdapp }) => {
     setHipcircumference('')
   };
   const [products, setProducts] = useState([]);
-
+  console.log(itemId)
+  console.log(products)
   useEffect(() => {
     axios
       .get(`http://localhost:5000/productCollection/${itemId}`)
@@ -161,27 +163,42 @@ const ProductCollection = ({ userIdapp }) => {
                           key={post.id}
                           className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl"
                         >
+
                           <Link to={`/Product/${post.id}/${itemId}`} key={post.id}>
+                          {post.offers?(<div className="bg-gradient-to-r from-white to-red-600 p-2  flex items-center">
+                          <div className="w-1/2  h-full rounded-l-md flex justify-center items-center">
+                            <p className="text-white font-semibold">عرض</p>
+                          </div>
+                          <div className="w-1/2 h-full rounded-r-md flex justify-center items-center">
+                            {/* Placeholder for the other half of the div */}
+                          </div>
+                        </div>):( <></>
+                          
+    )}
+
                             <img
                               src={post.photo}
                               alt="Product"
-                              className="h-80 w-72 object-cover rounded-t-xl"
+                              className="h-72 w-72 object-cover rounded-t-xl"
                             />
+
                             <div className="px-4 py-3 w-72">
                               <p className="text-lg font-bold text-black truncate block capitalize">
-                                {post.name}
+                                {post.name}:    <span className="text-xs  text-neutral-600 dark:text-neutral-200">
+                              {post.description}
+                          </span>
                               </p>
-                              <p className="text-lg font-semibold text-black cursor-auto my-3">
-                                {post.description}
-                              </p>
-                              <div className="flex items-center">
-                                <p className="text-lg font-semibold text-black cursor-auto my-3">
-                                  {post.price}
+                            
+                          
+                          <p className="text-sm font-semibold text-white  text-center bg-yellow-500 cursor-auto ">
+                                  {post.price} دينار
                                 </p>
+                              {/* <div className="flex items-center">
+                              
                                 <del>
                                   <p className="text-sm text-gray-600 cursor-auto ml-2">$199</p>
                                 </del>
-                              </div>
+                              </div> */}
                             </div>
                           </Link>
                         </div>

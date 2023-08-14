@@ -114,7 +114,7 @@ function Stitched({ userIdapp }) {
           المخايط المتاحة      </h1>
 
       </div>
-      <Makhiata filterDataUsers={filterDataUsers} />
+      <Makhiata filterDataUsers={filterDataUsers}  />
 
 
 

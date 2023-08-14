@@ -32,6 +32,7 @@ import About from './pages/forAll/About';
 import Nav from './component/Nav';
 import Footer from './component/Footer';
 import ProfileProviderr from './pages/provider/ProfileProviderr';
+import Offers from './pages/forAll/Offers';
 
 
 
@@ -158,6 +159,7 @@ console.log("ffffffffffff",forceUpdate)
   <Route path='/ProfileUser' element={<ProfileUser userIdapp={userId}/>}/>
   <Route path='/requestProduct' element={<RequestProduct/>}/>
   <Route path='pagenation' element={<Pagenation/>}/>
+  <Route path='offers' element={<Offers/>}/>
 
 </Routes>
 <Footer/>

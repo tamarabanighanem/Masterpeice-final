@@ -21,11 +21,12 @@ const style = {
   p: 4,
 };
 
-function Editproduct({ productId, open, close,setrefreshReq,refreshReq }) {
+function Editproduct({ productId, open, close, setrefreshReq, refreshReq }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
+  const [offers, setOffers] = useState([]);
 
   const handleSubmit = async (e) => {
     // e.preventDefault();
@@ -73,7 +74,16 @@ function Editproduct({ productId, open, close,setrefreshReq,refreshReq }) {
       console.log(error);
     }
   };
-
+  const handleReject = async (id) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/offersOfMakhiata/${id}`
+      );
+      setOffers(response.data.data.resorts);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     fetchProductDetails();
   }, [productId]);
@@ -129,6 +139,18 @@ function Editproduct({ productId, open, close,setrefreshReq,refreshReq }) {
               onChange={(e) => handleImageChange(e)}
               accept="image/*"
             />
+            <Button
+              onClick={(event) => {
+                handleReject(productId);
+              }} className="m-5 border-solid bg-fuchsia-800 text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800"
+              variant="text"
+            >
+              ضمن العروض
+            </Button>
+            {/* <button className="mb-10 p-2  bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
+         variant="text"     onClick={(event) => {
+          handleReject(request.id);
+        }}>تم الانتهاء </button> */}
             <Button
               onClick={handleOnClick}
               className="m-5 border-solid bg-fuchsia-800 text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800"

@@ -9,6 +9,8 @@ const Makhiata = ({filterDataUsers}) => {
   const [users, setUsers] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   console.log(filterDataUsers)
+  console.log(filterDataUsers)
+  console.log(filterDataUsers)
   useEffect(()=>{
     axios
     .get(`http://localhost:5000/stitched`)
@@ -50,13 +52,13 @@ const Makhiata = ({filterDataUsers}) => {
   return (
     <div>
   <section className="py-4 mx-auto max-w-screen-xl text-center pb-28 md:px-12 mt-8 grid gap-3 sm:grid-cols-1 lg:grid-cols-3">
-{users.length === 0 ? (<>
+{filterDataUsers.length === 0 ? (<>
   <div className="text-4xl  w-full py-48 justify-center flex items-center  text-neutral-800  dark:text-neutral-50">
     </div>
   <div className="text-4xl  w-full py-52 justify-center flex items-center  text-neutral-800  dark:text-neutral-50">
   لا توجد مخايط للعرض  😢   </div></>
 ) : (
-  users.map((item) => {
+  filterDataUsers.map((item) => {
     return (
       <div key={item.id} className="w-72 bg-gray-100  shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
         <img

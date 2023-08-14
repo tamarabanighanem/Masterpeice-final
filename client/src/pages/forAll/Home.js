@@ -5,9 +5,23 @@ import {Link} from 'react-router-dom';
 import img1 from '../../images/شعار_مخيطة-removebg-preview.png'
 import im2 from '../../images/pexels-castorly-stock-3945638.jpg'
 import Makhiata from './Makhiata';
+import Offers from './Offers';
 const Home = () => {
   const [users, setUsers] = useState([]);
-
+  const [filterDataUsers, setFilterDataUsers] = useState([]);
+console.log(users)
+  // Fetch users data and set it to the "filteredDataUsers" state
+  useEffect(() => {
+    axios
+      .get('http://localhost:5000/stitched')
+      .then((response) => {
+        setFilterDataUsers(response.data);
+      })
+      .catch((error) => console.log(error.message));
+  
+  }, []);
+   // Slice the first three users from the filtered data
+   const firstThreeUsers = filterDataUsers.slice(0, 3);
   const fetchProtectedData = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -169,41 +183,8 @@ useEffect(()=>{
           <p className="mt-3 text-gray-500">
 للمزيد من المخايط وعرض تصاميمها قم بتسجيل الدخول          </p>
         </div>
-        <Makhiata/>
-    {/* <section className="py-4 mx-auto max-w-screen-xl text-center pb-28 md:px-12 mt-8 grid gap-3 sm:grid-cols-1 lg:grid-cols-3">
-  {users.length === 0 ? (<>
-    <div className="text-4xl  w-full py-48 justify-center flex items-center  text-neutral-800  dark:text-neutral-50">
-      </div>
-    <div className="text-4xl  w-full py-52 justify-center flex items-center  text-neutral-800  dark:text-neutral-50">
-    لا توجد مخايط للعرض  😢   </div></>
-  ) : (
-    users.map((item) => {
-      return (
-        <div key={item.id} className="w-72 bg-gray-100  shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-          <img
-            className='mr-28 mt-5 items-center flex justify-center '
-            src={img1}
-            width={70}
-            height="100%"
-            alt="Float UI logo"
-          />
-          <div className="p-6">
-            <h5 className="mb-4 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
-              اسم المخيطة : {item.username}
-            </h5>
-            <p className="mb-4  text-base text-neutral-600 dark:text-neutral-200">
-            الموقع :   {item.address}
-            </p>
-            <p className="mb-4  text-base text-neutral-600 dark:text-neutral-200">
-            رقم الهاتف :   {item.domain}
-            </p>
-      
-          </div>
-        </div>
-      );
-    })
-  )}
-</section> */}
+        <Makhiata filterDataUsers={firstThreeUsers} />
+
       {/* //////////////////////////////// */}
       <section className="container mx-auto p-10 md:py-20  px-0 md:p-10 md:px-0">
   <section className="relative px-10 md:p-0 transform duration-500 hover:shadow-2xl cursor-pointer hover:-translate-y-1 ">
@@ -225,6 +206,8 @@ useEffect(()=>{
     </div>
   </section>
 </section>
+{/* ////////////////offers */}
+<Offers makhiata={users}/>
 </div>
 
   );
