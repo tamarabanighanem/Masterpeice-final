@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Pagenation from '../forAll/Pagenation';
 import axios from 'axios';
-const RequestProduct = ({ userIdapp,refreshh,setRefreshh }) => {
+const RequestProduct = ({ userIdapp }) => {
   const { itemId } = useParams();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3; // Number of items to display per page
@@ -15,7 +15,7 @@ const RequestProduct = ({ userIdapp,refreshh,setRefreshh }) => {
   const [request, setrequest] = useState([]);
   const [approved, setApproved] = useState([]);
   const [finished, setFinished] = useState([]);
-  const[refresh,setrefresh]=useState([])
+  const[refresh,setrefresh]=useState(false)
 
   const handleReject = async (id) => {
     try {
@@ -23,7 +23,7 @@ const RequestProduct = ({ userIdapp,refreshh,setRefreshh }) => {
         `http://localhost:5000/finishrequestOfMakhiata/${id}`
       );
       setFinished(response.data.data.resorts);
-      setRefreshh(!refreshh)
+      setrefresh(!refresh)
 
     } catch (error) {
       console.log(error);
@@ -51,7 +51,7 @@ const handleAccept = async (id) => {
     const response = await axios.post(`http://localhost:5000/ApprovedrequestOfMakhiata/${id}`, data);
     // Assuming you want to set the "approved" state with the updated data
     setApproved(response.data.data.resorts);
-    setRefreshh(!refreshh)
+    setrefresh(!refresh)
   } catch (error) {
     console.log(error);
   }
@@ -108,7 +108,6 @@ const handleAccept = async (id) => {
       .then((response) => {
         setFinished(response.data);
         setLoading(false)
-        setrefresh(finished )
         console.log(response.data)
         console.log(response.data)
         console.log(response.data)
@@ -116,7 +115,7 @@ const handleAccept = async (id) => {
       })
       .catch((error) => console.log(error.message)
       );
-  }, [userIdapp]);
+  }, [userIdapp,refresh]);
   console.log(request)
 console.log(userIdapp)
   return (

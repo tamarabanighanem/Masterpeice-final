@@ -162,7 +162,7 @@ const ProductCollection = ({ userIdapp ,product }) => {
                             <img
                               src={post.photo}
                               alt="Product"
-                              className="h-72 w-72 object-cover rounded-t-xl"
+                              className="h-72 w-72 object-cover "
                             />
 
                             <div className="px-4 py-3 w-72">

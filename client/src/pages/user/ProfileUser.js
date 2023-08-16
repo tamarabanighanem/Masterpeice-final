@@ -1,5 +1,5 @@
 
-import { useState, useEffect ,useContext} from "react";
+import { useState, useEffect, useContext } from "react";
 import * as React from "react";
 import axios from "axios";
 import { Button } from "@material-tailwind/react";
@@ -13,7 +13,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 function ProfileUser({ userIdapp }) {
   const [image, setImg] = useState("");
-  const {pagination,setItem,currentItems}=useContext(UserContext)
+  const { pagination, setItem, currentItems } = useContext(UserContext)
 
   const [user, setUser] = useState({});
   const [users, setUsers] = useState([]);
@@ -118,12 +118,8 @@ function ProfileUser({ userIdapp }) {
     try {
       const response = await axios.post(`http://localhost:5000/ApprovedrequestComefromUser/${id}`);
       // Assuming you want to set the "approved" state with the updated data
-      console.log(response.data.data.resort)
-      console.log(response.data)
       setApproved(response.data.data.resort);
-      console.log(approved.approveduser)
-      console.log(approved)
-      console.log(approved)
+      setRefesh2(!refresh2)
 
     } catch (error) {
       console.log(error);
@@ -257,48 +253,49 @@ function ProfileUser({ userIdapp }) {
                 </div>
               </>
               ) : (
-                currentItems?.map((post) => {
-                  return (
-                    <div data-aos="zoom-in" className="p-5 grid grid-cols-1 ">
-                      <div key={post.id} className=" flex flex-col rounded-t-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 md:max-w-xl md:flex-row">
-                        <img
-                          className="  object-cover  md:w-48 md:rounded-none md:rounded-t-lg"
-                          src={post.photo}
-                          alt=""
-                        />
-                        <div className="flex flex-col  justify-start p-6">
-                          <h5 className="mb-2 text-xl  font-medium text-neutral-800 dark:text-neutral-50">
-                            الوصف :   {post.description}  {post.aproved}  </h5>
-                          <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200">
-                            This is a wider card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.
-                          </p>
-                          <p className="text-xs text-neutral-500 dark:text-neutral-300">
-                            رقم الهاتف :   {post.phone}     </p>
-                          {post.aproved ? (
-                            <div><p className="text-red-500 border-l-4 mr-32 font-bold">لا يمكن التعديل على الطلب </p></div>
 
-                          ) : (<div className=" pt-10  sm:mt-0 flex gap-4">
-                            <Button className="mb-10  bg-fuchsia-800  text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800   "
-                              variant="text" onClick={() => handleOpen(post.id)}>تعديل </Button>
-                            <EditRequest productId={requestId} open={open} close={handleClose} refreshReq={refresh2} setrefreshReq={setRefesh2} />
+                <div className="relative w-full overflow-x-auto">
+                  {/* <h1>جميع الطلبات</h1> */}
 
-                            <Button className="mb-10  bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
-                              variant="text" onClick={() => handleDelete(post.id)}>حذف </Button>
+                  <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead className="text-xs border text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                      <tr className=''><th colSpan="5" scope="col" className='px-6 py-6 text-lg text-center'>جميع الطلبات</th></tr>
+
+                      <tr>
+                        <th scope="col" className="px-6 py-3">
+                          صورة
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          الوصف                    </th>
+                        <th scope="col" className="px-6 py-3">
+                          رقم الهاتف
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          حالة الطلب
+                        </th>
+                        {/* <th scope="col" className="px-6 py-3">
+                      Price
+                    </th> */}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {currentItems?.map((post) => {
+                        return (
+                          <tr key={post.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 
 
-                          </div>)}
 
-                          {post.aproved ? (
-                          <div className="mb-10 w-full bg-green-500 p-2 text-center rounded-b-lg text-white shadow" variant="text">
-                            تم القبول الطلب التكلفة = {post.price}
-                            <div>
-                              {!approved.approveduser ? (
-                                <>
-
-                                  <div>
-                                    <p>هل تود الاستمرار؟</p>
-                                    <button
+                            <td className="px-6 py-4">  <img
+                              src={post.photo}
+                              alt="Product"
+                              className="h-20 w-20 object-cover rounded-t-xl"
+                            /></td>
+                            <td className="px-6 py-4">{post.description}</td>
+                            <td className="px-6 py-4"> {post.phone}</td>
+                            {post.aproved && !post.approveduser ?(
+                            <td className="px-6 py-4">تم القبول الطلب التكلفة = {post.price}
+                             <p>هل تود الاستمرار؟</p> 
+                             <button
                                       className="mb-10 p-2 ml-2 bg-[#dc2626] text-white shadow hover:bg-[#991b1b] hover:text-black"
                                       variant="text"
                                       onClick={(event) => {
@@ -318,49 +315,32 @@ function ProfileUser({ userIdapp }) {
                                     >
                                       قبول
                                     </button>
-                                  </div>
-                                </>
-                              ) : (<>
+                                  
 
-
-
-
-                              </>)}
-                              {/* عرض حالة الطلب بناءً على الشروط */}
-                              {approved.approveduser ? (
-                                <>
-                                  {post.statuse ? (
-                                    <p className="bg-green-500">تم تصميم القطعة بنجاح</p>
-                                  ) : (
-                                    <p className="bg-[#dc2626]">القطعة قيد التنفيذ</p>
-                                  )}
-                                </>
-                              ) : (
-                                <div>
-                                  {post.statuse ? (
-                                    <p className="bg-green-500">تم تصميم القطعة بنجاح</p>
-                                  ) : (
-                                    <p></p>
-                                  )}
-                                </div>
-                              )}
-                            </div>
+                            </td>
+                            ): post.aproved && post.approveduser && post.statuse ?  (<>
+                             <div className="text-green-600 px-6 pt-11" variant="text">
+                            الطلب جاهز
                           </div>
-                        ) : (
-                          <div className="mb-10 w-full p-2 text-center bg-[#dc2626] rounded-b-lg text-white shadow" variant="text">
+                            </>) : post.aproved && post.approveduser && !post.statuse ? (
+                              <>
+                              <div className="text-[#dc2626] px-6 py-4" variant="text">
+                            الطلب قيد التنفيذ
+                          </div>
+                              </>
+                            ):(<>   <div className=" px-6 pt-11  text-[#dc2626] " variant="text">
                             لم يتم قول الطلب بعد
-                          </div>
-                        )}
+                          </div></>)
+                            }
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
 
-                        </div>
-
-                      </div>
-                  
-                    </div>
-                  );
-                }
-                )
+                </div>
               )}
+
             </section>
             {pagination}
           </div>

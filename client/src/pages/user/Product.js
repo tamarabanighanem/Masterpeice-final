@@ -163,13 +163,13 @@ const handleSubmit = async (event) => {
       <section className="mx-auto max-w-screen-xl pt-28 px-4 py-8">
         {/* Product details section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 sticky top-40">
             <img
               alt="Product"
               src={product.photo}
-              className="aspect-square w-full rounded-xl object-cover"
+              className=" h-full w-full rounded-xl object-cover"
             />
-            <div className="sticky top-0">
+            <div className="">
               {/* Product info */}
               <div className="mt-8 flex justify-between">
                 <div className="max-w-[35ch] space-y-2">
@@ -178,11 +178,11 @@ const handleSubmit = async (event) => {
               </div>
               <div className="mt-4 prose max-w-none">
                 <p>{product.description}</p>
-                <p className="text-lg font-bold">JD {product.price}</p>
+                <p className="text-lg font-bold"> {product.price}دينار</p>
               </div>
               <Link
                 to={`/checkout/${id}/${itemId}`}
-                className="inline-block rounded bg-fuchsia-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-fuchsia-300 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                className="inline-block mt-2 rounded bg-fuchsia-800 hover:bg-fuchsia-400 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-fuchsia-300 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
                 data-te-ripple-init=""
                 data-te-ripple-color="light"
               >
@@ -211,7 +211,7 @@ const handleSubmit = async (event) => {
                       <div className="-mr-1">
                         <input
                           type="submit"
-                          className="bg-fuchsia-400 text-gray-700 font-medium py-1 px-3 border border-fuchsia-400 rounded-lg tracking-wide mr-1 hover:bg-fuchsia-100"
+                          className="bg-fuchsia-800 text-sm  text-white font-medium py-2 px-4 border border-fuchsia-400 rounded tracking-wide mr-1 hover:bg-fuchsia-400"
                           value="ارسال"
                         />
                       </div>
@@ -219,22 +219,24 @@ const handleSubmit = async (event) => {
                   </div>
                 </form>
                 <div>
-  {comments.length >= 3 && pagination} {/* Display pagination if there are 3 or more comments */}
+   {/* Display pagination if there are 3 or more comments */}
   {currentItems.map((comment) => (
-    <div key={comment.id} className="bg-gray-200 m-5 p-2  flex">
+    <div key={comment.id} className="bg-gray-200 m-5 p-2 px-8 rounded-xl  flex">
       <div className="flex-grow">
         <h4 className="font-bold ">{comment.name}</h4>
         <hr className="text-black" />
-        <p className="pt-3">{comment.body}</p>
+        <p className="text-sm ">{comment.body}</p>
       </div>
       <button
         onClick={() => handleReportComment(comment.id)}
-        className="mt-16 items-end text-blue-500 text-sm self-start"
+        className="mt-2 ite ms-end text-blue-500 text-sm self-start"
       >
         ابلاغ
       </button>
     </div>
+    
   ))}
+  {comments.length >= 3 && pagination}
   {/* {comments.length >= 3 && pagination} Display pagination again at the end */}
 </div>
 {/* In this code, the pagination component is only displayed if the comments array has 3 or more items. It appears both before the comment list and after it. You can adjust the placement of the pagination component according to your design requirements. */}
@@ -255,9 +257,9 @@ const handleSubmit = async (event) => {
   <div className="mx-auto max-w-screen-md p-8">
     <h4 className="pb-5 text-center">إذا كنت ترغب بتفصيل نفس القطة مع اختلاف بعض المواصفات املأ النموذج التالي</h4>
     <form className="p-4 md:p-8" onSubmit={handleSubmit}>
-      <div className="bg-white border border-gray-300 p-4 shadow-lg max-w-xl mx-auto">
+      <div className="bg-white border rounded border-gray-300 p-4 shadow-lg max-w-xl mx-auto">
         <input
-          className="bg-gray-100 border border-gray-300 p-2 mb-4 outline-none w-full"
+          className="bg-gray-100 border rounded border-gray-300 p-2 mb-4 outline-none w-full"
           spellCheck="false"
           placeholder="رقم الهاتف"
           type="text"
@@ -267,7 +269,7 @@ const handleSubmit = async (event) => {
           }}
         />
         <textarea
-          className="bg-gray-100 sec p-3 h-40 md:h-60 border border-gray-300 outline-none w-full"
+          className="bg-gray-100 rounded sec p-3 h-40 md:h-60 border border-gray-300 outline-none w-full"
           spellCheck="false"
           placeholder="اكتب الوصف الذي ترغب فيه"
           value={body}
@@ -278,7 +280,7 @@ const handleSubmit = async (event) => {
         <div className="buttons pt-5 flex justify-center md:justify-end">
           <button
             type="submit"
-            className="btn border border-indigo-500 p-1 px-4 font-semibold cursor-pointer text-gray-200 ml-2 bg-indigo-500"
+            className="btn border rounded bg-fuchsia-800 hover:bg-fuchsia-400 p-1 px-4 font-semibold cursor-pointer text-gray-200 ml-2 "
           >
             إرسال
           </button>
