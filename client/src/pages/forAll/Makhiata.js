@@ -71,8 +71,8 @@ const Makhiata = ({ filterDataUsers}) => {
           alt="Float UI logo"
         /> */}
         <div className="p-6 text-center">
-          <h5 className="mb-4 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
-            اسم المخيطة : {item.username}
+          <h5 className="mb-4 text-xl namenav font-medium leading-tight text-neutral-800 dark:text-neutral-50">
+            مخيطة  {item.username}
           </h5>
           <p className="mb-4  text-base text-neutral-600 dark:text-neutral-200">
           الموقع :   {item.address}

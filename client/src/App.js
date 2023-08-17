@@ -160,6 +160,8 @@ console.log("ffffffffffff",forceUpdate)
   <Route path='/requestProduct' element={<RequestProduct/>}/>
   <Route path='pagenation' element={<Pagenation/>}/>
   <Route path='offers' element={<Offers/>}/>
+  
+
 
 </Routes>
 <Footer/>

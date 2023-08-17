@@ -188,7 +188,6 @@ function ProfileProviderr({ userIdapp }) {
         rel="stylesheet"
         href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css"
       />
-
       <main className="  bg-fuchsia-100">
         <section className="relative block h-500-px">
           <div
@@ -234,7 +233,6 @@ function ProfileProviderr({ userIdapp }) {
                       {/* {userData.firstName} */}
                     </h3>
                   </div>
-
                 </div>
                 <div className="text-center">
                   <div className="mb-2 text-blueGray-600">
@@ -258,8 +256,6 @@ function ProfileProviderr({ userIdapp }) {
                 <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
                   <div className="flex flex-wrap justify-center">
                     <div className="w-full justify-center lg:w-9/12 px-4">
-
-
                       <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
                         "الخياطة هي فن يجمع بين الإبداع والدقة، حيث تتحول الأقمشة العادية إلى قطع فريدة من الملابس التي تعكس ذوقًا وشخصية المرتدي. بين خيوط الإبرة وصانعة الملابس تنبض قصصٌ لا تُروى، وتنسج أحلام وأفكار تتجسد في تصاميم مبتكرة. دعنا نستكشف معًا عالم الخياطة والتصميم، حيث يلتقي الفن والموضة وتتحقق الأحلام والأفكار في أجمل الأزياء المصممة والمعدلة بمهارة وحب."
                       </p>
@@ -335,27 +331,22 @@ function ProfileProviderr({ userIdapp }) {
               </div>
             </div>
           </div>
-
         </section>
-
         {/* ////////////////////////////// */}
-
         <div className="text-center mt-10 p-5 sm:p-10">
           <h1 className="font-bold text-3xl bg-gray-200 p-5 w-full rounded-xl mb-4">
             التصاميم المعروضة
           </h1>
         </div>
-
         <div className="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
           {users.length === 0 ? (
             <div className="text-2xl w-full py-16 text-center text-neutral-800 dark:text-neutral-50">
               لا توجد طلبات للعرض 😢
             </div>
           ) : (
-            <section className="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
+            <section className="w-fit mx-auto text-center grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
               {currentItems?.map((post) => (
                 <div key={post.id} data-aos="zoom-in-left" className="bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-
                   <img
                     src={post.photo}
                     alt="Product"
@@ -368,13 +359,11 @@ function ProfileProviderr({ userIdapp }) {
                     <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200">
                       {post.description}
                     </p>
-                    <p className="text-lg font-semibold text-yellow-500 cursor-auto my-3">
-                         السعر : {post.price}
+                    <p className="text-lg font-semibold  cursor-auto my-3">
+                         السعر : {post.price} دينار
                       </p>
-              
                   </div>
-
-                  <div className="py-3 px-10 mt-32 sm:mt-0 flex gap-4">
+                  <div className=" px-10 mt-32 sm:mt-0 flex gap-4">
                     <Button className="mb-10  bg-fuchsia-800  text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800   "
                       variant="text" onClick={() => handleOpen(post.id)}>تعديل </Button>
                     <Editproduct productId={productId} open={open} close={handleClose} refreshReq={refresh2} setrefreshReq={setRefesh2} />
@@ -382,20 +371,16 @@ function ProfileProviderr({ userIdapp }) {
                     <Button className="mb-10  bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
                       variant="text" onClick={() => handleDelete(post.id)}>حذف </Button>
                   </div>
-
                 </div>
               ))}
             </section>
           )}
           {pagination}
         </div>
-
-
         <main className="py-14 bg-fuchsia-100 ">
           <div className="text-center mt-10">
             <h1 className="text-3xl text-gray-800 font-semibold mb-10">                             لاضافة منتج املئ النموذج التالي
             </h1>
-
           </div>
           <div className="max-w-screen-xl mx-auto px-4 text-gray-600 md:px-8">
             <div className="max-w-lg mx-auto gap-12 justify-between lg:flex lg:max-w-none">
