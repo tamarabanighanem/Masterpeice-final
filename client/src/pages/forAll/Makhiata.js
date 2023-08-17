@@ -6,19 +6,16 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 import { Link } from "react-router-dom";
-const Makhiata = ({filterDataUsers}) => {
+const Makhiata = ({ filterDataUsers}) => {
   const [users, setUsers] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  console.log(filterDataUsers)
-  console.log(filterDataUsers)
-  console.log(filterDataUsers)
+
   useEffect(()=>{
     axios
     .get(`http://localhost:5000/stitched`)
     .then((response) => {
       setUsers(response.data);
-      console.log(response.data)
-      console.log(response.data)
+  
     
 
 
@@ -65,15 +62,15 @@ const Makhiata = ({filterDataUsers}) => {
 ) : (
   filterDataUsers.map((item) => {
     return (
-      <div key={item.id} data-aos="fade-left" className="w-72 bg-gray-100  shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-        <img
+      <div key={item.id} data-aos="fade-left" className="w-72 bg-gray-100 p-5  shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+        {/* <img
           className='mr-28 mt-5 items-center flex justify-center '
           src={img1}
           width={70}
           height="100%"
           alt="Float UI logo"
-        />
-        <div className="p-6">
+        /> */}
+        <div className="p-6 text-center">
           <h5 className="mb-4 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
             اسم المخيطة : {item.username}
           </h5>
@@ -90,7 +87,7 @@ const Makhiata = ({filterDataUsers}) => {
               data-te-ripple-init=""
               data-te-ripple-color="light"
             >
-              تصاميمي{item.id}
+              تصاميمي
             </button>
           </Link>}
           

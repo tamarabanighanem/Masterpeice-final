@@ -1,123 +1,90 @@
-import React from 'react';
-import axios from "axios";
-import img2 from '../../images/thomas-william-6Sls-TB27kM-unsplash.jpg'
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import img2 from '../../images/thomas-william-6Sls-TB27kM-unsplash.jpg';
 import Makhiata from '../forAll/Makhiata';
 
 function Stitched({ userIdapp }) {
-  const [value, setvalue] = useState("")
+  const [value, setValue] = useState('');
   const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5000/stitched`)
-      .then((response) => {
-        setUsers(response.data);
-        console.log(response.data)
-        console.log(response.data)
-
-
-
-      })
-      .catch((error) => console.log(error.message));
-
-  }, [])
-
-
-  
-
   const [filterDataUsers, setFilterDataUsers] = useState([]);
-  const filterDataByNameUsers = (searchTermUsers) => {
-    const filteredDataUsers = users.filter((item) =>
-      item.username.toLowerCase().includes(searchTermUsers.toLowerCase())
+  const [selectedLocation, setSelectedLocation] = useState(null);
+
+  const filterDataByNameAndLocation = (searchTermUsers) => {
+    const filteredDataUsers = users.filter(
+      (item) =>
+        item.username.toLowerCase().includes(searchTermUsers.toLowerCase()) &&
+        (!selectedLocation || item.address === selectedLocation)
     );
     setFilterDataUsers(filteredDataUsers);
   };
+
   useEffect(() => {
-    setFilterDataUsers(users);
-  }, [users]);
+    axios
+      .get('http://localhost:5000/stitched')
+      .then((response) => {
+        setUsers(response.data);
+        filterDataByNameAndLocation(value); // Apply filter initially
+      })
+      .catch((error) => console.log(error.message));
+  }, []);
+
+  useEffect(() => {
+    filterDataByNameAndLocation(value); 
+  }, [value, selectedLocation, users]);
+
+
+
 
   return (
     <>
-
-
       <div
         style={{
           background:
-            "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://plus.unsplash.com/premium_photo-1664202526559-e21e9c0fb46a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80) center",
-          backgroundSize: "cover"
+            'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://plus.unsplash.com/premium_photo-1664202526559-e21e9c0fb46a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80) center',
+          backgroundSize: 'cover'
         }}
         className="py-52 px-1 md:px-8 text-center relative text-black font-bold text-2xl md:text-3xl overflow-auto"
       >
-
-
-        <label
-          className="mx-auto mt-40 relative  backdrop-opacity-50 bg-white min-w-sm max-w-2xl flex flex-col md:flex-row items-center justify-center border py-2 px-2 rounded-2xl gap-2 shadow-2xl focus-within:border-gray-300"
-          htmlFor="search-bar"
-        >
+        <div className="mx-auto mt-40 relative backdrop-opacity-50 bg-white min-w-sm max-w-2xl flex flex-col md:flex-row items-center justify-center border py-2 px-2 rounded-2xl gap-2 shadow-2xl focus-within:border-gray-300">
+          <select
+          className='p-2  text-[20px]  w-24'
+            value={selectedLocation || ''}
+            onChange={(e) => {
+              setSelectedLocation(e.target.value || null);
+              filterDataByNameAndLocation(value); 
+            }}
+          >
+            <option value="">الموقع</option>
+            <option value="عمان">ضاحية المدينة</option>
+            <option value="الزرقاء الجديدة">الزرقاء الجديدة</option>
+            <option value="الزرقاء الجديدة"> شارع 16</option>
+            <option value="الزرقاء الجديدة">شارع 36 </option>
+            <option value="الزرقاء الجديدة">شارع الملك عبدالله </option>
+            <option value="الزرقاء الجديدة"> الزواهرة</option>
+            <option value="الزرقاء الجديدة">جبل المغير </option>
+            <option value="الزرقاء الجديدة"> شارع 26</option>
+          </select>
           <input
             value={value}
             onChange={(e) => {
-              filterDataByNameUsers(e.target.value)
-
-              setvalue(e.target.value)
+              setValue(e.target.value);
+              filterDataByNameAndLocation(e.target.value);
             }}
-            type='text'
+            type="text"
             id="search-bar"
             placeholder="كلمتك الرئيسية هنا"
-            className="px-6 py-2 w-full rounded-md flex-1 outline-none   backdrop-opacity-50"
+            className="px-6 py-2 w-full rounded-md flex-1 text-[20px] outline-none backdrop-opacity-50"
           />
-          <button
-            className="w-full md:w-auto px-6 py-3 bg-fuchsia-800   text-white fill-white active:scale-95 duration-100 border will-change-transform overflow-hidden relative rounded-xl transition-all disabled:opacity-70">
-            <div className="relative">
-              {/* Loading animation change opacity to display */}
-              <div className="flex items-center justify-center h-3 w-3 absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 transition-all">
-                <svg
-                  className="opacity-0 animate-spin w-full h-full"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx={12}
-                    cy={12}
-                    r={10}
-                    stroke="currentColor"
-                    strokeWidth={4}
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-              </div>
-              <div className="flex items-center transition-all opacity-1 valid:">
-                <span className="text-sm font-semibold whitespace-nowrap truncate mx-auto">
-                  البحث
-                </span>
-              </div>
-            </div>
-          </button>
-
-        </label>
-
-
-
-
-
-
+        </div>
       </div>
 
       <div className="text-center mt-16">
         <h1 className="text-3xl text-gray-800 font-semibold">
-          المخايط المتاحة      </h1>
-
+          المخايط المتاحة
+        </h1>
       </div>
-      <Makhiata filterDataUsers={filterDataUsers}  />
 
-
+      <Makhiata filterDataUsers={filterDataUsers} />
 
       <section className="flex items-center pt-5 bg-fuchsia-100 xl:h-screen font-poppins dark:bg-gray-800 ">
         <div className="justify-center flex-1 max-w-6xl py-4 mx-auto lg:py-6 md:px-6">
@@ -169,9 +136,8 @@ function Stitched({ userIdapp }) {
         </div>
 
       </section>
-
-
     </>
-  )
+  );
 }
-export default Stitched
+
+export default Stitched;

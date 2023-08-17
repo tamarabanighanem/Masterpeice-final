@@ -16,7 +16,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { UserContext } from '../../UserContext';
 
-function ProfileProviderr({ userIdapp, setrefreshReq, refreshReq }) {
+function ProfileProviderr({ userIdapp }) {
   const [refresh, setRefresh] = useState(false)
   const [refresh2, setRefesh2] = useState(false)
   const {pagination,setItem,currentItems}=useContext(UserContext)
@@ -89,7 +89,7 @@ function ProfileProviderr({ userIdapp, setrefreshReq, refreshReq }) {
   };
   const handleClose = () => setOpen(false);
   const [users, setUsers] = useState([]);
-  const [request, setrequest] = useState([]);
+  // const [request, setrequest] = useState([]);
   const [productId, setProductId] = useState(0)
   useEffect(() => {
     axios
@@ -305,7 +305,7 @@ function ProfileProviderr({ userIdapp, setrefreshReq, refreshReq }) {
             </h1>
 
           </div>
-          <RequestProduct userIdapp={userIdapp}refreshh={refresh} setRefreshh={setRefresh} />
+          <RequestProduct userIdapp={userIdapp} refreshh={refresh} setRefreshh={setRefresh} />
 
 
           {/* ///////////////////////////////// */}
@@ -371,32 +371,7 @@ function ProfileProviderr({ userIdapp, setrefreshReq, refreshReq }) {
                     <p className="text-lg font-semibold text-yellow-500 cursor-auto my-3">
                          السعر : {post.price}
                       </p>
-                    {/* <div className="flex items-center">
-                      
-                      <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200">
-                          
-                          </p> */}
-                      {/* <del>
-                        <p className="text-sm text-gray-600 cursor-auto ml-2">$199</p>
-                      </del> */}
-
-                      {/* <div className="ml-auto">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width={20}
-                          height={20}
-                          fill="currentColor"
-                          className="bi bi-bag-plus"
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z"
-                          />
-                          <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                        </svg>
-                      </div> */}
-                    {/* </div> */}
+              
                   </div>
 
                   <div className="py-3 px-10 mt-32 sm:mt-0 flex gap-4">
