@@ -1,5 +1,5 @@
 // import EditProfileBeneficiary from "./EditProfileBeneficiary";
-import { useState, useEffect ,useContext} from "react";
+import { useState, useEffect, useContext } from "react";
 import * as React from "react";
 import axios from "axios";
 import { Link } from 'react-router-dom';
@@ -19,7 +19,7 @@ import { UserContext } from '../../UserContext';
 function ProfileProviderr({ userIdapp }) {
   const [refresh, setRefresh] = useState(false)
   const [refresh2, setRefesh2] = useState(false)
-  const {pagination,setItem,currentItems}=useContext(UserContext)
+  const { pagination, setItem, currentItems } = useContext(UserContext)
 
   // console.log(userIdapp)
   const [image, setImg] = useState("");
@@ -350,25 +350,24 @@ function ProfileProviderr({ userIdapp }) {
                   <img
                     src={post.photo}
                     alt="Product"
-                    className="h-80 w-72 object-cover rounded-t-xl"
+                    className="h-72 w-72 object-cover rounded-t-xl"
                   />
                   <div className="px-4 py-3 w-72">
                     <p className="text-lg font-bold text-black truncate block capitalize">
                       {post.name} :
                     </p>
-                    <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200">
+                    <p className=" text-base text-neutral-600 dark:text-neutral-200">
                       {post.description}
                     </p>
-                    <p className="text-lg font-semibold  cursor-auto my-3">
-                         السعر : {post.price} دينار
-                      </p>
+                    <p className="text-sm  cursor-auto my-1">
+                      السعر : {post.price} دينار
+                    </p>
                   </div>
-                  <div className=" px-10 mt-32 sm:mt-0 flex gap-4">
-                    <Button className="mb-10  bg-fuchsia-800  text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800   "
+                  <div className=" px-10   flex gap-4">
+                    <Button className="mb-2  bg-fuchsia-800  text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800"
                       variant="text" onClick={() => handleOpen(post.id)}>تعديل </Button>
                     <Editproduct productId={productId} open={open} close={handleClose} refreshReq={refresh2} setrefreshReq={setRefesh2} />
-
-                    <Button className="mb-10  bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
+                    <Button className="mb-2   bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
                       variant="text" onClick={() => handleDelete(post.id)}>حذف </Button>
                   </div>
                 </div>
@@ -379,7 +378,7 @@ function ProfileProviderr({ userIdapp }) {
         </div>
         <main className="py-14 bg-fuchsia-100 ">
           <div className="text-center mt-10">
-            <h1 className="text-3xl text-gray-800 font-semibold mb-10">                             لاضافة منتج املئ النموذج التالي
+            <h1 className="text-3xl text-gray-800 font-semibold mb-10"> لاضافة منتج املئ النموذج التالي
             </h1>
           </div>
           <div className="max-w-screen-xl mx-auto px-4 text-gray-600 md:px-8">
