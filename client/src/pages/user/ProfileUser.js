@@ -2,8 +2,6 @@
 import { useState, useEffect, useContext } from "react";
 import * as React from "react";
 import axios from "axios";
-import { Button } from "@material-tailwind/react";
-import EditRequest from "../../component/EditRequest";
 import EditProfile from "../../component/Editprofile";
 import Swal from 'sweetalert2';
 import { UserContext } from '../../UserContext';
@@ -273,9 +271,7 @@ function ProfileUser({ userIdapp }) {
                         <th scope="col" className="px-6 py-3">
                           حالة الطلب
                         </th>
-                        {/* <th scope="col" className="px-6 py-3">
-                      Price
-                    </th> */}
+                    
                       </tr>
                     </thead>
                     <tbody>

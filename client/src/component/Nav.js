@@ -5,7 +5,7 @@ import axios from 'axios';
 import { UserContext } from '../UserContext';
 import  { useContext } from 'react';
 
-const Nav = ({username ,forceUpdate}) => {
+const Nav = ({username ,forceUpdate,set}) => {
   const [state, setState] = useState(false);
   const { SignStatus,updateSignStatus } = useContext(UserContext)
 
@@ -30,6 +30,7 @@ const Nav = ({username ,forceUpdate}) => {
     localStorage.clear();
     window.location.href = 'http://localhost:3000/';
     // forceUpdate();
+    set(false)
   }
   useEffect(() => {
     document.onclick = (e) => {
@@ -233,7 +234,11 @@ console.log(role)
               </>
             ) : (
         
-              <Link to="/Signup" className="flex items-center justify-center gap-x-1 text-xl py-2 px-4 text-white font-medium bg-fuchsia-800 hover:bg-white hover:text-fuchsia-800 active:bg-gray-900 rounded-full md:inline-flex">
+              <Link to="/Signup" className="flex items-center justify-center gap-x-1 text-xl py-2 px-4 text-white font-medium bg-fuchsia-800 hover:bg-white hover:text-fuchsia-800 active:bg-gray-900 rounded-full md:inline-flex"
+               onClick={set(false)
+               }
+              >
+                
   تسجيل
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
     <path fillRule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clipRule="evenodd" />

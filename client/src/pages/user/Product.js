@@ -74,8 +74,8 @@ const Product = ({ userIdapp }) => {
 
       Swal.fire({
         icon: 'success',
-        title: 'Success!',
-        text: 'Comment has been submitted successfully.',
+        title: 'تمت اضافة التعليق بنجاح',
+        
       });
 
       fetchComments();
@@ -103,9 +103,10 @@ const Product = ({ userIdapp }) => {
 
       Swal.fire({
         icon: 'success',
-        title: 'Reported!',
-        text: 'Comment has been reported.',
-      });
+        title: 'تم الإبلاغ!',
+        text: 'تم الإبلاغ عن التعليق.',
+    });
+    
 
       setShowReportModal(false);
       fetchComments();
@@ -229,7 +230,7 @@ const handleSubmit = async (event) => {
       </div>
       <button
         onClick={() => handleReportComment(comment.id)}
-        className="mt-2 ite ms-end text-blue-500 text-sm self-start"
+        className="mt-2  text-blue-500 text-sm self-start"
       >
         ابلاغ
       </button>

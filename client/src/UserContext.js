@@ -5,13 +5,6 @@ import axios from 'axios'
 export const UserContext = createContext();
 export default function UserProvider ( {children} ) {
   
-  // const [test, setTest] = useState([]);
-
-
-  // const updateTest = (newValue) => {
-  //   setTest(newValue);
-  // };
-
 const[item,setItem]=useState([])
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -20,7 +13,7 @@ const[item,setItem]=useState([])
       const indexOfLastItem = currentPage * itemsPerPage;
       const indexOfFirstItem = indexOfLastItem - itemsPerPage;
       const currentItems = item.slice(indexOfFirstItem, indexOfLastItem);
-    
+    const[refresh,setRefresh]=useState(false)
       // Calculate the total number of pages
       const totalPages = Math.ceil(item.length / itemsPerPage);
     
@@ -139,13 +132,11 @@ const[item,setItem]=useState([])
   </div>
 </div>
 </div>)
-  
-
   return (
         <>
             <UserContext.Provider
                 value={{
-                pagination,setItem,currentItems
+                pagination,setItem,currentItems,refresh,setRefresh
                 }}
             >
                 {children}
@@ -153,7 +144,6 @@ const[item,setItem]=useState([])
         </>
     )
 };
-  // UserProvider;
 
 
 

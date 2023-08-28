@@ -152,26 +152,23 @@ function PaymentPage({userIdapp}) {
 
   const showSuccessAlert = (message,currentPrice) => {
     Swal.fire({
-      title: `Thank you for Donating ${currentPrice}$`,
+      title: `تم الدفع بنجاح`,
       icon: "success",
-      confirmButtonText: "OK",
+      confirmButtonText: "حسنا",
     }).then(() => {
-      navigate("/")
+      navigate("/stisched")
     });
   };
 
   const showAlert = (message) => {
     Swal.fire({
-      title: "Error",
+      title: "خطأ في ادخال البيانات",
       text: message,
       icon: "error",
-      confirmButtonText: "OK",
+      confirmButtonText: "حسنا",
     });
   };
-  console.log(id)
-  console.log(id)
-  console.log(id)
-  console.log(id)
+
   return (
     <>
       <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">

@@ -1,15 +1,11 @@
-// import EditProfileBeneficiary from "./EditProfileBeneficiary";
 import { useState, useEffect, useContext } from "react";
 import * as React from "react";
 import axios from "axios";
-import { Link } from 'react-router-dom';
 import RequestProduct from "./RequestProduct";
 import { Button } from "@material-tailwind/react";
 import Swal from 'sweetalert2';
-// import Cards from "./CardsBeneficiary";
 import EditProfile from "../../component/Editprofile";
 import Editproduct from "../../component/Editproduct";
-// import img2 from '../images/thomas-william-6Sls-TB27kM-unsplash.jpg'
 import img2 from '../../images/filipp-romanovski-8k1xDc3Or4Q-unsplash (1).jpg'
 import './ProfileProvider.css';
 import AOS from "aos";
@@ -22,7 +18,7 @@ function ProfileProviderr({ userIdapp }) {
   const { pagination, setItem, currentItems } = useContext(UserContext)
 
   // console.log(userIdapp)
-  const [image, setImg] = useState("");
+        const [image, setImg] = useState("");
   const [name, setname] = useState("");
   const [price, setprice] = useState("");
   const [description, setdescription] = useState("");
@@ -64,7 +60,11 @@ function ProfileProviderr({ userIdapp }) {
         title: 'Success!',
         text: 'Product has been submitted successfully.',
       });
-
+ // Clear the form fields
+ setname('');
+ setdescription('');
+ setprice('');
+ setImg('');
       console.log(response.data);
     } catch (error) {
       // Display error message
@@ -76,6 +76,7 @@ function ProfileProviderr({ userIdapp }) {
 
       console.error(error.message);
     }
+    
   };
 
   const [user, setUser] = useState({});
@@ -118,16 +119,7 @@ function ProfileProviderr({ userIdapp }) {
       })
       .catch((error) => console.log(error.message));
 
-    // axios
-    // .get(`http://localhost:5000/requestOfMakhiata/${userIdapp}`)
-    // .then((response) => {
-    //   setrequest(response.data);
-    //   setLoading(false)
-    //   console.log(response.data)
-    //   // Assuming there is only one user with the given ID
-    // })
-    // .catch((error) => console.log(error.message)
-    // );
+  
   }, [userIdapp, refresh, refresh2]);
 
   // Tamara@123
@@ -152,27 +144,7 @@ function ProfileProviderr({ userIdapp }) {
       // Handle error if necessary
     }
   };
-  // const handleDeleterequist = async (id) => {
-  //   try {
-  //     // Display confirmation dialog
-  //     const confirmed = await Swal.fire({
-  //       title: 'Are you sure?',
-  //       text: 'You are about to delete the product. This action cannot be undone.',
-  //       icon: 'warning',
-  //       showCancelButton: true,
-  //       confirmButtonColor: '#3085d6',
-  //       cancelButtonColor: '#d33',
-  //       confirmButtonText: 'Yes, delete it!'
-  //     });
 
-  //     if (confirmed.isConfirmed) {
-  //       await axios.delete("http://localhost:5000/requestOfMakhiataDelete/" + id);
-  //       window.location.reload();
-  //     }
-  //   } catch (error) {
-  //     // Handle error if necessary
-  //   }
-  // };
   useEffect(() => {
     AOS.init();
     AOS.refresh();
@@ -444,7 +416,9 @@ function ProfileProviderr({ userIdapp }) {
                         onChange(e);
                       }}
                       accept="image/*"
+                      
                     />
+
                   </div>
 
 

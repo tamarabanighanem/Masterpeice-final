@@ -2,7 +2,6 @@ import React from 'react';
 import { useState,useEffect } from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
-import img1 from '../../images/شعار_مخيطة-removebg-preview.png'
 import im2 from '../../images/pexels-castorly-stock-3945638.jpg'
 import Makhiata from './Makhiata';
 import Offers from './Offers';

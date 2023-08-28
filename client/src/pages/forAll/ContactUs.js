@@ -14,7 +14,6 @@ const ContactUs = () => {
           console.log(error.text);
       });
   };
-
   return (
     <div>
 <main className="flex pt-16 overflow-hidden">

@@ -1,5 +1,4 @@
 import React from 'react';
-import img1 from '../images/شعار_مخيطة-removebg-preview.png'
 
 const Footer = () => {
   const footerNavs = [
@@ -7,7 +6,6 @@ const Footer = () => {
       name: 'عنا'
     },
     {
-
       name: 'المقالات'
     },
     {
@@ -20,11 +18,9 @@ const Footer = () => {
       name: 'الدعم'
     }
   ];
-
   return (
-    <footer className="text-gray-500 bg-gray-100 w-full px-4 py-1 max-w-screen-xxl mx-auto md:px-8">
+    <footer className="text-gray-500 mb-0 bg-gray-100 w-full px-4 py-1 max-w-screen-xxl mx-auto md:px-8">
       <div className="max-w-lg sm:mx-auto sm:text-center">
-      
       </div>
       <ul className="items-center justify-center mt-8 space-y-5 sm:flex sm:space-x-4 sm:space-x-reverse sm:space-y-0">
         {footerNavs.map((item, idx) => (
