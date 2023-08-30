@@ -9,6 +9,7 @@ const RequestProduct = ({ userIdapp,refreshh,setRefreshh,refresh3,setrefresh3 })
   const [request, setrequest] = useState([]);
   const [approved, setApproved] = useState([]);
   const [finished, setFinished] = useState([]);
+  console.log(refresh3)
   // const[refresh,setrefresh]=useState(false)
 
   const handleReject = async (id) => {
@@ -16,7 +17,7 @@ const RequestProduct = ({ userIdapp,refreshh,setRefreshh,refresh3,setrefresh3 })
       const response = await axios.put(
         `http://localhost:5000/finishrequestOfMakhiata/${id}`
       );
-      setFinished(response.data.data.resorts);
+      setFinished(response.data);
       setrefresh3(!refresh3)
 
     } catch (error) {

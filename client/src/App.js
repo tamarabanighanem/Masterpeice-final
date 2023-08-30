@@ -134,7 +134,6 @@ function App() {
                 <Route path='/requestProduct' element={<RequestProduct />} />
                 <Route path='forgetpassword' element={<ForgotPassword />} />
                 <Route path='*' element={<NotFound />} />
-                <Route path="/reset_password/:id/:token" element={<ResetPassword />}></Route>
               </Routes>
         ):(
           <Routes>
