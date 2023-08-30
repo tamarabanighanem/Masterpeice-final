@@ -84,10 +84,11 @@ const Login = () => {
       .catch(function (error) {
         Swal.fire({
           icon: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!',
-          footer: '<a href="#">Why do I have this issue?</a>'
+          title: 'عذرًا...',
+          text: 'حدث خطأ!',
+          footer: '<a href="#">لماذا حدث هذا الخطأ؟</a>'
         })
+        
 
 
       });
@@ -219,7 +220,7 @@ const Login = () => {
 </div>
 
           </button> */}
-           <button
+           {/* <button
                       id="google-sign-in"
                       className="w-full bg-white max-w-xs font-bold border border-2 border-purple-500 hover:bg-purple-500 hover:text-white  shadow-sm rounded-lg py-3 text-black flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline"
                       onClick={() => login()}
@@ -245,7 +246,7 @@ const Login = () => {
                         </svg>
                       </div>
                       <span className="ml-4">Sign-In with Google</span>
-                    </button>
+                    </button> */}
 
         </div>
         <Link className='text-white' to="/forgetpassword">نسيت كلمة السر ؟ </Link>

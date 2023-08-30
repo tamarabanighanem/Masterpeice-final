@@ -34,7 +34,7 @@ const [open, setOpen] = React.useState(false);
     const [userId ,setUserId] = useState(userIdapp)
     // const [userData ,setUserData] = useState({})
     const [username, setuserName] = useState("");
-    const [address, setaddress] = useState("");
+    const [email, setemail] = useState("");
     const [domain, setdomain] = useState("");
   const[about,setabout]=useState("")
 
@@ -48,9 +48,9 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    await axios.put(`http://localhost:5000/editprofileProvirer/${userIdapp}`, {
+    await axios.put(`http://localhost:5000/editprofileuser/${userIdapp}`, {
       username: username,
-      address: address,
+      email: email,
       domain: domain,
       about:about
     }
@@ -63,7 +63,7 @@ const handleSubmit = async (e) => {
     setUser((prevUser) => ({
       ...prevUser,
       username: username,
-      address: address,
+      email: email,
       domain: domain,
       about:about
     })
@@ -120,19 +120,16 @@ const handleSubmit = async (e) => {
  type='text' placeholder={user.username ||""} variant="h6" component="h2" className='m-5'>
           Text in a modal
         </Input> <br></br>
+      
+        <Input placeholder=  {user.address ||""} id="email" type='text'onChange={(e)=>setemail(e.target.value)}  value={email} variant="h6" component="h2" className='m-5'>
+          Text in a modal
+        </Input> <br></br>
+  
+    
         <Input onChange={(e)=>setdomain(e.target.value)} id="name" value={domain}
  type='text' placeholder={user.domain ||""} variant="h6" component="h2" className='m-5'>
           Text in a modal
         </Input> <br></br>
-        <Input placeholder=  {user.address ||""} id="email" type='text'onChange={(e)=>setaddress(e.target.value)}  value={address} variant="h6" component="h2" className='m-5'>
-          Text in a modal
-        </Input> <br></br>
-        {/* </Input> <br></br> */}
-        <textarea placeholder=  {user.about ||""} id="em" type='text'onChange={(e)=>setabout(e.target.value)}  value={about} variant="h6" component="h2" className='m-5'>
-          Text in a modal
-        </textarea> <br></br>
-    
-      
         
       
       

@@ -184,6 +184,22 @@ app.post("/request", (req, res) => {
     }
   );
 });
+app.post("/requistProduct", (req, res) => {
+  const { user_id, mkhiata_id, description, phone, photo } = req.body;
+  console.log(user_id, mkhiata_id, description, phone, photo);
+  pool.query(
+    "INSERT INTO request(user_id, mkhiata_id,description , phone,photo) VALUES($1,$2,$3,$4,$5) RETURNING*",
+    [user_id, mkhiata_id, description, phone, photo],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+
+        res.status(201).send(result.rows);
+      }
+    }
+  );
+});
 ///////////////////////////////////////Product of makhiata 
 
 
@@ -584,21 +600,19 @@ app.get('/offersOfMakhiata', async function (req, res) {
 app.put('/offersOfMakhiata/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    // const { description,phone, photo } = req.body;
-    // console.log(description, phone ,photo);
 
+    // Update the 'offers' status to true and return the updated product
     const updated = await pool.query(
-      'UPDATE products SET offers = true WHERE id = $1',
+      'UPDATE products SET offers = true WHERE id = $1 RETURNING *',
       [id]
     );
 
-    console.log(updated);
-
-    res.json(updated.rows);
+    res.json(updated.rows[0]); // Return the updated product as JSON
   } catch (error) {
     res.status(500).json({ error: "Can't edit data" });
   }
 });
+
 ////////////////////////////تفاصيل كل قطعه
 app.get('/eachproduct/:id', async function (req, res) {
   try {
@@ -637,13 +651,33 @@ app.get('/commentEachProduct/:id', async function (req, res) {
 app.put(`/editprofileProvirer/:id`, async (req, res) => {
   try {
     const { id } = req.params;
-    const { username, address, domain } = req.body;
+    const { username, address, domain,about } = req.body;
     console.log(username, address, domain);
 
 
     const updated = await pool.query(
-      'UPDATE users SET username = $1, address = $2, domain = $3 WHERE id = $4',
-      [username, address, domain, id]
+      'UPDATE users SET username = $1, address = $2, domain = $3,about=$4 WHERE id = $5',
+      [username, address, domain, about, id]
+    );
+
+    console.log(updated);
+
+    res.json(updated.rows);
+
+  } catch (error) {
+    res.status(500).json({ error: "Can't edit data" });
+  }
+});
+app.put(`/editprofileuser/:id`, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { username, email, domain} = req.body;
+    console.log(username, email, domain);
+
+
+    const updated = await pool.query(
+      'UPDATE users SET username = $1, email = $2, domain = $3 WHERE id = $4',
+      [username, email, domain, id]
     );
 
     console.log(updated);
@@ -659,12 +693,12 @@ app.put(`/editprofileProvirer/:id`, async (req, res) => {
 app.put(`/editproduct/:id`, async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description, price, photo } = req.body;
-    console.log(name, description, price, photo);
+    const { name, description, price,discountedprice, photo } = req.body;
+    console.log(name, description, price,discountedprice, photo);
 
     const updated = await pool.query(
-      'UPDATE products SET name = $1, description = $2, price = $3, photo = $4 WHERE id = $5',
-      [name, description, price, photo, id]
+      'UPDATE products SET name = $1, description = $2, price = $3, discountedprice = $4 ,photo=$5 WHERE id = $6',
+      [name, description, price, discountedprice, photo,id]
     );
 
     console.log(updated);
@@ -702,7 +736,18 @@ app.get('/requestOfeachuser/:id', async function (req, res) {
     res.status(500).json({ error: 'An error occurred while fetching user data' });
   }
 });
-
+////////////////////طلبات المستخدمين لكل مخيطة
+app.get('/allrequestforEachMakhiata/:id', async function (req, res) {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const user = await pool.query('SELECT * FROM request WHERE statuse = true AND aproved = true AND approveduser = true AND mkhiata_id = $1', [id]);
+    res.json(user.rows); // Assuming there is only one user with the given ID
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: 'An error occurred while fetching user data' });
+  }
+});
 //////////delete request from user profile
 app.delete("/request/:id", (req, res) => {
   const resortid = req.params.id;
@@ -734,8 +779,7 @@ app.post("/payment", (req, res) => {
 app.put('/prouctAvailable/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    // const { description,phone, photo } = req.body;
-    // console.log(description, phone ,photo);
+    
 
     const updated = await pool.query(
       'UPDATE products SET deleted = true WHERE id = $1',

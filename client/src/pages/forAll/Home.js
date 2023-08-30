@@ -100,7 +100,7 @@ useEffect(()=>{
   <div
     class="relative mx-auto max-w-screen-xl px-4 py-32 sm:px-6 lg:flex lg:h-screen lg:items-center lg:px-8"
   >
-    <div class="max-w-xl text-center ltr:sm:text-left rtl:sm:text-right">
+    <div class="max-w-xl mt-5 text-center ltr:sm:text-left rtl:sm:text-right">
       <h1 class="text-3xl  sm:text-5xl nameweb">
         ابرة و خيط
         </h1>
@@ -127,9 +127,7 @@ useEffect(()=>{
         <div className="text-center">
           <h1 className="text-3xl text-gray-800 font-semibold">
 خدماتنا          </h1>
-          <p className="mt-3 text-gray-500">
-            المدونات التي يحبها المجتمع. يتم تحديثها كل ساعة.
-          </p>
+          
         </div>
         <div data-aos="fade-down" className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((item, key) => (
@@ -167,11 +165,9 @@ useEffect(()=>{
         <div className="p-8 md:p-12 lg:px-16 lg:py-24">
           <div className="mx-auto max-w-xl text-center ltr:sm:text-left rtl:sm:text-right">
             <h2 className="text-2xl font-bold text-black md:text-3xl">
-            لم تكن خُطاهن علامات فارقة في قطاع الإعلام فقط            </h2>
+            لم تكن خُطاهن علامات فارقة في قطاع الخياطة          </h2>
             <p className="hidden  text-gray-500 md:mt-4 md:block">
-            لم تكن خُطاهن علامات فارقة في قطاع الإعلام فقط، إنما حققن خطى نجاح في قطاعات مختلفة، انعكست على مجتمعهن، 
-      فكانت أعمالهن حالة تؤكد أن المرأة قادرة، والمرأة تستطيع، تحديدا في دول تعاني من أزمات
-       واضطرابات أمام مجتمع بأكمله، لتخرج نساء منها وقد حققن الكثير الكثير من الإنجازات إعلاميا وفي قطاعات متعددة.
+                 الخياطة هي فن يجمع بين الإبداع والدقة، حيث تتحول الأقمشة العادية إلى قطع فريدة من الملابس التي تعكس ذوقًا وشخصية المرتدي. بين خيوط الإبرة وصانعة الملابس تنبض قصصٌ لا تُروى، وتنسج أحلام وأفكار تتجسد في تصاميم مبتكرة. دعنا نستكشف معًا عالم الخياطة والتصميم، حيث يلتقي الفن والموضة وتتحقق الأحلام والأفكار في أجمل الأزياء المصممة والمعدلة بمهارة وحب.
             </p>
           </div>
         </div>

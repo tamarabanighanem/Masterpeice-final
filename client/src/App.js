@@ -101,7 +101,6 @@ function App() {
     }
   };
 
-const[refresh,setRefresh]=useState(false)
   useEffect(() => {
     fetchProtectedData()
   }
@@ -119,9 +118,9 @@ const[refresh,setRefresh]=useState(false)
     return (
       <Router>
         <Nav
-          username={username} forceUpdate={forceUpdate} set={setRefresh}
+          username={username} forceUpdate={forceUpdate}
         />
-        {!refresh? (
+        {token ? (
                 <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/productcollection/:itemId' element={<ProductCollection userIdapp={userId} />} />
@@ -140,7 +139,7 @@ const[refresh,setRefresh]=useState(false)
         ):(
           <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/Signup' element={<Signup set={setRefresh} />} />
+          <Route path='/Signup' element={<Signup />} />
           <Route path='/Login' element={<Login />} />
           <Route path='/ContactUs' element={<ContactUs />} />
           <Route path='/About' element={<About />} />

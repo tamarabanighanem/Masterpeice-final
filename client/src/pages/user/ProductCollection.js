@@ -18,6 +18,9 @@ const ProductCollection = ({ userIdapp, product }) => {
   const [loading, setLoading] = useState(true);
   const [image, setImg] = useState('');
   const [delproduct, setdelproduct] = useState([]);
+  const [allRequest, setAllrequest] = useState([]);
+  const [phoneError, setPhoneError] = useState(""); // Add phoneError state
+  const phoneRegex = /^(\+?\d{1,4}[\s-]?)?\d{10}$/; // You can modify the regex for your specific phone number format
 
 
   const onChange = (e) => {
@@ -42,7 +45,13 @@ const ProductCollection = ({ userIdapp, product }) => {
   // const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent the default behavior of the event
+    event.preventDefault();
+    if (!phoneRegex.test(phone)) {
+      setPhoneError("الرجاء ادخال رقم صحيح");
+      return;
+    } else {
+      setPhoneError("");
+    } // Prevent the default behavior of the event
     const data = {
       user_id: userIdapp,
       description: description,
@@ -56,24 +65,26 @@ const ProductCollection = ({ userIdapp, product }) => {
     try {
       const request = await axios.post('http://localhost:5000/request', data);
       Swal.fire({
-        title: 'submitted form successful',
-        icon: 'success',
-        confirmButtonText: 'OK',
-      });
+        title: `تم ارسال الطلب `,
+        icon: "success",
+        confirmButtonText: "حسنا",
+    });
+    
       console.log(request.data);
     } catch (error) {
       Swal.fire({
-        title: 'Error',
-        text: 'please enter a valid donation amount',
+        title: 'خطأ',
+        text: 'الرجاء إدخال البيانات بشكل صحيح',
         icon: 'error',
-        confirmButtonText: 'OK',
+        confirmButtonText: 'موافق',
       });
+      
       console.error(error.message);
 
     }
     setdescription('')
     setphone('')
-    setImg("")
+    setImg('')
     setChestCircumference('')
     setWaistline('')
     setHipcircumference('')
@@ -92,7 +103,7 @@ const ProductCollection = ({ userIdapp, product }) => {
       })
       .catch((error) => {
         setLoading(false);
-        setProducts(0);
+        // setProducts(0);
         console.log(error.message);
       });
     axios
@@ -103,8 +114,13 @@ const ProductCollection = ({ userIdapp, product }) => {
         // Assuming there is only one user with the given ID
       })
       .catch((error) => console.log(error.message));
-
+ axios.get(`http://localhost:5000/allrequestforEachMakhiata/${itemId}`)
+ .then((response)=>{
+  setAllrequest(response.data)
+console.log(allRequest)
+ }).catch((error)=>console.log(error.message))
   }, []);
+  console.log(allRequest)
   useEffect(() => {
     AOS.init();
     AOS.refresh();
@@ -134,67 +150,85 @@ const ProductCollection = ({ userIdapp, product }) => {
                   </h1>
                 </div>
 
-                {products !== 0 ? (
-                  <section
-                    id="Projects"
-                    data-aos="flip-up"
-                    className="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5"
-                  >
-                    {currentItems.map((post) => {
-                      return (
-                        <div
-                          key={post.id}
-                          data-aos="flip-right" className="w-72  bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl"
-                        >
+                <section
+  id="Projects"
+  data-aos="flip-up"
+  className="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5"
+>
+  {products.length > 0 ? (
+    // Render products when there are products
+    currentItems.map((post) => (
+      <div
+        key={post.id}
+        data-aos="flip-right"
+        className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl"
+      >
+        <Link to={`/Product/${post.id}/${itemId}`} key={post.id}>
+          {post.offers ? (
+            <div className="border rounded-t-lg rounded-md border-red-500">
+              <div className="bg-gradient-to-r from-white to-red-600 p-2 rounded-t-lg  flex items-center">
+                <div className="w-1/2  h-full rounded-l-md flex justify-center items-center">
+                  <p className="text-white font-semibold">
+                    عرض خاص {post.discountedprice}
+                  </p>
+                </div>
+              </div>
+              <img
+                src={post.photo}
+                alt="Product"
+                className="h-72 w-72 object-cover"
+              />
+              <div className="px-4 py-3 w-72">
+                <p className="text-lg font-bold text-black truncate block capitalize">
+                  {post.name}:{' '}
+                  <span className="text-xs text-neutral-600 dark:text-neutral-200">
+                    {post.description}
+                  </span>
+                </p>
+                <del className="text-sm font-semibold text-red-600 cursor-auto">
+                  {post.price}
+                </del>
+              </div>
+            </div>
+          ) : (
+            <>
+              <img
+                src={post.photo}
+                alt="Product"
+                className="h-72 w-72 object-cover"
+              />
+              <div className="px-4 py-3 w-72">
+                <p className="text-lg font-bold text-black truncate block capitalize">
+                  {post.name}:{' '}
+                  <span className="text-xs text-neutral-600 dark:text-neutral-200">
+                    {post.description}
+                  </span>
+                </p>
+                <p className="text-sm font-semibold text-black cursor-auto">
+                  {post.price}
+                </p>
+              </div>
+            </>
+          )}
+        </Link>
+      </div>
+    ))
+  ) : (
+    <>
+    <div></div>
+    <div className="text-2xl w-full py-48 justify-center flex items-center text-gray-500 dark:text-neutral-50">
+    لا توجد تصاميم للعرض 😢
+  </div></>
+    
+  )}
+</section>
 
-                          <Link to={`/Product/${post.id}/${itemId}`} key={post.id}>
-                            {post.offers ? (<div className="bg-gradient-to-r from-white to-red-600 p-2 rounded-t-lg  flex items-center">
-                              <div className="w-1/2  h-full rounded-l-md flex justify-center items-center">
-                                <p className="text-white font-semibold">عرض</p>
-                              </div>
-                              <div className="w-1/2 h-full rounded-r-md flex justify-center items-center">
-                                {/* Placeholder for the other half of the div */}
-                              </div>
-                            </div>) : (<></>
-
-                            )}
-
-                            <img
-                              src={post.photo}
-                              alt="Product"
-                              className="h-72 w-72 object-cover "
-                            />
-                            <div className="px-4 py-3 w-72">
-                              <p className="text-lg font-bold text-black truncate block capitalize">
-                                {post.name}:    <span className="text-xs  text-neutral-600 dark:text-neutral-200">
-                                  {post.description}
-                                </span>
-                              </p>
-                              <p className="text-sm font-semibold text-black   cursor-auto ">
-                                {post.price} دينار
-                              </p>
-                            </div>
-                          </Link>
-                        </div>
-
-                      );
-                    })}
-                  </section>
-                ) : (
-                  <>
-                    <section>
-                      <div className="text-4xl  w-full py-48 justify-center flex items-center  text-gray-500  dark:text-neutral-50">
-                        لا توجد تصاميم للعرض 😢{' '}
-                      </div>
-                    </section>
-                  </>
-                )}
               </div>
             </section>
           </div>
         </>
       )}
-      {pagination}
+      {products.length>3&&pagination}
 
       <div className="text-center mt-10 p-10">
         <h1 className="font-bold text-3xl bg-gray-200 p-5 w-full rounded-xl  mb-4">جزء من اعمال المخيطة
@@ -202,28 +236,50 @@ const ProductCollection = ({ userIdapp, product }) => {
 
       </div>
       <div className="bg-white">
-        <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-          <h2 className="sr-only">Products</h2>
-          {delproduct.length === 0 ? (<>
-
-            <div className="text-2xl  w-full py-48 justify-center flex items-center  text-neutral-800  dark:text-neutral-50">
-              لا توجد طلبات مباعة للعرض  😢   </div></>) : (
-            <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-              {delproduct?.map((product) => (
-                <a key={product.id} href={product.href} className="group">
-                  <div data-aos="flip-up" className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                    <img
-                      src={product.photo}
-                      alt="Product"
-                      className="h-96 w-full object-cover object-center group-hover:opacity-75"
-                    />
-                  </div>
-
-                </a>
-              ))}
-            </div>
-          )}  </div>
+  <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+    <h2 className="sr-only">Products</h2>
+    {delproduct.length === 0 && allRequest.length === 0 ? (
+      <div className="text-2xl w-full py-48 justify-center flex items-center text-neutral-800 dark:text-neutral-50">
+  لا توجد اعملال للمخيطة😢
       </div>
+    ) : (
+      <div className="grid grid-cols-1 gap-x-6 p-5  gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 xl:gap-x-8">
+        {delproduct?.map((product) => (
+          <a key={product.id} href={product.href} className="group ">
+            <div
+              data-aos="flip-up"
+              className="  overflow-hidden  rounded-lg bg-gray-200 "
+            >
+              <img
+                src={product.photo}
+                alt="Product"
+                className="h-96 w-full object-cover object-center group-hover:opacity-75"
+              />
+            </div>
+          </a>
+        ))}
+        {allRequest?.map((req) => (
+          <a key={req.id} href={req.href} className="group">
+            <div
+              data-aos="flip-up"
+              className=" w-full overflow-hidden rounded-lg bg-gray-200 "
+            >
+              <img
+                src={req.photo}
+                alt="Product"
+                className="h-96 w-full object-cover object-center group-hover:opacity-75"
+              />
+            </div>
+          </a>
+        ))}
+      </div>
+
+    )}
+              
+
+  </div>
+</div>
+
 
 
       <main className=" ">
@@ -289,15 +345,17 @@ const ProductCollection = ({ userIdapp, product }) => {
 
                   </div>
                   <div>
-                    <label className="font-medium">رقم الهاتف</label>
-                    <input
-                      type="text"
-                      required
-                      value={phone}
-                      onChange={(e) => setphone(e.target.value)}
-                      className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border-2 border-gray-300 p-2 focus:border-[#E8AA42] shadow-sm rounded-lg"
-                    />
-                  </div>
+  <label className="font-medium">رقم الهاتف</label>
+  <input
+    type="text"
+    name="phone"
+    value={phone}
+    onChange={(e) => setphone(e.target.value)}
+    required
+    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-fuchsia-600 shadow-sm rounded-lg"
+  />
+  {phoneError && <p className="text-red-600 text-xs">{phoneError}</p>}
+</div>
 
                   <div>
                     <label className="font-medium">صورة التصميم المطلوب</label>

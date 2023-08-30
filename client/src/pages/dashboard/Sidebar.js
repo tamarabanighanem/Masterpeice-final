@@ -33,7 +33,7 @@ function handleLogOut(){
     /* Read more about isConfirmed, isDenied below */
     if (result.isConfirmed) {
 
-        Swal.fire(`  تم الخرزج `, '', 'success');
+        Swal.fire(`  تم الخروج `, '', 'success');
      
         // updateSignStatus("signUp")
         localStorage.setItem("SignStatus","signUp")

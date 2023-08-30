@@ -2,7 +2,7 @@
 import { useState, useEffect, useContext } from "react";
 import * as React from "react";
 import axios from "axios";
-import EditProfile from "../../component/Editprofile";
+import EditProfileuser from "../user/EditProfileuser";
 import Swal from 'sweetalert2';
 import { UserContext } from '../../UserContext';
 
@@ -21,7 +21,7 @@ function ProfileUser({ userIdapp }) {
   const [open, setOpen] = React.useState(false);
   const [refresh, setRefresh] = useState(false)
   const [refresh2, setRefesh2] = useState(false)
-  const [accepted, setAccepted] = useState(false);
+  // const [accepted, setAccepted] = useState(false);
   useEffect(() => {
     AOS.init();
     AOS.refresh();
@@ -182,7 +182,6 @@ function ProfileUser({ userIdapp }) {
                 <div className="flex flex-wrap justify-center">
                   <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center mt-5">
                     <h3 className="text-4xl font-semibold leading-normal text-blueGray-700 mb-2">
-                      {/* {userData.firstName} */}
                     </h3>
                   </div>
 
@@ -190,14 +189,13 @@ function ProfileUser({ userIdapp }) {
                 <div className="text-center">
                   <div className="mb-2 text-blueGray-600">
                     <i className="fas fa-inbox ml-5 text-lg text-blueGray-400" />
-                    {/* {userData.email} */}
                     {user.username || ""}
                   </div>
 
 
                   <div className="mb-2 text-blueGray-600">
                     <i className="fas fa-envelope ml-5 text-lg text-blueGray-400" />
-                    {user.address || ""}
+                    {user.email || ""}
                   </div>  <div className="mb-2 text-blueGray-600">
                     <i className="fas fa-phone ml-5 text-lg text-blueGray-400" />
                     {user.domain || ""}
@@ -222,7 +220,7 @@ function ProfileUser({ userIdapp }) {
                 </div>
                 <div className="w-full lg:w-4/12 px-4  lg:order-3 lg:text-right lg:self-center">
                   <div className="py-6 px-3 mt-32 sm:mt-0">
-                    <EditProfile userIdapp={userIdapp}
+                    <EditProfileuser userIdapp={userIdapp}
                       refreshh={refresh}
                       setRefreshh={setRefresh}
                     />
@@ -338,7 +336,7 @@ function ProfileUser({ userIdapp }) {
               )}
 
             </section>
-            {pagination}
+            {user.length>3&&pagination}
           </div>
         </section>
 

@@ -59,10 +59,12 @@ useEffect(() => {
                   {product.name} ({makhiataItem.username})
                 </a>
               </h3>
-              <p className="mt-1 text-sm text-gray-500">{product.color}</p>
-            </div>
-            <p className="text-sm font-medium text-red-600">{product.price}</p>
+          <div className='flex'>
+            <del className="text-sm   font-medium text-red-600"> {product.price}</del>
+            <p className="text-sm pr-10 font-medium text-green-600"> {product.discountedprice}</p></div>
           </div>
+          </div>
+
         </div>
       );
     }
@@ -71,8 +73,7 @@ useEffect(() => {
   })}
 </div>
       </div>
-      {pagination}
-
+      {offers.length > 3 && pagination}
     </div>
     </div>
   )

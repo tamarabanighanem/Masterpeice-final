@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-const Signup = ({ set }) => {
+const Signup = ({ s }) => {
   const [isMokhitaChecked, setIsMokhitaChecked] = useState(false);
   const navigate = useNavigate();
   const [rolell, setrolell] = useState("");
@@ -12,16 +12,19 @@ const Signup = ({ set }) => {
   const [password, setpassword] = useState("");
   const [domain, setdomain] = useState("");
   const [address, setaddress] = useState("");
+  const[about,setAbout]=useState('')
 
   // Validation patterns
   const usernameRegex = /^[\u0600-\u06FF0-9_]{3,20}$/;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const phoneRegex = /^(\+?\d{1,4}[\s-]?)?\d{10}$/; // You can modify the regex for your specific phone number format
 
   // Error states for validation
   const [usernameError, setUsernameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [phoneError, setPhoneError] = useState(""); // Add phoneError state
 
   const handleRadioChange = (e) => {
     setIsMokhitaChecked(e.target.value === 'مخيطة');
@@ -45,7 +48,12 @@ const Signup = ({ set }) => {
     } else {
       setEmailError("");
     }
-
+    if (!phoneRegex.test(domain)) {
+      setPhoneError("Please enter a valid phone number.");
+      return;
+    } else {
+      setPhoneError("");
+    }
     if (!passwordRegex.test(password)) {
       setPasswordError("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
       return;
@@ -70,7 +78,6 @@ const Signup = ({ set }) => {
         const { token } = res.data;
         localStorage.setItem('token', token);
         console.log(res);
-        set(true)
         if (isMokhitaChecked) {
           navigate('/Profileprovider');
         } else {
@@ -183,6 +190,18 @@ const Signup = ({ set }) => {
                 {emailError && <p className="text-red-600 text-xs">{emailError}</p>}
               </div>
               <div>
+  <label className="font-medium">رقم الهاتف</label>
+  <input
+    type="text"
+    name="phone"
+    onChange={(e) => setdomain(e.target.value)}
+    required
+    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-fuchsia-600 shadow-sm rounded-lg"
+  />
+  {phoneError && <p className="text-red-600 text-xs">{phoneError}</p>}
+</div>
+
+              <div>
                 <label className="font-medium">كلمة السر</label>
                 <input
                   type="password"
@@ -197,7 +216,7 @@ const Signup = ({ set }) => {
               {isMokhitaChecked && (
 
                 <form onSubmit={handleSubmit} className="space-y-5">
-                  <div>
+                  {/* <div>
                     <label className="font-medium">رقم الهاتف</label>
                     <input
                       type="text"
@@ -207,7 +226,7 @@ const Signup = ({ set }) => {
                       required
                       className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-fuchsia-600 shadow-sm rounded-lg"
                     />
-                  </div>
+                  </div> */}
                   <div>
                     <label className="font-medium">العنوان</label>
                     <input
@@ -218,6 +237,16 @@ const Signup = ({ set }) => {
                       required
                       className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-fuchsia-600 shadow-sm rounded-lg"
                     />
+                  </div>
+                
+                    <div>
+                    <label className="font-medium">عن المخيطة</label>
+                    <textarea
+                      required
+                      placeholder="..."
+                      onChange={(e) => setAbout(e.target.value)}
+                      className="w-full mt-2 h-28 md:h-36 px-3 py-2 border-2 border-gray-300 p-2 rounded-lg resize-none appearance-none bg-transparent outline-none focus:border-fuchsia-600 shadow-sm"
+                    ></textarea>
                   </div>
                 </form>
 

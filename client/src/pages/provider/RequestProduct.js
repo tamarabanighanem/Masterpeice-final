@@ -2,7 +2,7 @@ import React from 'react'
 import  { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
-const RequestProduct = ({ userIdapp,refreshh,setRefreshh }) => {
+const RequestProduct = ({ userIdapp,refreshh,setRefreshh,refresh3,setrefresh3 }) => {
 
   const[loading,setLoading]=useState(true)
 
@@ -17,15 +17,14 @@ const RequestProduct = ({ userIdapp,refreshh,setRefreshh }) => {
         `http://localhost:5000/finishrequestOfMakhiata/${id}`
       );
       setFinished(response.data.data.resorts);
-      setRefreshh(!refreshh)
+      setrefresh3(!refresh3)
 
     } catch (error) {
       console.log(error);
     }
   };
-
   const [price, setPrice] = useState('');
-
+  
 const handleAccept = async (id) => {
   const data = {
     price: price,
@@ -44,15 +43,14 @@ const handleAccept = async (id) => {
     try {
       // Display confirmation dialog
       const confirmed = await Swal.fire({
-        title: 'Are you sure?',
-        text: 'You are about to delete the product. This action cannot be undone.',
+        title: 'هل أنت متأكد؟',
+        text: 'أنت على وشك حذف المنتج. هذا الإجراء لا يمكن التراجع عنه.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'نعم، احذفه!'
       });
-  
       if (confirmed.isConfirmed) {
         await axios.delete("http://localhost:5000/requestOfMakhiataDelete/" + id);
         window.location.reload();
@@ -98,7 +96,7 @@ const handleAccept = async (id) => {
       })
       .catch((error) => console.log(error.message)
       );
-  }, [userIdapp,refreshh]);
+  }, [userIdapp,refreshh,refresh3]);
   console.log(request)
 console.log(userIdapp)
   return (
@@ -113,28 +111,27 @@ console.log(userIdapp)
 
       
       <div className="relative overflow-x-auto">
-        <h1>جميع الطلبات</h1>
-      
+      <p className='px-6 pb-10 text-xl  text-center'>جميع الطلبات</p>
   <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead className="text-xs border text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-    <tr  className=''><th colSpan="5" scope="col" className='px-6 py-3 text-center'>جميع الطلبات</th></tr>
+    {/* <tr  className=''><th colSpan="5" scope="col" className='px-6 pb-10 text-xl  text-center'>جميع الطلبات</th></tr> */}
 
       <tr>
-        <th scope="col" className="px-6 py-3">
-          Product name
-        </th>
-        <th scope="col" className="px-6 py-3">
-          Color
-        </th>
-        <th scope="col" className="px-6 py-3">
-          Category
-        </th>
-        <th scope="col" className="px-6 py-3">
-          Price
-        </th>
-        <th scope="col" className="px-6 py-3">
-          Price
-        </th>
+        <td scope="col" className="px-6 py-3">
+          صورة عن القطعة
+        </td>
+        <td scope="col" className="px-6 py-3">
+          الوصف
+        </td>
+        <td scope="col" className="px-6 py-3">
+          رقم الهاتف
+        </td>
+        <td scope="col" className="px-6 py-3">
+          السعر المتوقع
+        </td>
+        <td scope="col" className="px-6 py-3">
+          الحالة
+        </td>
       </tr>
     </thead>
     <tbody>
@@ -144,12 +141,13 @@ console.log(userIdapp)
       
     
         
-        <td className="px-6 py-4">  <img
+        <td className="px-6 py-4"> 
+         <img
           src={request.photo}
           alt="Product"
           className="h-80 w-72 object-cover rounded-t-xl"
         /></td>
-        <td className="px-6 py-4">{request.description}</td>
+        <td className=" ">{request.description}</td>
         <td className="px-6 py-4"> {request.phone}</td>
       
         <td className="px-6 py-4">  <input type="text"placeholder='السعر المتوقع' value={price} onChange={(e)=>setPrice(e.target.value)}/>     </td>
@@ -176,75 +174,86 @@ console.log(userIdapp)
 </div>
 )}
 {/* /////////////////////////////// in progress*/}
-<div className="relative overflow-x-auto">
-    
-  <table  className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-    <tr  className=''><th colSpan="4" scope="col" className='px-6 py-3 text-center'>قيد التنفيذ</th></tr>
+{finished && finished.some(item => item && item.statuse) ? (
+  <div className="relative overflow-x-auto">
+          <p className='px-6 pb-10 text-xl  text-center'>قيد التنفيذ</p>
 
-      <tr>
-        <th scope="col" className="px-6 py-3">
-          Product name
-        </th>
-        <th scope="col" className="px-6 py-3">
-          Color
-        </th>
-        <th scope="col" className="px-6 py-3">
-          Category
-        </th>
-        <th scope="col" className="px-6 py-3">
-          Price
-        </th>
-      
-      </tr>
-    </thead>
-    <tbody>
-    {approved?.map((request) => {
-                    return (
-      <tr key={request.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-      
+    <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+      <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
     
-        
-        <td className="px-6 py-4">  <img
-          src={request.photo}
-          alt="Product"
-          className="h-20 w-20 object-cover rounded-t-xl"
-        /></td>
-        <td className="px-6 py-4">{request.description}</td>
-        <td className="px-6 py-4"> {request.phone}</td>
-          <th
-          scope="row"
-          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-        >
-          <button className="mb-10 p-2  bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
-         variant="text"     onClick={(event) => {
-          handleReject(request.id);
-        }}>تم الانتهاء </button>
-        </th>
-  
-      </tr>
-  );
-})}
-    </tbody>
-  </table>
 
-</div>
+        <tr>
+          <th scope="col" className="px-6 py-3">
+            صورة القطعة
+          </th>
+          <th scope="col" className="px-6 py-3">
+            الوصف
+          </th>
+          <th scope="col" className="px-6 py-3">
+          رقم الهاتف
+          </th>
+          <th scope="col" className="px-6 py-3">
+            الحالة
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {approved?.map((request) => {
+          return (
+            <tr
+              key={request.id}
+              className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+            >
+              <td className="px-6 py-4">
+                <img
+                  src={request.photo}
+                  alt="Product"
+                  className="h-20 w-20 object-cover rounded-t-xl"
+                />
+              </td>
+              <td className="px-6 py-4">{request.description}</td>
+              <td className="px-6 py-4"> {request.phone}</td>
+              <th
+                scope="row"
+                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              >
+                <button
+                  className="mb-10 p-2  bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
+                  variant="text"
+                  onClick={(event) => {
+                    handleReject(request.id);
+                  }}
+                >
+                  تم الانتهاء
+                </button>
+              </th>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+) : (
+  <></>
+)}
+<hr className='w-full mt-20 mb-20'></hr>
 {/* ////////////////////////////finish */}
-{/* <div className="relative overflow-x-auto">
-    
+<div className="relative overflow-x-auto">
+<p className='px-6 pb-10 text-xl  text-center'>الطلبات المنتهية</p>
+
   <table  className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+
     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-      <tr  className=''><th colSpan="3" scope="col" className='px-6 py-3 text-center'>الطلبات المنتهية</th></tr>
       <tr>
-        <th scope="col" className="px-6 py-3">
-          Product name
-        </th>
-        <th scope="col" className="px-6 py-3">
-          Color
-        </th>
-        <th scope="col" className="px-6 py-3">
-          Category
-        </th>
+        <td  className="px-6 py-3">
+          صورة القطعة
+        </td>
+        <td  className="px-6 py-3">
+          الوصف
+        </td>
+        <td  className="px-6 py-3">
+          رقم الهاتف
+        </td>
       
       
       </tr>
@@ -272,7 +281,7 @@ console.log(userIdapp)
   </table>
 
       
-</div> */}
+</div>
         </div>
 
 {/* <Pagenation/> */}

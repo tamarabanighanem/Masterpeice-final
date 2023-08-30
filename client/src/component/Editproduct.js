@@ -1,13 +1,10 @@
-
-
-
-import * as React from 'react';
+// import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { Button } from "@material-tailwind/react";
 import Modal from '@mui/material/Modal';
 import { Input } from '@mui/material';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const style = {
   position: 'absolute',
@@ -26,27 +23,30 @@ function Editproduct({ productId, open, close, setrefreshReq, refreshReq }) {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
-  const [offers, setOffers] = useState([]);
+  const [isOffer, setIsOffer] = useState(false); // Changed from isDiscounted
+  const [discountedPrice, setDiscountedPrice] = useState("");
 
-  const handleSubmit = async (e) => {
-    // e.preventDefault();
+  const handleOnClick = () => {
+    handleSubmit();
+    close();
+  };
+
+  const handleSubmit = async () => {
     try {
       await axios.put(`http://localhost:5000/editproduct/${productId}`, {
         name: name,
         description: description,
         price: price,
-        photo: image
+        discountedprice: discountedPrice, // Changed from discountedprice
+        photo: image,
       });
-      setrefreshReq(!refreshReq)
+      setrefreshReq(!refreshReq);
       console.log("Product updated successfully!");
     } catch (error) {
       console.log(error);
     }
   };
-  const handleOnClick = () => {
-    handleSubmit();
-    close();
-  };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     getBase64(file)
@@ -70,20 +70,32 @@ function Editproduct({ productId, open, close, setrefreshReq, refreshReq }) {
       setName(product.name || "");
       setDescription(product.description || "");
       setPrice(product.price || "");
+      setIsOffer(product.offers); // Changed from isDiscounted
+      setDiscountedPrice(product.discountedPrice || "");
+      setImage(product.photo || "")
     } catch (error) {
       console.log(error);
     }
   };
+
   const handleReject = async (id) => {
     try {
       const response = await axios.put(
         `http://localhost:5000/offersOfMakhiata/${id}`
       );
-      setOffers(response.data.data.resorts);
+
+      // Check if 'offers' is true in the response data
+      const updatedProduct = response.data;
+      if (updatedProduct.offers) {
+        setIsOffer(true); // Changed from setShowDiscount
+      } else {
+        setIsOffer(false); // Changed from setShowDiscount
+      }
     } catch (error) {
       console.log(error);
     }
   };
+
   useEffect(() => {
     fetchProductDetails();
   }, [productId]);
@@ -97,7 +109,7 @@ function Editproduct({ productId, open, close, setrefreshReq, refreshReq }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div className='flex flex-col'>
+          <div className='flex flex-col '>
             <Input
               onChange={(e) => setName(e.target.value)}
               id="name"
@@ -147,23 +159,31 @@ function Editproduct({ productId, open, close, setrefreshReq, refreshReq }) {
             >
               ضمن العروض
             </Button>
-            {/* <button className="mb-10 p-2  bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
-         variant="text"     onClick={(event) => {
-          handleReject(request.id);
-        }}>تم الانتهاء </button> */}
+            {isOffer && ( // Only display the discounted price field if isOffer is true
+              <Input
+                onChange={(e) => setDiscountedPrice(e.target.value)}
+                id="discountedPrice"
+                value={discountedPrice}
+                type='text'
+                placeholder="السعر بعد الخصم"
+                variant="h6"
+                component="h2"
+                className='m-5'
+              />
+            )}
             <Button
               onClick={handleOnClick}
               className="m-5 border-solid bg-fuchsia-800 text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800"
               variant="text"
             >
-              Save
+              حفظ
             </Button>
             <Button
               className="m-5 border-solid bg-fuchsia-200 text-fuchsia-800 shadow hover:bg-fuchsia-800 hover:text-fuchsia-200"
               variant="text"
               onClick={close}
             >
-              Cancel
+              الغاء
             </Button>
           </div>
         </Box>

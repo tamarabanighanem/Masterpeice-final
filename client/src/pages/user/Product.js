@@ -17,7 +17,7 @@ const Product = ({ userIdapp }) => {
   const [selectedCommentId, setSelectedCommentId] = useState(null);
   const [reportReason, setReportReason] = useState('');
   const {pagination,setItem,currentItems}=useContext(UserContext)
-
+console.log(product.photo)
   useEffect(() => {
     // Fetch product details
     fetchProduct();
@@ -122,17 +122,17 @@ const Product = ({ userIdapp }) => {
   };
 const handleSubmit = async (event) => {
   event.preventDefault(); // Prevent the default behavior of the event
-  const product={
+  const productt={
     phone:phone,
     description:body,
     mkhiata_id:itemId,
     user_id:userIdapp,
-    photo:product1.photo,
+    photo:product.photo,
     
   }
-
+console.log(product.photo)
   try {
-    const response = await axios.post(`http://localhost:5000/requistProduct`, product);
+    const response = await axios.post(`http://localhost:5000/requistProduct`, productt);
 
     // Display success message
     Swal.fire({
@@ -161,7 +161,7 @@ const handleSubmit = async (event) => {
 
   return (
     <div>
-      <section className="mx-auto max-w-screen-xl pt-28 px-4 py-8">
+      <section className="mx-auto max-w-screen-xl h-screen pt-40 px-4 py-8">
         {/* Product details section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           <div className="grid grid-cols-2 gap-4 sticky top-40">
@@ -179,7 +179,7 @@ const handleSubmit = async (event) => {
               </div>
               <div className="mt-4 prose max-w-none">
                 <p>{product.description}</p>
-                <p className="text-lg font-bold"> {product.price}دينار</p>
+                <p className="text-lg font-bold"> {product.price}</p>
               </div>
               <Link
                 to={`/checkout/${id}/${itemId}`}
@@ -238,7 +238,6 @@ const handleSubmit = async (event) => {
     
   ))}
   {comments.length >= 3 && pagination}
-  {/* {comments.length >= 3 && pagination} Display pagination again at the end */}
 </div>
 {/* In this code, the pagination component is only displayed if the comments array has 3 or more items. It appears both before the comment list and after it. You can adjust the placement of the pagination component according to your design requirements. */}
 
@@ -265,6 +264,7 @@ const handleSubmit = async (event) => {
           placeholder="رقم الهاتف"
           type="text"
           value={phone}
+          // required
           onChange={(e) => {
             setPhone(e.target.value);
           }}
@@ -272,6 +272,7 @@ const handleSubmit = async (event) => {
         <textarea
           className="bg-gray-100 rounded sec p-3 h-40 md:h-60 border border-gray-300 outline-none w-full"
           spellCheck="false"
+          // required
           placeholder="اكتب الوصف الذي ترغب فيه"
           value={body}
           onChange={(e) => {

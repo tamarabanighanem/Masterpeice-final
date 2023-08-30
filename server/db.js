@@ -30,6 +30,7 @@ module.exports = pool
 	
 // );
 
+
 // CREATE TABLE payment (
 //   payment_id SERIAL PRIMARY KEY,
 //   card_number VARCHAR(16) NOT NULL,

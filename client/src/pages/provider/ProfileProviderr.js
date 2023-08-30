@@ -15,6 +15,8 @@ import { UserContext } from '../../UserContext';
 function ProfileProviderr({ userIdapp }) {
   const [refresh, setRefresh] = useState(false)
   const [refresh2, setRefesh2] = useState(false)
+  const [refresh3, setRefesh3] = useState(false)
+
   const { pagination, setItem, currentItems } = useContext(UserContext)
 
   // console.log(userIdapp)
@@ -57,8 +59,8 @@ function ProfileProviderr({ userIdapp }) {
       // Display success message
       Swal.fire({
         icon: 'success',
-        title: 'Success!',
-        text: 'Product has been submitted successfully.',
+        title: 'تم!',
+        text: 'تم ارسال الطلب بنجاح',
       });
  // Clear the form fields
  setname('');
@@ -90,14 +92,13 @@ function ProfileProviderr({ userIdapp }) {
   };
   const handleClose = () => setOpen(false);
   const [users, setUsers] = useState([]);
-  // const [request, setrequest] = useState([]);
   const [productId, setProductId] = useState(0)
   useEffect(() => {
     axios
       .get(`http://localhost:5000/profileProvider/${userIdapp}`)
       .then((response) => {
         setUser(response.data[0]);
-        // setRefresh(true)
+      
 
       })
       .catch((error) => console.log(error.message));
@@ -120,20 +121,20 @@ function ProfileProviderr({ userIdapp }) {
       .catch((error) => console.log(error.message));
 
   
-  }, [userIdapp, refresh, refresh2]);
-
+  }, [userIdapp, refresh, refresh2 ,refresh3]);
+  
   // Tamara@123
   const handleDelete = async (id) => {
     try {
       // Display confirmation dialog
       const confirmed = await Swal.fire({
-        title: 'Are you sure?',
-        text: 'You are about to delete the product. This action cannot be undone.',
+        title: 'هل انت متأكد?',
+        text: 'انت تريد حذف القطعة',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'نعم اريد حذفه!'
       });
 
       if (confirmed.isConfirmed) {
@@ -144,7 +145,7 @@ function ProfileProviderr({ userIdapp }) {
       // Handle error if necessary
     }
   };
-
+console.log(users)
   useEffect(() => {
     AOS.init();
     AOS.refresh();
@@ -223,13 +224,14 @@ function ProfileProviderr({ userIdapp }) {
 
                     {user.address || ""}
                   </div>
-                </div>
-
+                 </div>
+              {/*  الخياطة هي فن يجمع بين الإبداع والدقة، حيث تتحول الأقمشة العادية إلى قطع فريدة من الملابس التي تعكس ذوقًا وشخصية المرتدي. بين خيوط الإبرة وصانعة الملابس تنبض قصصٌ لا تُروى، وتنسج أحلام وأفكار تتجسد في تصاميم مبتكرة. دعنا نستكشف معًا عالم الخياطة والتصميم، حيث يلتقي الفن والموضة وتتحقق الأحلام والأفكار في أجمل الأزياء المصممة والمعدلة بمهارة وحب. */}
                 <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
                   <div className="flex flex-wrap justify-center">
                     <div className="w-full justify-center lg:w-9/12 px-4">
                       <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
-                        "الخياطة هي فن يجمع بين الإبداع والدقة، حيث تتحول الأقمشة العادية إلى قطع فريدة من الملابس التي تعكس ذوقًا وشخصية المرتدي. بين خيوط الإبرة وصانعة الملابس تنبض قصصٌ لا تُروى، وتنسج أحلام وأفكار تتجسد في تصاميم مبتكرة. دعنا نستكشف معًا عالم الخياطة والتصميم، حيث يلتقي الفن والموضة وتتحقق الأحلام والأفكار في أجمل الأزياء المصممة والمعدلة بمهارة وحب."
+                        
+                        "   {user.about  || ""}                                                  "
                       </p>
                     </div>
                   </div>
@@ -273,7 +275,7 @@ function ProfileProviderr({ userIdapp }) {
             </h1>
 
           </div>
-          <RequestProduct userIdapp={userIdapp} refreshh={refresh} setRefreshh={setRefresh} />
+          <RequestProduct userIdapp={userIdapp} refreshh={refresh} setRefreshh={setRefresh} refresh3={refresh3} setRefesh3={setRefesh3} />
 
 
           {/* ///////////////////////////////// */}
@@ -317,37 +319,59 @@ function ProfileProviderr({ userIdapp }) {
             </div>
           ) : (
             <section className="w-fit mx-auto text-center grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
-              {currentItems?.map((post) => (
-                <div key={post.id} data-aos="zoom-in-left" className="bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-                  <img
-                    src={post.photo}
-                    alt="Product"
-                    className="h-72 w-72 object-cover rounded-t-xl"
-                  />
-                  <div className="px-4 py-3 w-72">
-                    <p className="text-lg font-bold text-black truncate block capitalize">
-                      {post.name} :
-                    </p>
-                    <p className=" text-base text-neutral-600 dark:text-neutral-200">
-                      {post.description}
-                    </p>
-                    <p className="text-sm  cursor-auto my-1">
-                      السعر : {post.price} دينار
-                    </p>
+            {currentItems?.map((post) => (
+              <div
+                key={post.id}
+                data-aos="zoom-in-left"
+                className={`bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl ${
+                  post.offers ? 'border border-red-500' : '' // Add this condition to add a red border if there's an offer
+                }`}
+              >
+                {post.offers && (
+                  <div className="bg-red-500 text-white py-1 px-3 rounded-t-xl">
+                    <p className="text-xs">عرض خاص {post.discountedprice}</p>
+                    <p className="text-xs"></p>
                   </div>
-                  <div className=" px-10   flex gap-4">
-                    <Button className="mb-2  bg-fuchsia-800  text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800"
-                      variant="text" onClick={() => handleOpen(post.id)}>تعديل </Button>
-                    <Editproduct productId={productId} open={open} close={handleClose} refreshReq={refresh2} setrefreshReq={setRefesh2} />
-                    <Button className="mb-2   bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
-                      variant="text" onClick={() => handleDelete(post.id)}>حذف </Button>
-                  </div>
+                )}
+                <img
+                  src={post.photo}
+                  alt="Product"
+                  className="h-72 w-72 object-cover "
+                />
+                <div className="px-4 py-3 w-72">
+                  <p className="text-lg font-bold text-black truncate block capitalize">
+                    {post.name} :
+                  </p>
+                  <p className="text-base text-neutral-600 dark:text-neutral-200">
+                    {post.description}
+                  </p>
+                  <p className="text-sm  cursor-auto my-1">
+                    السعر : {post.price} 
+                  </p>
                 </div>
-              ))}
-            </section>
+                <div className="px-10 flex gap-4">
+                  <Button
+                    className="mb-2  bg-fuchsia-800  text-white shadow hover:bg-fuchsia-200 hover:text-fuchsia-800"
+                    variant="text"
+                    onClick={() => handleOpen(post.id)}
+                  >
+                    تعديل
+                  </Button>
+                  <Editproduct productId={productId} open={open} close={handleClose} refreshReq={refresh2} setrefreshReq={setRefesh2} />
+                  <Button
+                    className="mb-2   bg-[#dc2626]  text-white shadow hover:bg-[#991b1b] hover:text-black   "
+                    variant="text"
+                    onClick={() => handleDelete(post.id)}
+                  >
+                    حذف
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </section>
+          
           )}
-          {pagination}
-        </div>
+  {users.length > 3 && pagination}        </div>
         <main className="py-14 bg-fuchsia-100 ">
           <div className="text-center mt-10">
             <h1 className="text-3xl text-gray-800 font-semibold mb-10"> لاضافة منتج املئ النموذج التالي
@@ -379,7 +403,7 @@ function ProfileProviderr({ userIdapp }) {
                       required
                       value={name}
                       onChange={(e) => setname(e.target.value)}
-                      className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border-2 border-gray-300 p-2  focus:border-[#E8AA42] shadow-sm rounded-lg"
+                      className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border-2 border-gray-300 p-2  focus:border-fuchsia-600 shadow-sm rounded-lg"
                     />
                   </div>
                   <div>
@@ -391,7 +415,7 @@ function ProfileProviderr({ userIdapp }) {
                       required
                       value={price}
                       onChange={(e) => setprice(e.target.value)}
-                      className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border-2 border-gray-300 p-2  focus:border-[#E8AA42] shadow-sm rounded-lg"
+                      className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border-2 border-gray-300 p-2  focus:border-fuchsia-600 shadow-sm rounded-lg"
                     />
                   </div>
 
@@ -402,7 +426,7 @@ function ProfileProviderr({ userIdapp }) {
                     <textarea
                       value={description}
                       onChange={(e) => setdescription(e.target.value)}
-                      required className="w-full mt-2 h-36 px-3 py-2 border-2 border-gray-300 p-2 rounded-lg  resize-none appearance-none bg-transparent outline-none  focus:border-[#E8AA42] shadow-sm "></textarea>
+                      required className="w-full mt-2 h-36 px-3 py-2 border-2 border-gray-300 p-2 rounded-lg  resize-none appearance-none bg-transparent outline-none  focus:border-fuchsia-600 shadow-sm "></textarea>
                   </div>
                   <div>
                     <label className="font-medium">صورة عن المنتج</label>
